@@ -1,0 +1,54 @@
+Theme: BUG!
+
+Elevator Pitch:
+
+A program bug tries to escape from being erased by manipulating its digital environment to
+slip past, deactivate, or infect the debugger
+
+
+Aesthetics:
+
+- Insects, Pest extermination, Digital
+- Natural environments with a digitized look?
+- Programmer lingo (everything below in quotes)
+
+
+Gameplay Concept:
+
+- Roguelike platformer with the goal of ascending out of the debugger.
+
+- Each region/zone/area is separated by a "breakpoint" and the bug must find a way around the
+  breakpoint.
+
+- Each region is cleared by getting through a maze-like series of rooms, which are filled with
+  enemies and traps. Each room is cleared by disabling or erasing every enemy. Traps can be avoided
+
+- Getting through enough rooms finds a "logic error" that is a backdoor around the breakpoint,
+  allowing progression to the next region.
+
+- Players can choose a skill at the beginning of their run, each with a unique way of clearing
+  rooms. Each of these has a coresponding skill tree that progresses during a run
+
+- Permanent unlocks are stored in the hub (to be flavored later) via "memory leaks"
+
+- The bug escapes by slipping past the debugger after the final breakpoint. The bug becomes
+  a feature! :P
+
+
+Skill Paths (to be named):
+
+- "Red" path: Attack enemies directly, erasing them
+- "Green" path: Stun enemies, disabling them for a period of time, and manipulate traps
+- "Blue" path: Manipulate the physical environment (e.g. summon platforms, move traps, etc.)
+
+------------
+| PLANNING |
+------------
+
+CreatureSprite.gd - extends AnimatedSprite:
++ take_damage()
++ stun()
++ unstun()
++ explode()
++ fade_away()
++ disintegrate()
