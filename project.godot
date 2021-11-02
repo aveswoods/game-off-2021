@@ -13,14 +13,30 @@ _global_script_classes=[ {
 "class": "CreatureSprite",
 "language": "GDScript",
 "path": "res://creatures/CreatureSprite.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "Enemy",
+"language": "GDScript",
+"path": "res://creatures/enemies/Enemy.gd"
+}, {
+"base": "Area2D",
+"class": "EnemyHitbox",
+"language": "GDScript",
+"path": "res://creatures/enemies/EnemyHitbox.gd"
 } ]
 _global_script_class_icons={
-"CreatureSprite": ""
+"CreatureSprite": "",
+"Enemy": "",
+"EnemyHitbox": ""
 }
 
 [application]
 
 config/name="Game Off 2021"
+
+[display]
+
+window/size/height=576
 
 [importer_defaults]
 
@@ -120,6 +136,7 @@ ui_pause_menu={
 [physics]
 
 common/enable_pause_aware_picking=true
+2d/default_gravity=300
 
 [rendering]
 

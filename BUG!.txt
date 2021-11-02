@@ -52,3 +52,18 @@ CreatureSprite.gd - extends AnimatedSprite:
 + explode()
 + fade_away()
 + disintegrate()
+
+Player.gd - extends KinematicBody:
++ action1 : Script
++ action2 : Script
+...
++ hp
+
++ take_damage(impulse, amount)
++ die()
+
+Enemy.gd - extends :
++ hp
+
++ take_damage(impulse, amount)
++ die(means)

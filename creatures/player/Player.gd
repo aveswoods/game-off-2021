@@ -1,35 +1,60 @@
 extends KinematicBody2D
 
-
+# Scene variables
 onready var _sprite = $CreatureSprite
+onready var _invincibility_timer = $InvincibilityTimer
+
+# Game variables
+var hp = 0
 
 # Physics variables
 const _gravity = 30 # px / sec^2
-const _jump_impulse = -720 # px / sec 
+const _jump_impulse = -640 # px / sec 
 const _move_speed = 240 # px / sec
 const _friction = 0.15
 const _acceleration = 0.2
 var _velocity = Vector2.ZERO
 var _is_on_floor = false
+var _taking_damage = false
+var _in_invincibility_frames = false
+var _damage_impulse = Vector2.ZERO
+
+# TODO:
+# Damage is not applied if the user is inside a hitbox after the invincibility timer has expired!
+# However, the timer is so short that this is a small issue.
+func take_damage(damage, impulse):
+	if not _in_invincibility_frames:
+		hp -= damage
+		_taking_damage = true
+		_damage_impulse = impulse
+		
+		_in_invincibility_frames = true
+		_invincibility_timer.start()
+
+
+func _ready():
+	_sprite.play()
+
 
 func _physics_process(delta):
 	# Detect horizontal input
 	var direction = 0
-	if Input.is_action_pressed("ui_left"):
+	if Input.is_action_pressed("ui_left") and not _taking_damage:
 		direction += -1
-	if Input.is_action_pressed("ui_right"):
+	if Input.is_action_pressed("ui_right") and not _taking_damage:
 		direction += 1
 	
 	# Interpolate based on horizontal input
 	if direction != 0:
 		_velocity.x = lerp(direction * _move_speed, _velocity.x, _acceleration)
 		
+		if direction == 1:
+			_sprite.flip_h(false)
+		else:
+			_sprite.flip_h(true)
+		
 		if _is_on_floor:
 			_sprite.animation = "run"
-			if direction == -1:
-				_sprite.flip_h(false)
-			else:
-				_sprite.flip_h(true)
 	else:
 		_velocity.x = lerp(_velocity.x, 0, _friction)
 		
@@ -42,6 +67,13 @@ func _physics_process(delta):
 	# Animate fall
 	if not _is_on_floor and _velocity.y > 0:
 		_sprite.animation = "fall"
+	
+	# Apply damage impulse
+	if _taking_damage:
+		_velocity.x += _damage_impulse.x
+		_velocity.y = _damage_impulse.y
+		_taking_damage = false
+		_is_on_floor = false
 	
 	# Move the player based on velocity
 	_velocity = move_and_slide(_velocity, Vector2(0, -1))
@@ -58,3 +90,7 @@ func _physics_process(delta):
 		
 		# Animate jump
 		_sprite.animation = "jump"
+
+
+func _on_InvincibilityTimer_timeout():
+	_in_invincibility_frames = false
