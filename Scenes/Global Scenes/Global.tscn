@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Audio/Music/[MP3FY] Hart - Party Till The End.wav" type="AudioStream" id=1]
+[ext_resource path="res://Scenes/Global Scenes/Global.gd" type="Script" id=2]
+
+[node name="Global" type="Node"]
+script = ExtResource( 2 )
+
+[node name="AudioMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+
+[connection signal="finished" from="AudioMusic" to="." method="_on_AudioMusic_finished"]
