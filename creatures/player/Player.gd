@@ -13,6 +13,7 @@ var hp = 0
 var action1_script = null
 var action2_script = null
 var input_disabled = false
+var is_outside_movement = false
 var _is_facing_left = false
 
 # Physics variables
@@ -65,6 +66,15 @@ func _ready():
 # Handle directional input and weapon additional input at the same time
 # Current solution is disabling input
 func _physics_process(delta):
+	# Detect action input
+	if Input.is_action_just_pressed("ui_accept") and action1_script != null and not input_disabled:
+		input_disabled = true
+		action1_script.trigger()
+	if Input.is_action_just_pressed("ui_select") and action2_script != null and not input_disabled:
+		input_disabled = true
+		action2_script.trigger()
+	
+	
 	# Detect horizontal input
 	var direction = 0
 	if Input.is_action_pressed("ui_left") and not _taking_damage and not input_disabled:
@@ -84,12 +94,14 @@ func _physics_process(delta):
 			_is_facing_left = true
 		
 		if _is_on_floor:
-			_animation_player.play("run", 0.25)
-	else:
+			_animation_player.play("run")
+	elif not is_outside_movement:
 		velocity.x = lerp(velocity.x, 0, friction)
-		
 		if _is_on_floor:
-			_animation_player.queue("idle")
+			if _animation_player.current_animation != "run":
+				_animation_player.queue("idle")
+			else:
+				_animation_player.play("idle")
 	
 	# Add gravity
 	velocity.y += gravity
@@ -134,11 +146,6 @@ func _physics_process(delta):
 		# Animate jump
 		#_sprite.animation = "jump"
 	
-	# Detect action input
-	if Input.is_action_just_pressed("ui_accept") and action1_script != null and not input_disabled:
-		action1_script.trigger()
-	if Input.is_action_just_pressed("ui_select") and action2_script != null and not input_disabled:
-		action2_script.trigger()
 
 
 func _on_InvincibilityTimer_timeout():

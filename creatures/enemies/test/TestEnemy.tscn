@@ -5,8 +5,8 @@
 [ext_resource path="res://creatures/enemies/EnemyHitbox.gd" type="Script" id=3]
 [ext_resource path="res://creatures/enemies/test/TestEnemy.gd" type="Script" id=4]
 
-[sub_resource type="CapsuleShape2D" id=1]
-height = 16.0
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 15.9336, 10 )
 
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 12.0
@@ -24,7 +24,6 @@ script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 1 )
-rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="EnemyHitbox" type="Area2D" parent="."]
