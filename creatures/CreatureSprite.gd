@@ -1,12 +1,12 @@
-extends AnimatedSprite
+extends Sprite
 
 class_name CreatureSprite
 
-func flip_h(is_flipped):
-	if is_flipped:
-		scale = Vector2(-1, 1)
+func flip_h(flipped):
+	if flipped:
+		scale.x = -1
 	else:
-		scale = Vector2(1, 1)
+		scale.x = 1
 
 func animate_take_damage():
 	pass
