@@ -12,7 +12,9 @@ height = 16.0
 radius = 12.0
 height = 18.0
 
-[node name="TestEnemy" type="KinematicBody2D"]
+[node name="TestEnemy" type="KinematicBody2D" groups=[
+"enemy",
+]]
 script = ExtResource( 4 )
 
 [node name="CreatureSprite" type="Sprite" parent="."]
@@ -26,7 +28,6 @@ rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="EnemyHitbox" type="Area2D" parent="."]
-monitorable = false
 collision_layer = 2
 script = ExtResource( 3 )
 

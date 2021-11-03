@@ -39,6 +39,8 @@ func take_damage(damage, impulse):
 		
 		invincible = true
 		_invincibility_timer.start()
+		
+		print("Player damaged!")
 
 
 func is_facing_left():

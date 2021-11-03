@@ -4,7 +4,7 @@ extends Node
 #
 # Allows for scripting of player abilities, able to be assigned to a player at any point
 
-func setup(player):
+func equip(player):
 	pass
 
 func trigger():
