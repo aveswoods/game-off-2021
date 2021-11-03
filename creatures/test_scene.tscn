@@ -5,7 +5,6 @@
 [ext_resource path="res://creatures/enemies/test/TestEnemy.tscn" type="PackedScene" id=3]
 [ext_resource path="res://creatures/test_scene.gd" type="Script" id=4]
 
-
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 4 )
 
@@ -29,12 +28,13 @@ position = Vector2( 301.277, 286.711 )
 position = Vector2( 254.798, 452.775 )
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
-margin_left = 346.004
-margin_top = 207.246
-margin_right = 609.004
-margin_bottom = 247.246
+margin_left = 346.0
+margin_top = 207.0
+margin_right = 609.0
+margin_bottom = 272.0
 text = "Arrows to move
-Z to lunge (example ability)"
+Z to lunge 
+X to bite (example abilities)"
 __meta__ = {
 "_edit_use_anchors_": false
 }

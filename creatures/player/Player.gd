@@ -28,6 +28,13 @@ var _is_on_floor = false
 var _taking_damage = false
 var _damage_impulse = Vector2.ZERO
 
+
+func animate(name: String, flipped_h: bool = false, custom_blend : float = -1):
+	_sprite.flip_h(flipped_h)
+	_is_facing_left = flipped_h
+	_animation_player.play(name, custom_blend)
+
+
 # NOTE/BUG:
 # Damage is not applied if the user is inside a hitbox after the invincibility timer has expired!
 # However, the timer is so short that this is a small issue.
@@ -82,7 +89,7 @@ func _physics_process(delta):
 		velocity.x = lerp(velocity.x, 0, friction)
 		
 		if _is_on_floor:
-			_animation_player.play("idle")
+			_animation_player.queue("idle")
 	
 	# Add gravity
 	velocity.y += gravity
@@ -130,6 +137,8 @@ func _physics_process(delta):
 	# Detect action input
 	if Input.is_action_just_pressed("ui_accept") and action1_script != null and not input_disabled:
 		action1_script.trigger()
+	if Input.is_action_just_pressed("ui_select") and action2_script != null and not input_disabled:
+		action2_script.trigger()
 
 
 func _on_InvincibilityTimer_timeout():

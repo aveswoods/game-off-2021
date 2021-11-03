@@ -40,12 +40,13 @@ position = Vector2( 301.192, 430.187 )
 position = Vector2( 92.4142, 210.184 )
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
-margin_left = 232.611
-margin_top = 35.8972
-margin_right = 495.611
-margin_bottom = 75.8972
+margin_left = 233.0
+margin_top = 36.0
+margin_right = 496.0
+margin_bottom = 86.0
 text = "Arrows to move
-Z to lunge (example ability)"
+Z to lunge 
+X to bite (example abilities)"
 __meta__ = {
 "_edit_use_anchors_": false
 }
