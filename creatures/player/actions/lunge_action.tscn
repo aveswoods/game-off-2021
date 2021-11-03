@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://creatures/player/actions/lunge_action.gd" type="Script" id=1]
+
+[node name="lunge_action" type="Timer"]
+wait_time = 0.3
+one_shot = true
+script = ExtResource( 1 )
+
+[connection signal="timeout" from="." to="." method="_on_lunge_action_timeout"]

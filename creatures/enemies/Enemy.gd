@@ -21,9 +21,6 @@ var velocity = Vector2.ZERO
 var _is_on_floor = false
 
 
-func is_on_ground():
-	return _is_on_floor
-
 func take_damage(amount : int, impulse : Vector2, source = death_source.ERASE):
 	hp -= amount
 	print("Enemy damage")
@@ -33,8 +30,8 @@ func _physics_process(delta):
 	# Add gravity
 	velocity.y += _gravity
 	
-	# Checks for collisions
-	var collision_x = move_and_collide(delta * Vector2(velocity.x, 0), true, true, true)
+	# Checks for x collisions
+	var collision_x = move_and_collide(delta * Vector2(velocity.x, -0.1), true, true, true)
 
 	 # Move based on velocity
 	velocity = move_and_slide(velocity, Vector2(0, -1))
