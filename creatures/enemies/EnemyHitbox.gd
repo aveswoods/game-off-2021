@@ -14,12 +14,14 @@ func _ready():
 
 
 func _on_body_entered(body: Node):
-	if body.is_in_group("player"):
+	if body.is_in_group("player") and not body.invincible:
 		var impulse = body.global_position - self.global_position
 		if impulse.x < 0:
 			impulse = contact_impulse * Vector2(-1, -1)
 		else:
 			impulse = contact_impulse * Vector2(1, -1)
-		body.take_damage(contact_damage, impulse)
+		
+		body.bump(impulse)
+		body.take_damage(contact_damage)
 		
 		emit_signal("hitbox_entered")

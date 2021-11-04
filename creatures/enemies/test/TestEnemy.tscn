@@ -6,15 +6,16 @@
 [ext_resource path="res://creatures/enemies/test/TestEnemy.gd" type="Script" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 15.9336, 10 )
+extents = Vector2( 14, 10 )
 
 [sub_resource type="CapsuleShape2D" id=2]
-radius = 12.0
-height = 18.0
+radius = 13.0
 
 [node name="TestEnemy" type="KinematicBody2D" groups=[
 "enemy",
 ]]
+collision_layer = 2
+collision_mask = 3
 script = ExtResource( 4 )
 
 [node name="CreatureSprite" type="Sprite" parent="."]
@@ -37,6 +38,7 @@ shape = SubResource( 2 )
 [node name="Timer" type="Timer" parent="."]
 autostart = true
 
-[connection signal="collided_x" from="." to="." method="_on_TestEnemy_collided_x"]
+[connection signal="collided_with_body" from="." to="." method="_on_TestEnemy_collided_with_body"]
+[connection signal="collided_with_wall" from="." to="." method="_on_TestEnemy_collided_with_wall"]
 [connection signal="hitbox_entered" from="EnemyHitbox" to="." method="_on_EnemyHitbox_hitbox_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

@@ -44,6 +44,8 @@ tracks/1/keys = {
 [node name="Area2D" type="Area2D"]
 monitoring = false
 monitorable = false
+collision_layer = 0
+collision_mask = 3
 script = ExtResource( 1 )
 lunge_velocity = Vector2( 240, 0 )
 

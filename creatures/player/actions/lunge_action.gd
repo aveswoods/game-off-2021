@@ -6,7 +6,7 @@ export var lunge_velocity := Vector2.ZERO
 export var is_decelerating := false
 export var is_lunging := false
 var lunge_damage = 0
-var lunge_impact_impulse = 100
+var lunge_impact_impulse = 800
 var _can_lunge = true
 var _player = null
 var _player_facing_left = false
@@ -77,8 +77,5 @@ func _stop_decelerating():
 
 func _on_Area2D_body_entered(body):
 	if body.is_in_group("enemy"):
-		body.take_damage(
-			lunge_damage,
-			lunge_impact_impulse * (body.global_position - global_position + Vector2(0, -0.1)).normalized(),
-			0.05
-		)
+		body.bump(lunge_impact_impulse * (body.global_position - global_position + Vector2(0, -0.5)).normalized())
+		body.take_damage(lunge_damage)
