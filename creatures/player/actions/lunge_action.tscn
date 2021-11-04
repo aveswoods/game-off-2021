@@ -42,7 +42,7 @@ tracks/1/keys = {
 monitoring = false
 monitorable = false
 script = ExtResource( 1 )
-lunge_velocity = Vector2( 360, 0 )
+lunge_velocity = Vector2( 240, 0 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 4, 0 )
