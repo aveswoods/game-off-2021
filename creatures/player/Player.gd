@@ -66,14 +66,15 @@ func _ready():
 # Handle directional input and weapon additional input at the same time
 # Current solution is disabling input
 func _physics_process(delta):
+	# -------------------
+	# | INPUT DETECTING |
+	# -------------------
+	
 	# Detect action input
 	if Input.is_action_just_pressed("ui_accept") and action1_script != null and not input_disabled:
-		input_disabled = true
 		action1_script.trigger()
 	if Input.is_action_just_pressed("ui_select") and action2_script != null and not input_disabled:
-		input_disabled = true
 		action2_script.trigger()
-	
 	
 	# Detect horizontal input
 	var direction = 0
@@ -81,6 +82,18 @@ func _physics_process(delta):
 		direction += -1
 	if Input.is_action_pressed("ui_right") and not _taking_damage and not input_disabled:
 		direction += 1
+	
+	# Detect vertical input
+	if Input.is_action_just_pressed("ui_up") and _is_on_floor and is_equal_approx(velocity.y, 0) and not input_disabled:
+		velocity.y = jump_impulse
+		_is_on_floor = false
+		
+		# Animate jump
+		#_sprite.animation = "jump"
+	
+	# -------------------
+	# | CREATE MOVEMENT |
+	# -------------------
 	
 	# Interpolate based on horizontal input
 	if direction != 0:
@@ -95,8 +108,10 @@ func _physics_process(delta):
 		
 		if _is_on_floor:
 			_animation_player.play("run")
+		
 	elif not is_outside_movement:
 		velocity.x = lerp(velocity.x, 0, friction)
+		
 		if _is_on_floor:
 			if _animation_player.current_animation != "run":
 				_animation_player.queue("idle")
@@ -118,6 +133,10 @@ func _physics_process(delta):
 		_taking_damage = false
 		_is_on_floor = false
 	
+	# ------------------
+	# | APPLY MOVEMENT |
+	# ------------------
+	
 	# Checks for x collisions
 	var collision_x = move_and_collide(delta * Vector2(velocity.x, -0.1), true, true, true)
 	
@@ -138,13 +157,6 @@ func _physics_process(delta):
 		_is_on_floor = true
 		emit_signal("collided_y")
 	
-	# Detect vertical input
-	if _is_on_floor and Input.is_action_just_pressed("ui_up") and not input_disabled:
-		velocity.y = jump_impulse
-		_is_on_floor = false
-		
-		# Animate jump
-		#_sprite.animation = "jump"
 	
 
 

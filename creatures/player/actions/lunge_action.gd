@@ -16,8 +16,6 @@ var _player_gravity = 0
 func equip(player):
 	_player = player
 	_player.add_child(self)
-	_player.connect("collided_x", self, "_on_impact_x")
-	_player.connect("collided_y", self, "_on_impact_y")
 
 
 func trigger():
@@ -46,8 +44,6 @@ func trigger():
 		# Update player gravity
 		_player_gravity = _player.gravity
 		_player.gravity = 0
-	else:
-		_player.input_disabled = false
 
 
 func _physics_process(_delta):
@@ -63,9 +59,12 @@ func _stop_lunging():
 	is_lunging = false
 	is_decelerating = true
 	_player.gravity = _player_gravity
-	_player.invincible = false
 	_player.input_disabled = false
 	_player.is_outside_movement = false
+
+
+func _stop_invincibility():
+	_player.invincible = false
 	monitoring = false
 
 
@@ -74,22 +73,6 @@ func _stop_decelerating():
 	_player_facing_left = false
 	scale.x = 1
 	_can_lunge = true
-
-
-func _on_impact_x():
-	print("Impact x")
-	if is_lunging:
-		_stop_lunging()
-		_stop_decelerating()
-		_animation_player.stop(true)
-	elif is_decelerating:
-		_stop_decelerating()
-		_animation_player.stop(true)
-
-
-func _on_impact_y():
-	if not _can_lunge:
-		_can_lunge = true
 
 
 func _on_Area2D_body_entered(body):
