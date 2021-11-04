@@ -77,5 +77,6 @@ func _stop_decelerating():
 
 func _on_Area2D_body_entered(body):
 	if body.is_in_group("enemy"):
-		body.bump(lunge_impact_impulse * (body.global_position - global_position + Vector2(0, -0.5)).normalized())
+		var direction = (body.global_position - global_position + Vector2(0, -0.5)).normalized()
+		body.bump(lunge_impact_impulse * direction)
 		body.take_damage(lunge_damage)

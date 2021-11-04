@@ -9,30 +9,30 @@ signal collided_with_ceiling
 onready var _sprite = $CreatureSprite
 onready var _raycast_gravity = $CollisionGravityRayCast
 onready var _invincibility_timer = $InvincibilityTimer
+onready var _stun_timer = $StunTimer
 onready var _animation_player = $AnimationPlayer
 
 # Game variables
 var hp = 0
+const _jump_forgiveness_time = 0.1 # Time after leaving a platform that the player can still jump
+var _air_time = _jump_forgiveness_time # Time that the player is in the air
 var action1_script = null
 var action2_script = null
 var input_disabled = false
-var is_outside_movement = false
+var is_outside_movement = false # Indicates that outside scripts are updating the player's velocity
+var invincible = false
 var _is_facing_left = false
 
 # Physics variables
-const _wall_bounce_impulse = 20
-const _jump_forgiveness_time = 0.1
-var _air_time = _jump_forgiveness_time
-var gravity = 30 # px / sec^2
-var jump_impulse = -640 # px / sec 
-var move_speed = 240 # px / sec
-var friction = 0.15
-var acceleration = 0.2
+var gravity = 30
+var jump_impulse = -640 # Instantaneous velocity that is applied when the player jumps
+var move_speed = 240 # X Velocity that is clamped to while the player is moving
+var acceleration = 0.2 # Ratio that the X velocity is lerped to move_speed while moving with player input
+var friction = 0.15 # Ratio that the X velocity is lerped to 0 while not moving with player input
 var velocity = Vector2.ZERO
-var invincible = false
-var _is_on_floor = false
 var _bumping = false
 var _bump_impulse = Vector2.ZERO
+var _is_on_floor = false
 
 
 func animate(name: String, flipped_h: bool = false, custom_blend : float = -1):
@@ -44,6 +44,14 @@ func animate(name: String, flipped_h: bool = false, custom_blend : float = -1):
 func bump(impulse):
 	_bumping = true
 	_bump_impulse = impulse
+
+
+func stun(time):
+	input_disabled = true
+	_sprite.animate_stun()
+	
+	_stun_timer.wait_time = time
+	_stun_timer.start()
 
 # NOTE/BUG:
 # Damage is not applied if the user is inside a hitbox after the invincibility timer has expired!
@@ -153,7 +161,6 @@ func _physics_process(delta):
 	# Check for colliding with body
 	if collision != null and not collision.collider is TileMap:
 		emit_signal("collided_with_body", collision)
-		print("Collided with body " + str(collision.collider))
 	
 	# Move the player based on velocity
 	velocity = move_and_slide(velocity, Vector2(0, -1))
@@ -176,3 +183,8 @@ func _physics_process(delta):
 
 func _on_InvincibilityTimer_timeout():
 	invincible = false
+
+
+func _on_StunTimer_timeout():
+	input_disabled = false
+	_sprite.animate_unstun()

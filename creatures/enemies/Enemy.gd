@@ -6,15 +6,18 @@ signal collided_with_body(collision)
 signal collided_with_wall
 signal collided_with_floor
 signal collided_with_ceiling
+signal stunned
+signal unstunned
+signal killed(source)
 
 # Game variables
-const wall_bounce_impulse = 300
+var _stun_timer = Timer.new()
 var hp = 0
 enum death_source {
+	IMPACT,
 	EXPLOSION,
 	ERASE,
-	WATER,
-	BULLET
+	WATER
 }
 
 # Physics variables
@@ -28,14 +31,27 @@ var _bumping = false
 var _bump_impulse = Vector2.ZERO
 
 
-func bump(impulse):
+func bump(impulse: Vector2):
 	_bumping = true
 	_bump_impulse = impulse
 
 
+func stun(time: float):
+	emit_signal("stunned")
+	_stun_timer.wait_time = time
+	_stun_timer.start()
+
+
 func take_damage(amount : int, impulse : Vector2 = Vector2.ZERO, source = death_source.ERASE):
 	hp -= amount
-	print("Enemy damage")
+	if hp <= 0:
+		emit_signal("killed", source)
+
+
+func _ready():
+	_stun_timer.one_shot = true
+	_stun_timer.connect("timeout", self, "_on_stun_timer_timeout")
+	add_child(_stun_timer)
 
 
 func _physics_process(delta):
@@ -66,3 +82,9 @@ func _physics_process(delta):
 		emit_signal("collided_with_floor")
 	if is_on_ceiling():
 		emit_signal("collided_with_ceiling")
+	
+	# Reset movement
+	movement_velocity = Vector2.ZERO
+
+func _on_stun_timer_timeout():
+	emit_signal("unstunned")
