@@ -14,10 +14,10 @@ signal killed(source)
 var _stun_timer = Timer.new()
 var hp = 0
 enum death_source {
-	IMPACT,
-	EXPLOSION,
-	ERASE,
-	WATER
+	IMPACT, # 0
+	EXPLOSION, # 1
+	ERASE, # 2
+	WATER # 3
 }
 
 # Physics variables
@@ -42,7 +42,7 @@ func stun(time: float):
 	_stun_timer.start()
 
 
-func take_damage(amount : int, impulse : Vector2 = Vector2.ZERO, source = death_source.ERASE):
+func take_damage(amount : int, source = death_source.ERASE):
 	hp -= amount
 	if hp <= 0:
 		emit_signal("killed", source)

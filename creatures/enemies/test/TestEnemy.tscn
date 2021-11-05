@@ -45,5 +45,6 @@ autostart = true
 [connection signal="killed" from="." to="." method="_on_TestEnemy_killed"]
 [connection signal="stunned" from="." to="." method="_on_TestEnemy_stunned"]
 [connection signal="unstunned" from="." to="." method="_on_TestEnemy_unstunned"]
+[connection signal="finished_death_animation" from="CreatureSprite" to="." method="_on_CreatureSprite_finished_death_animation"]
 [connection signal="hitbox_entered" from="EnemyHitbox" to="." method="_on_EnemyHitbox_hitbox_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

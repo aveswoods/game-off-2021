@@ -57,6 +57,8 @@ func _on_TestEnemy_unstunned():
 
 
 func _on_TestEnemy_killed(source):
+	_hitbox.monitoring = false
+	
 	match source:
 		death_source.IMPACT:
 			_sprite.animate_explode()
@@ -66,4 +68,7 @@ func _on_TestEnemy_killed(source):
 			_sprite.animate_fade_away()
 		death_source.WATER:
 			_sprite.animate_disintegrate()
+
+
+func _on_CreatureSprite_finished_death_animation():
 	queue_free()

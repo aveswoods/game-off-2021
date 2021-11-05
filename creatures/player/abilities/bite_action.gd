@@ -29,7 +29,7 @@ func _on_Area2D_body_entered(body):
 	if body.is_in_group("enemy"):
 		var direction_x = -1 if _player.is_facing_left() else 1
 		body.bump(bite_impact_impulse * Vector2(direction_x, -1))
-		body.take_damage(bite_damage)
+		body.take_damage(bite_damage, 0)
 
 
 func _on_Timer_timeout():
