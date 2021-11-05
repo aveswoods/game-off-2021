@@ -1,71 +1,17 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=23 format=2]
 
-[ext_resource path="res://creatures/CreatureSprite.gd" type="Script" id=1]
 [ext_resource path="res://creatures/player/Player.gd" type="Script" id=2]
-[ext_resource path="res://creatures/player/frames/player-frames.png" type="Texture" id=3]
-[ext_resource path="res://creatures/creature_shader_material.tres" type="Material" id=4]
-[ext_resource path="res://creatures/death_animations/explosion.tscn" type="PackedScene" id=5]
 [ext_resource path="res://creatures/player/frames/bbaa.png" type="Texture" id=6]
 [ext_resource path="res://creatures/player/frames/fam.png" type="Texture" id=7]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 18.0
 
-[sub_resource type="Animation" id=2]
-resource_name = "bite"
-length = 0.5
-tracks/0/type = "value"
-tracks/0/path = NodePath("CreatureSprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 1, 2, 3, 4, 5 ]
-}
-
-[sub_resource type="Animation" id=3]
-resource_name = "idle"
-length = 1.5
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("CreatureSprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
-}
-
-[sub_resource type="Animation" id=4]
-resource_name = "run"
-length = 0.4
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("CreatureSprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 11, 12, 13, 14 ]
-}
-
 [sub_resource type="Animation" id=5]
 resource_name = "bite"
 length = 0.4
 tracks/0/type = "value"
-tracks/0/path = NodePath("SpriteFace:frame")
+tracks/0/path = NodePath("PlayerSprite/SpriteFace:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -81,7 +27,7 @@ tracks/0/keys = {
 length = 0.2
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("SpriteBody:frame")
+tracks/0/path = NodePath("PlayerSprite/SpriteBody:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -93,7 +39,7 @@ tracks/0/keys = {
 "values": [ 6, 7 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("SpriteFace:frame")
+tracks/1/path = NodePath("PlayerSprite/SpriteFace:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -109,7 +55,7 @@ tracks/1/keys = {
 length = 0.5
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("SpriteBody:frame")
+tracks/0/path = NodePath("PlayerSprite/SpriteBody:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -121,7 +67,7 @@ tracks/0/keys = {
 "values": [ 0, 1 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("SpriteFace:frame")
+tracks/1/path = NodePath("PlayerSprite/SpriteFace:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -137,7 +83,7 @@ tracks/1/keys = {
 length = 0.2
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("SpriteBody:frame")
+tracks/0/path = NodePath("PlayerSprite/SpriteBody:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -149,7 +95,7 @@ tracks/0/keys = {
 "values": [ 8, 9 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("SpriteFace:frame")
+tracks/1/path = NodePath("PlayerSprite/SpriteFace:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -165,7 +111,7 @@ tracks/1/keys = {
 length = 0.4
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("SpriteBody:frame")
+tracks/0/path = NodePath("PlayerSprite/SpriteBody:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -177,7 +123,7 @@ tracks/0/keys = {
 "values": [ 2, 3, 4, 5 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("SpriteFace:frame")
+tracks/1/path = NodePath("PlayerSprite/SpriteFace:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -192,7 +138,7 @@ tracks/1/keys = {
 [sub_resource type="Animation" id=10]
 length = 0.4
 tracks/0/type = "value"
-tracks/0/path = NodePath("SpriteBody:frame")
+tracks/0/path = NodePath("PlayerSprite/SpriteBody:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -204,7 +150,7 @@ tracks/0/keys = {
 "values": [ 14, 15, 16, 17 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("SpriteFace:frame")
+tracks/1/path = NodePath("PlayerSprite/SpriteFace:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -225,66 +171,66 @@ animation = "jump"
 [sub_resource type="AnimationNodeAnimation" id=13]
 animation = "fall"
 
-[sub_resource type="AnimationNodeAnimation" id=19]
+[sub_resource type="AnimationNodeAnimation" id=14]
 animation = "bite"
 
-[sub_resource type="AnimationNodeAnimation" id=21]
+[sub_resource type="AnimationNodeAnimation" id=15]
 animation = "shoot"
 
-[sub_resource type="AnimationNodeAnimation" id=14]
+[sub_resource type="AnimationNodeAnimation" id=16]
 animation = "idle"
 
-[sub_resource type="AnimationNodeOneShot" id=22]
+[sub_resource type="AnimationNodeOneShot" id=17]
 
-[sub_resource type="AnimationNodeOneShot" id=20]
+[sub_resource type="AnimationNodeOneShot" id=18]
 
-[sub_resource type="AnimationNodeTransition" id=15]
+[sub_resource type="AnimationNodeTransition" id=19]
 input_count = 2
 input_0/name = "fall"
 input_0/auto_advance = false
 input_1/name = "jump"
 input_1/auto_advance = false
 
-[sub_resource type="AnimationNodeTransition" id=16]
+[sub_resource type="AnimationNodeTransition" id=20]
 input_count = 2
 input_0/name = "ground"
 input_0/auto_advance = false
 input_1/name = "air"
 input_1/auto_advance = false
 
-[sub_resource type="AnimationNodeTransition" id=17]
+[sub_resource type="AnimationNodeTransition" id=21]
 input_count = 2
 input_0/name = "idle"
 input_0/auto_advance = false
 input_1/name = "run"
 input_1/auto_advance = false
 
-[sub_resource type="AnimationNodeBlendTree" id=18]
-graph_offset = Vector2( -188.147, -119.986 )
-nodes/Animation/node = SubResource( 14 )
+[sub_resource type="AnimationNodeBlendTree" id=22]
+graph_offset = Vector2( -1322.95, -261.179 )
+nodes/Animation/node = SubResource( 16 )
 nodes/Animation/position = Vector2( -702, -221 )
 "nodes/Animation 2/node" = SubResource( 11 )
 "nodes/Animation 2/position" = Vector2( -728, 52 )
 "nodes/Animation 3/node" = SubResource( 12 )
-"nodes/Animation 3/position" = Vector2( -299, 507 )
+"nodes/Animation 3/position" = Vector2( -240, 460 )
 "nodes/Animation 4/node" = SubResource( 13 )
-"nodes/Animation 4/position" = Vector2( -260, 299 )
-"nodes/Animation 5/node" = SubResource( 19 )
+"nodes/Animation 4/position" = Vector2( -240, 300 )
+"nodes/Animation 5/node" = SubResource( 14 )
 "nodes/Animation 5/position" = Vector2( 494, 312 )
-"nodes/Animation 6/node" = SubResource( 21 )
+"nodes/Animation 6/node" = SubResource( 15 )
 "nodes/Animation 6/position" = Vector2( -416, 117 )
-nodes/OneShot/node = SubResource( 20 )
-nodes/OneShot/position = Vector2( 702, 52 )
-"nodes/OneShot 2/node" = SubResource( 22 )
+nodes/OneShot/node = SubResource( 18 )
+nodes/OneShot/position = Vector2( 700, 120 )
+"nodes/OneShot 2/node" = SubResource( 17 )
 "nodes/OneShot 2/position" = Vector2( 26, -65 )
-nodes/in_air/node = SubResource( 15 )
+nodes/in_air/node = SubResource( 19 )
 nodes/in_air/position = Vector2( 13, 351 )
-nodes/in_air_state/node = SubResource( 16 )
+nodes/in_air_state/node = SubResource( 20 )
 nodes/in_air_state/position = Vector2( 455, 65 )
-nodes/movement/node = SubResource( 17 )
+nodes/movement/node = SubResource( 21 )
 nodes/movement/position = Vector2( -351, -169 )
 nodes/output/position = Vector2( 949, 26 )
-node_connections = [ "output", 0, "OneShot", "in_air_state", 0, "OneShot 2", "in_air_state", 1, "in_air", "movement", 0, "Animation", "movement", 1, "Animation 2", "in_air", 0, "Animation 4", "in_air", 1, "Animation 3", "OneShot", 0, "in_air_state", "OneShot", 1, "Animation 5", "OneShot 2", 0, "movement", "OneShot 2", 1, "Animation 6" ]
+node_connections = [ "output", 0, "OneShot", "in_air_state", 0, "OneShot 2", "in_air_state", 1, "in_air", "in_air", 0, "Animation 4", "in_air", 1, "Animation 3", "OneShot 2", 0, "movement", "OneShot 2", 1, "Animation 6", "OneShot", 0, "in_air_state", "OneShot", 1, "Animation 5", "movement", 0, "Animation", "movement", 1, "Animation 2" ]
 
 [node name="Player" type="KinematicBody2D" groups=[
 "player",
@@ -293,14 +239,18 @@ process_priority = 10
 collision_mask = 3
 script = ExtResource( 2 )
 
-[node name="CreatureSprite" type="Sprite" parent="."]
-visible = false
-material = ExtResource( 4 )
-position = Vector2( -4, -5 )
-texture = ExtResource( 3 )
-hframes = 15
-frame = 14
-script = ExtResource( 1 )
+[node name="PlayerSprite" type="Node2D" parent="."]
+position = Vector2( -2, -5 )
+
+[node name="SpriteBody" type="Sprite" parent="PlayerSprite"]
+texture = ExtResource( 6 )
+hframes = 18
+frame = 1
+
+[node name="SpriteFace" type="Sprite" parent="PlayerSprite"]
+texture = ExtResource( 7 )
+hframes = 18
+frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -318,21 +268,6 @@ one_shot = true
 one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/bite = SubResource( 2 )
-anims/idle = SubResource( 3 )
-anims/run = SubResource( 4 )
-
-[node name="CPUParticles2D" parent="." instance=ExtResource( 5 )]
-
-[node name="SpriteBody" type="Sprite" parent="."]
-texture = ExtResource( 6 )
-hframes = 18
-
-[node name="SpriteFace" type="Sprite" parent="."]
-texture = ExtResource( 7 )
-hframes = 18
-
-[node name="AnimationPlayerBody" type="AnimationPlayer" parent="."]
 anims/bite = SubResource( 5 )
 anims/fall = SubResource( 6 )
 anims/idle = SubResource( 7 )
@@ -341,12 +276,12 @@ anims/run = SubResource( 9 )
 anims/shoot = SubResource( 10 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 18 )
-anim_player = NodePath("../AnimationPlayerBody")
+tree_root = SubResource( 22 )
+anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/OneShot/active = false
 "parameters/OneShot 2/active" = false
-parameters/in_air/current = 0
+parameters/in_air/current = 1
 parameters/in_air_state/current = 0
 parameters/movement/current = 0
 

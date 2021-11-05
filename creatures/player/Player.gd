@@ -6,11 +6,11 @@ signal collided_with_floor
 signal collided_with_ceiling
 
 # Scene variables
-onready var _sprite = $CreatureSprite
+onready var animation_tree = $AnimationTree
+onready var _sprite = $PlayerSprite
 onready var _raycast_gravity = $CollisionGravityRayCast
 onready var _invincibility_timer = $InvincibilityTimer
 onready var _stun_timer = $StunTimer
-onready var _animation_player = $AnimationPlayer
 
 # Game variables
 var hp = 0
@@ -36,9 +36,11 @@ var _is_on_floor = false
 
 
 func animate(name: String, flipped_h: bool = false, custom_blend : float = -1):
-	_sprite.flip_h(flipped_h)
+	if flipped_h:
+		_sprite.scale.x = -1
+	else:
+		_sprite.scale.x = 1
 	_is_facing_left = flipped_h
-	_animation_player.play(name, custom_blend)
 
 
 func bump(impulse):
@@ -73,7 +75,7 @@ func is_on_floor():
 	
 
 func _ready():
-	_animation_player.play("idle")
+	animation_tree.active = true
 	_is_on_floor = _raycast_gravity.is_colliding()
 	if _is_on_floor:
 		_air_time = 0
@@ -105,13 +107,10 @@ func _physics_process(delta):
 		if Input.is_action_just_pressed("ui_up") and _air_time < _jump_forgiveness_time:
 			velocity.y = jump_impulse
 			_is_on_floor = false
-			
-			# Animate jump
-			#_sprite.animation = "jump"
 	
-	# -------------------
-	# | CREATE MOVEMENT |
-	# -------------------
+	# -------------------------------
+	# | CREATE MOVEMENT AND ANIMATE |
+	# -------------------------------
 	
 	# Interpolate based on horizontal input
 	if not is_outside_movement:
@@ -119,31 +118,33 @@ func _physics_process(delta):
 			velocity.x = lerp(direction * move_speed, velocity.x, acceleration)
 			
 			if direction == 1:
-				_sprite.flip_h(false)
+				_sprite.scale.x = 1
 				_is_facing_left = false
 			else:
-				_sprite.flip_h(true)
+				_sprite.scale.x = -1
 				_is_facing_left = true
 			
 			if _is_on_floor:
-				_animation_player.play("run")
+				animation_tree.set("parameters/in_air_state/current", 0)
+				animation_tree.set("parameters/movement/current", 1)
 			
 		else:
 			velocity.x = lerp(velocity.x, 0, friction)
 			
 			if _is_on_floor:
-				if _animation_player.current_animation != "run":
-					_animation_player.queue("idle")
-				else:
-					_animation_player.play("idle")
+				animation_tree.set("parameters/in_air_state/current", 0)
+				animation_tree.set("parameters/movement/current", 0)
 	
 	# Add gravity
 	velocity.y += gravity
 	
 	# Animate fall
-	if not _is_on_floor and velocity.y > 0:
-		#_sprite.animation = "fall"
-		pass
+	if not _is_on_floor:
+		animation_tree.set("parameters/in_air_state/current", 1)
+		if velocity.y > 0:
+			animation_tree.set("parameters/in_air/current", 0)
+		else:
+			animation_tree.set("parameters/in_air/current", 1)
 	
 	# Apply bump impulse
 	if _bumping:
@@ -168,6 +169,7 @@ func _physics_process(delta):
 	# Manage in-air variables
 	_is_on_floor = _raycast_gravity.is_colliding()
 	if _is_on_floor:
+		animation_tree.set("parameters/in_air_state/current", 0)
 		_air_time = 0
 	else:
 		_air_time += delta
