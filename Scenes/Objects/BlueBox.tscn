@@ -1,0 +1,120 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Scenes/Objects/blue box.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/Objects/BlueBox.gd" type="Script" id=2]
+[ext_resource path="res://Audio/SFX/Shine.wav" type="AudioStream" id=3]
+
+[sub_resource type="Animation" id=1]
+resource_name = "change"
+tracks/0/type = "value"
+tracks/0/path = NodePath("blue box:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.9 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 1, 2 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AreaDamage/CollisionPolygon2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "charged"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("blue box:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AreaDamage/CollisionPolygon2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "idle"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("blue box:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AreaDamage/CollisionPolygon2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 15.1608, 15.1703 )
+
+[node name="BlueBox" type="RigidBody2D"]
+script = ExtResource( 2 )
+
+[node name="blue box" type="Sprite" parent="."]
+rotation = -0.00168411
+texture = ExtResource( 1 )
+hframes = 3
+frame = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "idle"
+anims/change = SubResource( 1 )
+anims/charged = SubResource( 2 )
+anims/idle = SubResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 4 )
+
+[node name="AreaDamage" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="AreaDamage"]
+polygon = PoolVector2Array( -34.8988, -0.337843, -15.1663, -5.23785, -16.2258, -16.6271, -6.02846, -15.5676, 0.0634232, -35.4326, 6.42022, -15.9649, 16.8824, -15.9649, 15.6905, -4.57569, 35.5554, -0.735142, 15.8229, 5.35677, 16.3527, 15.9514, 6.02291, 15.9514, 0.195854, 34.3596, -6.55821, 15.9514, -16.0934, 16.4811, -16.2258, 5.8865 )
+disabled = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = -10.0
+pitch_scale = 1.61

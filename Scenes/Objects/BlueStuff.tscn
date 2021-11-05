@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scenes/Objects/BlueBox.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Objects/BluePlatform.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Objects/BlueBells.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Objects/BlueStuff.gd" type="Script" id=4]
+
+[node name="BlueStuff" type="Node2D"]
+script = ExtResource( 4 )
+
+[node name="BlueBells" parent="." instance=ExtResource( 3 )]
+position = Vector2( 974.545, 294.987 )
+
+[node name="BluePlatform" parent="." instance=ExtResource( 2 )]
+position = Vector2( 688.105, 476.374 )
+
+[node name="BlueBox" parent="." instance=ExtResource( 1 )]
+position = Vector2( 402.066, 449.073 )
