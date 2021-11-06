@@ -167,12 +167,12 @@ func _physics_process(delta):
 	velocity = move_and_slide(velocity, Vector2(0, -1))
 	
 	# Manage in-air variables
-	_is_on_floor = _raycast_gravity.is_colliding()
-	if _is_on_floor:
+	if  _raycast_gravity.is_colliding():
 		animation_tree.set("parameters/in_air_state/current", 0)
 		_air_time = 0
 	else:
 		_air_time += delta
+	_is_on_floor = _air_time < _jump_forgiveness_time
 	
 	# Emit collision signals when applied
 	if is_on_wall():
