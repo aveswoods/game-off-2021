@@ -11,8 +11,8 @@ func _ready():
 	lunge_action.equip($Player)
 	bite_action.equip($Player)
 	stun_passive.equip($Player)
-	#doublejump_passive.equip($Player)
-	#walljump_passive.equip($Player)
+	doublejump_passive.equip($Player)
+	walljump_passive.equip($Player)
 	glide_passive.equip($Player)
 	$Player.action1_script = lunge_action
 	$Player.action2_script = bite_action

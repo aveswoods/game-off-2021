@@ -9,7 +9,6 @@ var bluesTotal = 0
 
 func _ready() -> void:
 	bluesTotal = self.get_child_count() 
-	print("Total of: ", bluesTotal)
 	#now put in all the objects in this list.
 	for i in self.get_children():
 		blue_list.append(i)
@@ -34,12 +33,16 @@ func _input(event: InputEvent) -> void:
 				m = 0
 		#previously selected object turns_off.
 		#the selected object charges up.
-		print("My list has ",blue_list, " and total :", bluesTotal)
-		print("My m =", m, "selected object:", blue_list[m])
 		blue_list[m].charge()
 		#if button pressed, CHANGE selected object
 		if Input.is_action_just_pressed("ui_accept"):
 			blue_list[m].change()
 	else:
-		blue_list[m].turn_off()
-	
+		for i in self.get_children():
+			blue_list[m].turn_off()
+
+
+
+func _on_BlueBells_stop_blue() -> void:
+	for i in self.get_children():
+			blue_list[m].turn_off()

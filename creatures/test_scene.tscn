@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://creatures/player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Tilemaps/TileMap_Floor.tres" type="TileSet" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://creatures/test_scene.gd" type="Script" id=4]
 [ext_resource path="res://Scenes/Objects/pipes back.png" type="Texture" id=5]
 [ext_resource path="res://Scenes/Objects/BlueStuff.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/Objects/Clover.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/Objects/black_clovers12.png" type="Texture" id=8]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 4 )
@@ -19,9 +21,7 @@ region_rect = Rect2( 0, 0, 1220, 540 )
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 506.75, 375.422 )
 
-[node name="TileMap" type="TileMap" parent="." groups=[
-"environment",
-]]
+[node name="TileMap" type="TileMap" parent="." groups=["environment"]]
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 32, 32 )
 collision_layer = 3
@@ -48,3 +48,16 @@ __meta__ = {
 }
 
 [node name="BlueStuff" parent="." instance=ExtResource( 6 )]
+
+[node name="Clover" parent="." instance=ExtResource( 7 )]
+position = Vector2( 897.273, 313.247 )
+
+[node name="Clover2" parent="." instance=ExtResource( 7 )]
+position = Vector2( 897.273, 313.247 )
+
+[node name="Clovers" parent="Clover2" index="0"]
+position = Vector2( -61.2145, 55.3236 )
+texture = ExtResource( 8 )
+
+[editable path="BlueStuff"]
+[editable path="Clover2"]
