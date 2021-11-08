@@ -16,5 +16,3 @@ position = Vector2( 688.105, 476.374 )
 
 [node name="BlueBox" parent="." instance=ExtResource( 1 )]
 position = Vector2( 402.066, 449.073 )
-
-[connection signal="stop_blue" from="BlueBells" to="." method="_on_BlueBells_stop_blue"]

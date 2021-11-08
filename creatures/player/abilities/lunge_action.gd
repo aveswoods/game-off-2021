@@ -2,9 +2,9 @@ extends Area2D
  
 onready var _animation_player = $AnimationPlayer
 
-export var lunge_velocity := Vector2.ZERO
-export var is_decelerating := false
-export var is_lunging := false
+var lunge_velocity = Vector2.ZERO
+var is_decelerating = false
+var is_lunging = false
 var lunge_damage = 0
 var lunge_impact_impulse = 800
 var _can_lunge = true

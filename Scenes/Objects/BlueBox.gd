@@ -1,56 +1,50 @@
-extends RigidBody2D
+extends Enemy
+
+var bump_velocity = 720
+var damage = 1
+var _charged = false
+var _activated = false
+
+#charged.
+func charge():
+	#$AudioStreamPlayer.play()
+	$AnimationTree.set("parameters/energy_state/current", 1)
+	$AnimationTree.set("parameters/action_state/current", 0)
+	_charged = true
+	_activated = false
+
+func is_charged():
+	return _charged
+
+
+func activate():
+	$AnimationTree.set("parameters/energy_state/current", 1)
+	$AnimationTree.set("parameters/action_state/current", 1)
+	_charged = false
+	_activated = true
+
+func is_activated():
+	return _activated
+
+
+func idle():
+	$AnimationTree.set("parameters/energy_state/current", 0)
+	_charged = false
+	_activated = false
 
 
 func _ready() -> void:
 	$AnimationTree.active = true
-	
 
 
-#charged.
-func charge():
-	$AudioStreamPlayer.play()
-	$AnimationTree.set("parameters/energy_state/current",1)
-#object no longer selected.
-func turn_off():
-	$AnimationTree.set("parameters/energy_state/current",0)
-
-
-#what the object does: this one dies.
-func change():
-	$AnimationTree.set("parameters/OneShot/active",true)
-	
-
-
-
-
-#
-#var can_change = false
-#var charged = false
-#
-##charged.
-#func charge():
-#	charged = true
-##object no longer selected.
-#func turn_off():
-#	$AnimationPlayer.play("idle")
-#
-#
-##what the object does: this one dies.
-#func change():
-#	can_change = true
-#
-#
-#func _process(_delta: float) -> void:
-#	if can_change == true: 
-#		$AnimationPlayer.play("change")
-#		can_change = false
-#
-#	if charged == true: 
-#		$AnimationPlayer.play("charged")
-#		charged = false
-#
-#
-#
-#func _on_AnimationPlayer_animation_finished(anim_name: String) -> void:
-#	if anim_name == "charged":
-#		$AnimationPlayer.play("charged")
+func _on_AreaDamage_body_entered(body):
+	print("body entered")
+	if body.has_method("bump"):
+		var velocity = bump_velocity * ((body.global_position - global_position).normalized())
+		velocity.y = min (velocity.y, -0.2)
+		body.bump(velocity)
+	if body.has_method("take_damage"):
+		if body.is_in_group("player"):
+			body.take_damage(damage)
+		else:
+			body.take_damage(damage, 0)

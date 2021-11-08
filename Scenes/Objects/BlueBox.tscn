@@ -4,8 +4,12 @@
 [ext_resource path="res://Scenes/Objects/BlueBox.gd" type="Script" id=2]
 [ext_resource path="res://Audio/SFX/Shine.wav" type="AudioStream" id=3]
 
-[sub_resource type="Animation" id=1]
-resource_name = "change"
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 15.1608, 15.1703 )
+
+[sub_resource type="Animation" id=2]
+resource_name = "activated"
+length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("blue box:frame")
 tracks/0/interp = 1
@@ -13,10 +17,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.9 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 1, 2 ]
+"values": [ 1 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("AreaDamage/CollisionPolygon2D:disabled")
@@ -30,25 +34,11 @@ tracks/1/keys = {
 "update": 1,
 "values": [ false ]
 }
-tracks/2/type = "value"
-tracks/2/path = NodePath("blue box:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 1 ) ]
-}
 
-[sub_resource type="Animation" id=2]
-resource_name = "charged"
-length = 0.4
-loop = true
+[sub_resource type="Animation" id=3]
+length = 0.1
 tracks/0/type = "value"
-tracks/0/path = NodePath("blue box:frame")
+tracks/0/path = NodePath("AreaDamage/CollisionPolygon2D:disabled")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -57,10 +47,10 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 0 ]
+"values": [ true ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("AreaDamage/CollisionPolygon2D:disabled")
+tracks/1/path = NodePath("blue box:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -69,23 +59,10 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ true ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("blue box:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0, 0.3 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Color( 0.403922, 0.00784314, 0.00784314, 1 ), Color( 1, 1, 1, 1 ) ]
+"values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "idle"
+[sub_resource type="Animation" id=4]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("blue box:frame")
@@ -111,88 +88,81 @@ tracks/1/keys = {
 "update": 1,
 "values": [ true ]
 }
-tracks/2/type = "value"
-tracks/2/path = NodePath("blue box:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 1 ) ]
-}
 
 [sub_resource type="AnimationNodeAnimation" id=5]
 animation = "charged"
 
 [sub_resource type="AnimationNodeAnimation" id=6]
-animation = "change"
+animation = "activated"
 
 [sub_resource type="AnimationNodeAnimation" id=7]
 animation = "idle"
 
-[sub_resource type="AnimationNodeOneShot" id=8]
-
 [sub_resource type="AnimationNodeTransition" id=9]
+input_count = 2
+input_0/name = "charged"
+input_0/auto_advance = false
+input_1/name = "activated"
+input_1/auto_advance = false
+
+[sub_resource type="AnimationNodeTransition" id=10]
 input_count = 2
 input_0/name = "idle"
 input_0/auto_advance = false
 input_1/name = "energized"
 input_1/auto_advance = false
 
-[sub_resource type="AnimationNodeBlendTree" id=10]
-graph_offset = Vector2( 166, -67 )
+[sub_resource type="AnimationNodeBlendTree" id=11]
+graph_offset = Vector2( 161.233, 58.7271 )
 nodes/Animation/node = SubResource( 7 )
 nodes/Animation/position = Vector2( 460, -20 )
 "nodes/Animation 2/node" = SubResource( 5 )
 "nodes/Animation 2/position" = Vector2( 360, 160 )
 "nodes/Animation 3/node" = SubResource( 6 )
-"nodes/Animation 3/position" = Vector2( 380, 300 )
-nodes/OneShot/node = SubResource( 8 )
-nodes/OneShot/position = Vector2( 600, 160 )
-nodes/energy_state/node = SubResource( 9 )
+"nodes/Animation 3/position" = Vector2( 320, 300 )
+nodes/action_state/node = SubResource( 9 )
+nodes/action_state/position = Vector2( 600, 200 )
+nodes/energy_state/node = SubResource( 10 )
 nodes/energy_state/position = Vector2( 840, -20 )
 nodes/output/position = Vector2( 1080, 80 )
-node_connections = [ "output", 0, "energy_state", "OneShot", 0, "Animation 2", "OneShot", 1, "Animation 3", "energy_state", 0, "Animation", "energy_state", 1, "OneShot" ]
+node_connections = [ "output", 0, "energy_state", "energy_state", 0, "Animation", "energy_state", 1, "action_state", "action_state", 0, "Animation 2", "action_state", 1, "Animation 3" ]
 
-[sub_resource type="RectangleShape2D" id=4]
-extents = Vector2( 15.1608, 15.1703 )
-
-[node name="BlueBox" type="RigidBody2D"]
+[node name="BlueBox" type="KinematicBody2D"]
 script = ExtResource( 2 )
 
 [node name="blue box" type="Sprite" parent="."]
-rotation = -0.00168411
 texture = ExtResource( 1 )
 hframes = 3
 frame = 2
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "idle"
-anims/change = SubResource( 1 )
-anims/charged = SubResource( 2 )
-anims/idle = SubResource( 3 )
-
-[node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 10 )
-anim_player = NodePath("../AnimationPlayer")
-parameters/OneShot/active = false
-parameters/energy_state/current = 0
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 4 )
+shape = SubResource( 1 )
 
 [node name="AreaDamage" type="Area2D" parent="."]
+monitorable = false
+collision_layer = 3
+collision_mask = 3
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="AreaDamage"]
-polygon = PoolVector2Array( -34.8988, -0.337843, -15.1663, -5.23785, -16.2258, -16.6271, -6.02846, -15.5676, 0.0634232, -35.4326, 6.42022, -15.9649, 16.8824, -15.9649, 15.6905, -4.57569, 35.5554, -0.735142, 15.8229, 5.35677, 16.3527, 15.9514, 6.02291, 15.9514, 0.195854, 34.3596, -6.55821, 15.9514, -16.0934, 16.4811, -16.2258, 5.8865 )
+polygon = PoolVector2Array( -34.8988, -0.337843, -15.9394, -5.23589, -16.0167, -16.2097, -6.04757, -15.9005, 0.0634232, -35.4326, 6.42022, -15.9649, 16.0545, -15.9005, 15.6905, -4.57569, 35.5554, -0.735142, 15.8229, 5.35677, 16.3527, 15.9514, 6.02291, 15.9514, 0.195854, 34.3596, -6.55821, 15.9514, -16.1713, 16.0161, -16.2258, 5.8865 )
 disabled = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "idle"
+anims/activated = SubResource( 2 )
+anims/charged = SubResource( 3 )
+anims/idle = SubResource( 4 )
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource( 11 )
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/action_state/current = 0
+parameters/energy_state/current = 0
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
 volume_db = -10.0
 pitch_scale = 1.61
 
-[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+[connection signal="body_entered" from="AreaDamage" to="." method="_on_AreaDamage_body_entered"]

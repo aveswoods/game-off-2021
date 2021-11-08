@@ -9,6 +9,7 @@ const walk_speed = 100
 const bump_absorbance = 0
 var walk_direction = 1
 var _stunned = false
+var _dead = false
 
 func _ready():
 	randomize()
@@ -16,7 +17,7 @@ func _ready():
 	velocity.x = walk_direction * walk_speed
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if not _stunned:
 		movement_velocity = Vector2(walk_direction * walk_speed, 0)
 
@@ -57,17 +58,19 @@ func _on_TestEnemy_unstunned():
 
 
 func _on_TestEnemy_killed(source):
-	_hitbox.monitoring = false
+	if not _dead:
+		_dead = true
+		_hitbox.monitoring = false
 	
-	match source:
-		death_source.IMPACT:
-			_sprite.animate_explode()
-		death_source.EXPLOSION:
-			_sprite.animate_big_explode()
-		death_source.ERASE:
-			_sprite.animate_fade_away()
-		death_source.WATER:
-			_sprite.animate_disintegrate()
+		match source:
+			death_source.IMPACT:
+				_sprite.animate_explode()
+			death_source.EXPLOSION:
+				_sprite.animate_big_explode()
+			death_source.ERASE:
+				_sprite.animate_fade_away()
+			death_source.WATER:
+				_sprite.animate_disintegrate()
 
 
 func _on_CreatureSprite_finished_death_animation():
