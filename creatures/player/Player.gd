@@ -8,7 +8,8 @@ signal collided_with_ceiling
 # Scene variables
 onready var animation_tree = $AnimationTree
 onready var _sprite = $PlayerSprite
-onready var _raycast_gravity = $CollisionGravityRayCast
+onready var _raycast_gravity_R = $CollisionGravityRayCastR
+onready var _raycast_gravity_L = $CollisionGravityRayCastL
 onready var _invincibility_timer = $InvincibilityTimer
 onready var _stun_timer = $StunTimer
 
@@ -76,7 +77,7 @@ func is_on_floor():
 
 func _ready():
 	animation_tree.active = true
-	_is_on_floor = _raycast_gravity.is_colliding()
+	_is_on_floor = _raycast_gravity_L.is_colliding()
 	if _is_on_floor:
 		_air_time = 0
 
@@ -167,7 +168,7 @@ func _physics_process(delta):
 	velocity = move_and_slide(velocity, Vector2(0, -1))
 	
 	# Manage in-air variables
-	if  _raycast_gravity.is_colliding():
+	if  _raycast_gravity_L.is_colliding() or _raycast_gravity_R.is_colliding():
 		animation_tree.set("parameters/in_air_state/current", 0)
 		_air_time = 0
 	else:

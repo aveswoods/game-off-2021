@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://creatures/player/Player.gd" type="Script" id=2]
 [ext_resource path="res://creatures/player/frames/bbaa.png" type="Texture" id=6]
@@ -7,8 +7,10 @@
 [sub_resource type="CircleShape2D" id=1]
 radius = 18.0
 
-[sub_resource type="Animation" id=2]
-resource_name = "bite"
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 8, 9 )
+
+[sub_resource type="Animation" id=3]
 length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("PlayerSprite/SpriteFace:frame")
@@ -23,7 +25,7 @@ tracks/0/keys = {
 "values": [ 10, 11, 12, 13 ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=4]
 length = 0.2
 loop = true
 tracks/0/type = "value"
@@ -51,7 +53,7 @@ tracks/1/keys = {
 "values": [ 6, 7 ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=5]
 length = 0.5
 loop = true
 tracks/0/type = "value"
@@ -79,7 +81,7 @@ tracks/1/keys = {
 "values": [ 0, 1 ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=6]
 length = 0.2
 loop = true
 tracks/0/type = "value"
@@ -107,7 +109,7 @@ tracks/1/keys = {
 "values": [ 8, 9 ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=7]
 length = 0.4
 loop = true
 tracks/0/type = "value"
@@ -135,7 +137,7 @@ tracks/1/keys = {
 "values": [ 2, 3, 4, 5 ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=8]
 length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("PlayerSprite/SpriteBody:frame")
@@ -162,75 +164,75 @@ tracks/1/keys = {
 "values": [ 14, 15, 16, 17 ]
 }
 
-[sub_resource type="AnimationNodeAnimation" id=8]
+[sub_resource type="AnimationNodeAnimation" id=9]
 animation = "run"
 
-[sub_resource type="AnimationNodeAnimation" id=9]
+[sub_resource type="AnimationNodeAnimation" id=10]
 animation = "jump"
 
-[sub_resource type="AnimationNodeAnimation" id=10]
+[sub_resource type="AnimationNodeAnimation" id=11]
 animation = "fall"
 
-[sub_resource type="AnimationNodeAnimation" id=11]
+[sub_resource type="AnimationNodeAnimation" id=12]
 animation = "bite"
 
-[sub_resource type="AnimationNodeAnimation" id=12]
+[sub_resource type="AnimationNodeAnimation" id=13]
 animation = "shoot"
 
-[sub_resource type="AnimationNodeAnimation" id=13]
+[sub_resource type="AnimationNodeAnimation" id=14]
 animation = "idle"
-
-[sub_resource type="AnimationNodeOneShot" id=14]
 
 [sub_resource type="AnimationNodeOneShot" id=15]
 
-[sub_resource type="AnimationNodeTransition" id=16]
+[sub_resource type="AnimationNodeOneShot" id=16]
+
+[sub_resource type="AnimationNodeTransition" id=17]
 input_count = 2
 input_0/name = "fall"
 input_0/auto_advance = false
 input_1/name = "jump"
 input_1/auto_advance = false
 
-[sub_resource type="AnimationNodeTransition" id=17]
+[sub_resource type="AnimationNodeTransition" id=18]
 input_count = 2
 input_0/name = "ground"
 input_0/auto_advance = false
 input_1/name = "air"
 input_1/auto_advance = false
 
-[sub_resource type="AnimationNodeTransition" id=18]
+[sub_resource type="AnimationNodeTransition" id=19]
 input_count = 2
 input_0/name = "idle"
 input_0/auto_advance = false
 input_1/name = "run"
 input_1/auto_advance = false
 
-[sub_resource type="AnimationNodeBlendTree" id=19]
+[sub_resource type="AnimationNodeBlendTree" id=20]
 graph_offset = Vector2( -348.379, 50.525 )
-nodes/Animation/node = SubResource( 13 )
+nodes/Animation/node = SubResource( 14 )
 nodes/Animation/position = Vector2( -702, -221 )
-"nodes/Animation 2/node" = SubResource( 8 )
+"nodes/Animation 2/node" = SubResource( 9 )
 "nodes/Animation 2/position" = Vector2( -728, 52 )
-"nodes/Animation 3/node" = SubResource( 9 )
+"nodes/Animation 3/node" = SubResource( 10 )
 "nodes/Animation 3/position" = Vector2( -240, 460 )
-"nodes/Animation 4/node" = SubResource( 10 )
+"nodes/Animation 4/node" = SubResource( 11 )
 "nodes/Animation 4/position" = Vector2( -240, 300 )
-"nodes/Animation 5/node" = SubResource( 11 )
+"nodes/Animation 5/node" = SubResource( 12 )
 "nodes/Animation 5/position" = Vector2( 494, 312 )
-"nodes/Animation 6/node" = SubResource( 12 )
+"nodes/Animation 6/node" = SubResource( 13 )
 "nodes/Animation 6/position" = Vector2( -416, 117 )
-nodes/OneShot/node = SubResource( 15 )
+nodes/OneShot/node = SubResource( 16 )
 nodes/OneShot/position = Vector2( 700, 120 )
-"nodes/OneShot 2/node" = SubResource( 14 )
+"nodes/OneShot 2/node" = SubResource( 15 )
 "nodes/OneShot 2/position" = Vector2( 26, -65 )
-nodes/in_air/node = SubResource( 16 )
+nodes/in_air/node = SubResource( 17 )
 nodes/in_air/position = Vector2( 13, 351 )
-nodes/in_air_state/node = SubResource( 17 )
+nodes/in_air_state/node = SubResource( 18 )
 nodes/in_air_state/position = Vector2( 455, 65 )
-nodes/movement/node = SubResource( 18 )
+nodes/movement/node = SubResource( 19 )
 nodes/movement/position = Vector2( -351, -169 )
 nodes/output/position = Vector2( 949, 26 )
-node_connections = [ "output", 0, "OneShot", "in_air", 0, "Animation 4", "in_air", 1, "Animation 3", "in_air_state", 0, "OneShot 2", "in_air_state", 1, "in_air", "OneShot", 0, "in_air_state", "OneShot", 1, "Animation 5", "OneShot 2", 0, "movement", "OneShot 2", 1, "Animation 6", "movement", 0, "Animation", "movement", 1, "Animation 2" ]
+node_connections = [ "output", 0, "OneShot", "movement", 0, "Animation", "movement", 1, "Animation 2", "in_air", 0, "Animation 4", "in_air", 1, "Animation 3", "OneShot 2", 0, "movement", "OneShot 2", 1, "Animation 6", "OneShot", 0, "in_air_state", "OneShot", 1, "Animation 5", "in_air_state", 0, "OneShot 2", "in_air_state", 1, "in_air" ]
 
 [node name="Player" type="KinematicBody2D" groups=[
 "player",
@@ -245,15 +247,28 @@ position = Vector2( -2, -5 )
 [node name="SpriteBody" type="Sprite" parent="PlayerSprite"]
 texture = ExtResource( 6 )
 hframes = 18
+frame = 1
 
 [node name="SpriteFace" type="Sprite" parent="PlayerSprite"]
 texture = ExtResource( 7 )
 hframes = 18
+frame = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShapeCircle" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
-[node name="CollisionGravityRayCast" type="RayCast2D" parent="."]
+[node name="CollisionShapeBottom" type="CollisionShape2D" parent="."]
+position = Vector2( -2, 9 )
+shape = SubResource( 2 )
+
+[node name="CollisionGravityRayCastL" type="RayCast2D" parent="."]
+position = Vector2( -9, 0 )
+enabled = true
+cast_to = Vector2( 0, 19 )
+collide_with_areas = true
+
+[node name="CollisionGravityRayCastR" type="RayCast2D" parent="."]
+position = Vector2( 5, 0 )
 enabled = true
 cast_to = Vector2( 0, 19 )
 collide_with_areas = true
@@ -266,15 +281,15 @@ one_shot = true
 one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/bite = SubResource( 2 )
-anims/fall = SubResource( 3 )
-anims/idle = SubResource( 4 )
-anims/jump = SubResource( 5 )
-anims/run = SubResource( 6 )
-anims/shoot = SubResource( 7 )
+anims/bite = SubResource( 3 )
+anims/fall = SubResource( 4 )
+anims/idle = SubResource( 5 )
+anims/jump = SubResource( 6 )
+anims/run = SubResource( 7 )
+anims/shoot = SubResource( 8 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 19 )
+tree_root = SubResource( 20 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/OneShot/active = false
