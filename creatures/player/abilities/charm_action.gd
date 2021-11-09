@@ -17,12 +17,14 @@ func equip(player):
 
 func trigger():
 	if _can_charm:
-		if _player.is_facing_left():
-			scale.x = -1
+		var facing_left = _player.is_facing_left()
+		
 		for body in get_overlapping_bodies():
 			if body.is_in_group("enemy") and body.has_method("set_target_group"):
-				body.set_target_group("enemy")
-				_charmed_bodies.append(body)
+				if ((facing_left and body.global_position.x < global_position.x)
+					or (not facing_left and body.global_position.x > global_position.x)):
+					body.set_target_group("enemy")
+					_charmed_bodies.append(body)
 		if _charmed_bodies.size() == 0:
 			_is_recharging = true
 			_timer.wait_time = recharge_time
@@ -35,13 +37,12 @@ func trigger():
 
 func _on_Timer_timeout():
 	if _is_recharging:
-		scale.x = 1
 		_is_recharging = false
 		_can_charm = true
 	else:
 		for body in _charmed_bodies:
 			# In case body was removed (killed) before being uncharmed
-			if body != null:
+			if weakref(body).get_ref():
 				body.set_target_group("player")
 		_charmed_bodies = []
 		_is_recharging = true

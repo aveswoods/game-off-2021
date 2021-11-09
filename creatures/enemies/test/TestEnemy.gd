@@ -65,7 +65,7 @@ func _on_TestEnemy_unstunned():
 func _on_TestEnemy_killed(source):
 	if not _dead:
 		_dead = true
-		_hitbox.monitoring = false
+		_hitbox.set_deferred("monitoring", false)
 	
 		match source:
 			death_source.IMPACT:
