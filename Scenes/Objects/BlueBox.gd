@@ -8,8 +8,8 @@ var _activated = false
 #charged.
 func charge():
 	#$AudioStreamPlayer.play()
-	$AnimationTree.set("parameters/energy_state/current", 1)
 	$AnimationTree.set("parameters/action_state/current", 0)
+	$AnimationTree.set("parameters/energy_state/current", 1)
 	_charged = true
 	_activated = false
 
@@ -18,8 +18,8 @@ func is_charged():
 
 
 func activate():
-	$AnimationTree.set("parameters/energy_state/current", 1)
 	$AnimationTree.set("parameters/action_state/current", 1)
+	$AnimationTree.set("parameters/energy_state/current", 1)
 	_charged = false
 	_activated = true
 

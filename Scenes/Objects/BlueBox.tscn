@@ -9,7 +9,9 @@ extents = Vector2( 15.1608, 15.1703 )
 
 [sub_resource type="Animation" id=2]
 resource_name = "activated"
-length = 0.1
+length = 0.001
+loop = true
+step = 1.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("blue box:frame")
 tracks/0/interp = 1
@@ -37,6 +39,8 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id=3]
 length = 0.1
+loop = true
+step = 1.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("AreaDamage/CollisionPolygon2D:disabled")
 tracks/0/interp = 1
@@ -64,6 +68,8 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id=4]
 length = 0.1
+loop = true
+step = 1.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("blue box:frame")
 tracks/0/interp = 1
@@ -98,34 +104,34 @@ animation = "activated"
 [sub_resource type="AnimationNodeAnimation" id=7]
 animation = "idle"
 
-[sub_resource type="AnimationNodeTransition" id=9]
+[sub_resource type="AnimationNodeTransition" id=8]
 input_count = 2
 input_0/name = "charged"
 input_0/auto_advance = false
 input_1/name = "activated"
 input_1/auto_advance = false
 
-[sub_resource type="AnimationNodeTransition" id=10]
+[sub_resource type="AnimationNodeTransition" id=9]
 input_count = 2
 input_0/name = "idle"
 input_0/auto_advance = false
 input_1/name = "energized"
 input_1/auto_advance = false
 
-[sub_resource type="AnimationNodeBlendTree" id=11]
-graph_offset = Vector2( 161.233, 58.7271 )
+[sub_resource type="AnimationNodeBlendTree" id=10]
+graph_offset = Vector2( 161.233, 254.229 )
 nodes/Animation/node = SubResource( 7 )
 nodes/Animation/position = Vector2( 460, -20 )
 "nodes/Animation 2/node" = SubResource( 5 )
 "nodes/Animation 2/position" = Vector2( 360, 160 )
 "nodes/Animation 3/node" = SubResource( 6 )
 "nodes/Animation 3/position" = Vector2( 320, 300 )
-nodes/action_state/node = SubResource( 9 )
+nodes/action_state/node = SubResource( 8 )
 nodes/action_state/position = Vector2( 600, 200 )
-nodes/energy_state/node = SubResource( 10 )
+nodes/energy_state/node = SubResource( 9 )
 nodes/energy_state/position = Vector2( 840, -20 )
 nodes/output/position = Vector2( 1080, 80 )
-node_connections = [ "output", 0, "energy_state", "energy_state", 0, "Animation", "energy_state", 1, "action_state", "action_state", 0, "Animation 2", "action_state", 1, "Animation 3" ]
+node_connections = [ "output", 0, "energy_state", "action_state", 0, "Animation 2", "action_state", 1, "Animation 3", "energy_state", 0, "Animation", "energy_state", 1, "action_state" ]
 
 [node name="BlueBox" type="KinematicBody2D"]
 script = ExtResource( 2 )
@@ -144,17 +150,17 @@ collision_layer = 3
 collision_mask = 3
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="AreaDamage"]
+visible = false
 polygon = PoolVector2Array( -34.8988, -0.337843, -15.9394, -5.23589, -16.0167, -16.2097, -6.04757, -15.9005, 0.0634232, -35.4326, 6.42022, -15.9649, 16.0545, -15.9005, 15.6905, -4.57569, 35.5554, -0.735142, 15.8229, 5.35677, 16.3527, 15.9514, 6.02291, 15.9514, 0.195854, 34.3596, -6.55821, 15.9514, -16.1713, 16.0161, -16.2258, 5.8865 )
 disabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "idle"
 anims/activated = SubResource( 2 )
 anims/charged = SubResource( 3 )
 anims/idle = SubResource( 4 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 11 )
+tree_root = SubResource( 10 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/action_state/current = 0

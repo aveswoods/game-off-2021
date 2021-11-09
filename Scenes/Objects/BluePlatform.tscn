@@ -8,8 +8,10 @@
 extents = Vector2( 47.2701, 6.75319 )
 
 [sub_resource type="Animation" id=2]
-resource_name = "change"
-length = 0.5
+resource_name = "active"
+length = 0.001
+loop = true
+step = 1.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("blue platforms:frame")
 tracks/0/interp = 1
@@ -29,16 +31,17 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ true, false ]
+"values": [ true ]
 }
 
 [sub_resource type="Animation" id=3]
 resource_name = "charged"
-length = 0.3
+length = 0.001
 loop = true
+step = 1.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("blue platforms:frame")
 tracks/0/interp = 1
@@ -46,15 +49,29 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 0, 2, 0 ]
+"values": [ 0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
 }
 
 [sub_resource type="Animation" id=4]
 resource_name = "idle"
-length = 0.1
+length = 0.001
+loop = true
+step = 1.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("blue platforms:frame")
 tracks/0/interp = 1
@@ -84,12 +101,17 @@ tracks/1/keys = {
 animation = "charged"
 
 [sub_resource type="AnimationNodeAnimation" id=6]
-animation = "change"
+animation = "active"
 
 [sub_resource type="AnimationNodeAnimation" id=7]
 animation = "idle"
 
-[sub_resource type="AnimationNodeOneShot" id=8]
+[sub_resource type="AnimationNodeTransition" id=8]
+input_count = 2
+input_0/name = "charged"
+input_0/auto_advance = false
+input_1/name = "activated"
+input_1/auto_advance = false
 
 [sub_resource type="AnimationNodeTransition" id=9]
 input_count = 2
@@ -99,43 +121,43 @@ input_1/name = "energized"
 input_1/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=10]
-graph_offset = Vector2( 0, 73 )
+graph_offset = Vector2( -28.7917, 39.3 )
 nodes/Animation/node = SubResource( 7 )
 nodes/Animation/position = Vector2( 180, 60 )
 "nodes/Animation 2/node" = SubResource( 5 )
 "nodes/Animation 2/position" = Vector2( 40, 200 )
 "nodes/Animation 3/node" = SubResource( 6 )
 "nodes/Animation 3/position" = Vector2( 40, 360 )
-nodes/OneShot/node = SubResource( 8 )
-nodes/OneShot/position = Vector2( 280, 220 )
+nodes/active_state/node = SubResource( 8 )
+nodes/active_state/position = Vector2( 260, 220 )
 nodes/energy_state/node = SubResource( 9 )
 nodes/energy_state/position = Vector2( 480, 100 )
-nodes/output/position = Vector2( 740, 140 )
-node_connections = [ "output", 0, "energy_state", "OneShot", 0, "Animation 2", "OneShot", 1, "Animation 3", "energy_state", 0, "Animation", "energy_state", 1, "OneShot" ]
+nodes/output/position = Vector2( 760, 100 )
+node_connections = [ "output", 0, "energy_state", "energy_state", 0, "Animation", "energy_state", 1, "active_state", "active_state", 0, "Animation 2", "active_state", 1, "Animation 3" ]
 
 [node name="BluePlatform" type="StaticBody2D"]
 script = ExtResource( 2 )
 
 [node name="blue platforms" type="Sprite" parent="."]
+position = Vector2( 0, 20 )
 texture = ExtResource( 1 )
 hframes = 3
 vframes = 2
 frame = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, -20.2175 )
 shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "idle"
-anims/change = SubResource( 2 )
+anims/active = SubResource( 2 )
 anims/charged = SubResource( 3 )
 anims/idle = SubResource( 4 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 10 )
 anim_player = NodePath("../AnimationPlayer")
-parameters/OneShot/active = false
+active = true
+parameters/active_state/current = 0
 parameters/energy_state/current = 0
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
