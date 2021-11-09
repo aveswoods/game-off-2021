@@ -10,7 +10,6 @@ extents = Vector2( 15.1608, 15.1703 )
 [sub_resource type="Animation" id=2]
 resource_name = "activated"
 length = 0.001
-loop = true
 step = 1.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("blue box:frame")
@@ -131,7 +130,7 @@ nodes/action_state/position = Vector2( 600, 200 )
 nodes/energy_state/node = SubResource( 9 )
 nodes/energy_state/position = Vector2( 840, -20 )
 nodes/output/position = Vector2( 1080, 80 )
-node_connections = [ "output", 0, "energy_state", "action_state", 0, "Animation 2", "action_state", 1, "Animation 3", "energy_state", 0, "Animation", "energy_state", 1, "action_state" ]
+node_connections = [ "output", 0, "energy_state", "energy_state", 0, "Animation", "energy_state", 1, "action_state", "action_state", 0, "Animation 2", "action_state", 1, "Animation 3" ]
 
 [node name="BlueBox" type="KinematicBody2D"]
 script = ExtResource( 2 )
@@ -150,7 +149,6 @@ collision_layer = 3
 collision_mask = 3
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="AreaDamage"]
-visible = false
 polygon = PoolVector2Array( -34.8988, -0.337843, -15.9394, -5.23589, -16.0167, -16.2097, -6.04757, -15.9005, 0.0634232, -35.4326, 6.42022, -15.9649, 16.0545, -15.9005, 15.6905, -4.57569, 35.5554, -0.735142, 15.8229, 5.35677, 16.3527, 15.9514, 6.02291, 15.9514, 0.195854, 34.3596, -6.55821, 15.9514, -16.1713, 16.0161, -16.2258, 5.8865 )
 disabled = true
 
@@ -162,7 +160,6 @@ anims/idle = SubResource( 4 )
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 10 )
 anim_player = NodePath("../AnimationPlayer")
-active = true
 parameters/action_state/current = 0
 parameters/energy_state/current = 0
 

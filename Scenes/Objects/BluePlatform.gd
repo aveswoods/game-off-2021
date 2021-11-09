@@ -6,8 +6,8 @@ var _activated = false
 
 func charge():
 	#$AudioStreamPlayer.play()
-	$AnimationTree.set("parameters/active_state/current", 0)
-	$AnimationTree.set("parameters/energy_state/current", 1)
+	$AnimationPlayer.play("charged")
+	$CollisionShape2D.disabled = false
 	_charged = true
 	_activated = false
 
@@ -16,8 +16,8 @@ func is_charged():
 
 
 func activate():
-	$AnimationTree.set("parameters/active_state/current", 1)
-	$AnimationTree.set("parameters/energy_state/current", 1)
+	$AnimationPlayer.play("active")
+	$CollisionShape2D.disabled = true
 	_charged = false
 	_activated = true
 
@@ -26,10 +26,7 @@ func is_activated():
 
 
 func idle():
-	$AnimationTree.set("parameters/energy_state/current", 0)
+	$AnimationPlayer.play("idle")
+	$CollisionShape2D.disabled = false
 	_charged = false
 	_activated = false
-
-
-func _ready() -> void:
-	$AnimationTree.active = true

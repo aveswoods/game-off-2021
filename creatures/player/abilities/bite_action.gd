@@ -1,6 +1,7 @@
 extends Area2D
  
 onready var _timer = $Timer
+onready var _sprite = $Sprite
 
 var bite_damage = 1
 var bite_impact_impulse = 500
@@ -16,13 +17,13 @@ func equip(player):
 
 func trigger():
 	if _can_bite:
-		var flipped = _player.is_facing_left()
-		if flipped:
+		if _player.is_facing_left():
 			scale.x = -1
-		_player.animate("bite", flipped)
-		_player.input_disabled = true
+		_sprite.visible = true
+		_player.animation_tree.set("parameters/OneShot/active", true)
 		monitoring = true
 		_timer.start()
+		_can_bite = false
 
 
 func _on_Area2D_body_entered(body):
@@ -37,8 +38,8 @@ func _on_Timer_timeout():
 	if _is_dead_time:
 		_can_bite = true
 		_is_dead_time = false
-		scale.x = 1
-		_player.input_disabled = false
 	else:
+		scale.x = 1
+		_sprite.visible = false
 		_is_dead_time = true
 		_timer.start()

@@ -11,7 +11,8 @@ radius = 18.0
 extents = Vector2( 8, 9 )
 
 [sub_resource type="Animation" id=3]
-length = 0.4
+length = 0.3
+step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("PlayerSprite/SpriteFace:frame")
 tracks/0/interp = 1
@@ -19,7 +20,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"times": PoolRealArray( 0, 0.05, 0.15, 0.25 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 10, 11, 12, 13 ]
@@ -208,7 +209,7 @@ input_1/name = "run"
 input_1/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=20]
-graph_offset = Vector2( -348.379, 50.525 )
+graph_offset = Vector2( 175.629, 59.7104 )
 nodes/Animation/node = SubResource( 14 )
 nodes/Animation/position = Vector2( -702, -221 )
 "nodes/Animation 2/node" = SubResource( 9 )
@@ -232,7 +233,7 @@ nodes/in_air_state/position = Vector2( 455, 65 )
 nodes/movement/node = SubResource( 19 )
 nodes/movement/position = Vector2( -351, -169 )
 nodes/output/position = Vector2( 949, 26 )
-node_connections = [ "output", 0, "OneShot", "movement", 0, "Animation", "movement", 1, "Animation 2", "in_air", 0, "Animation 4", "in_air", 1, "Animation 3", "OneShot 2", 0, "movement", "OneShot 2", 1, "Animation 6", "OneShot", 0, "in_air_state", "OneShot", 1, "Animation 5", "in_air_state", 0, "OneShot 2", "in_air_state", 1, "in_air" ]
+node_connections = [ "output", 0, "OneShot", "OneShot", 0, "in_air_state", "OneShot", 1, "Animation 5", "movement", 0, "Animation", "movement", 1, "Animation 2", "in_air", 0, "Animation 4", "in_air", 1, "Animation 3", "in_air_state", 0, "OneShot 2", "in_air_state", 1, "in_air", "OneShot 2", 0, "movement", "OneShot 2", 1, "Animation 6" ]
 
 [node name="Player" type="KinematicBody2D" groups=[
 "player",
@@ -247,12 +248,12 @@ position = Vector2( -2, -5 )
 [node name="SpriteBody" type="Sprite" parent="PlayerSprite"]
 texture = ExtResource( 6 )
 hframes = 18
-frame = 1
+frame = 3
 
 [node name="SpriteFace" type="Sprite" parent="PlayerSprite"]
 texture = ExtResource( 7 )
 hframes = 18
-frame = 1
+frame = 3
 
 [node name="CollisionShapeCircle" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -296,7 +297,7 @@ parameters/OneShot/active = false
 "parameters/OneShot 2/active" = false
 parameters/in_air/current = 1
 parameters/in_air_state/current = 0
-parameters/movement/current = 0
+parameters/movement/current = 1
 
 [connection signal="timeout" from="InvincibilityTimer" to="." method="_on_InvincibilityTimer_timeout"]
 [connection signal="timeout" from="StunTimer" to="." method="_on_StunTimer_timeout"]

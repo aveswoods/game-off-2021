@@ -13,6 +13,7 @@ signal killed(source)
 # Game variables
 var _stun_timer = Timer.new()
 var hp = 0
+var invincible = false
 enum death_source {
 	IMPACT, # 0
 	EXPLOSION, # 1
@@ -43,9 +44,14 @@ func stun(time: float):
 
 
 func take_damage(amount : int, source = death_source.ERASE):
-	hp -= amount
-	if hp <= 0:
-		emit_signal("killed", source)
+	if not invincible:
+		hp -= amount
+		if hp <= 0:
+			emit_signal("killed", source)
+
+# Must be implemented to be able to be charmed!
+func set_target_group(group):
+	pass
 
 
 func _ready():

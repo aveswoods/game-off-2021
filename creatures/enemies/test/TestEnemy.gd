@@ -11,6 +11,11 @@ var walk_direction = 1
 var _stunned = false
 var _dead = false
 
+
+func set_target_group(group):
+	$EnemyHitbox.target_group = group
+
+
 func _ready():
 	randomize()
 	hp = starting_hp

@@ -5,8 +5,9 @@ class_name EnemyHitbox
 signal hitbox_entered
 
 # Constact damage constants
-const contact_damage = 1
-const contact_impulse = 500
+var contact_damage = 1
+var contact_impulse = 500
+var target_group = "player"
 
 
 func _ready():
@@ -14,7 +15,7 @@ func _ready():
 
 
 func _on_body_entered(body: Node):
-	if body.is_in_group("player") and not body.invincible:
+	if body.is_in_group(target_group) and not body.invincible:
 		var impulse = body.global_position - self.global_position
 		if impulse.x < 0:
 			impulse = contact_impulse * Vector2(-1, -1)

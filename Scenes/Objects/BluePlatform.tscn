@@ -5,7 +5,7 @@
 [ext_resource path="res://Audio/SFX/Shine.wav" type="AudioStream" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 47.2701, 6.75319 )
+extents = Vector2( 48, 7 )
 
 [sub_resource type="Animation" id=2]
 resource_name = "active"
@@ -156,7 +156,6 @@ anims/idle = SubResource( 4 )
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 10 )
 anim_player = NodePath("../AnimationPlayer")
-active = true
 parameters/active_state/current = 0
 parameters/energy_state/current = 0
 
