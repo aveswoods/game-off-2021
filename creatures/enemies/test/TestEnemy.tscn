@@ -29,7 +29,9 @@ script = ExtResource( 2 )
 position = Vector2( 0, 1 )
 shape = SubResource( 1 )
 
-[node name="EnemyHitbox" type="Area2D" parent="."]
+[node name="EnemyHitbox" type="Area2D" parent="." groups=[
+"enemy",
+]]
 collision_layer = 2
 script = ExtResource( 3 )
 

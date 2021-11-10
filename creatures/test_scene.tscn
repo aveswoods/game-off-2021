@@ -50,15 +50,12 @@ position = Vector2( 453.994, 461.962 )
 [node name="BlueBox2" parent="." instance=ExtResource( 9 )]
 position = Vector2( 103.677, 194.787 )
 
-[node name="BlueBox3" parent="." instance=ExtResource( 9 )]
-position = Vector2( 181.168, 420.453 )
-
 [node name="BluePlatform" parent="." instance=ExtResource( 6 )]
 position = Vector2( 688, 455 )
 
 [node name="BlueBells" parent="." instance=ExtResource( 8 )]
 position = Vector2( 978.798, 324.637 )
-blue_paths = [ NodePath("../BlueBox"), NodePath("../BlueBox2"), NodePath("../BlueBox3"), NodePath("../BluePlatform") ]
+blue_paths = [ NodePath("../BlueBox"), NodePath("../BlueBox2"), NodePath("../BluePlatform") ]
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
 margin_left = 346.0

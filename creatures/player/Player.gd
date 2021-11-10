@@ -37,14 +37,6 @@ var _bump_impulse = Vector2.ZERO
 var _is_on_floor = false
 
 
-#func animate(name: String, flipped_h: bool = false):
-#	if flipped_h:
-#		_sprite.scale.x = -1
-#	else:
-#		_sprite.scale.x = 1
-#	_is_facing_left = flipped_h
-
-
 func bump(impulse):
 	_bumping = true
 	_bump_impulse = impulse
