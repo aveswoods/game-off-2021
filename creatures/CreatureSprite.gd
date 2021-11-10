@@ -9,8 +9,8 @@ var _death_animation_timer = Timer.new()
 var _tween = Tween.new()
 
 # Particles
-var _explosion_particles = load("res://creatures/death_animations/explosion.tscn").instance()
-var _big_explosion_particles = load("res://creatures/death_animations/big_explosion.tscn").instance()
+var _explosion_particles = load("res://particle effects/explosion.tscn").instance()
+var _big_explosion_particles = load("res://particle effects/big_explosion.tscn").instance()
 
 # Other variables
 var _dimensions = Vector2.ZERO

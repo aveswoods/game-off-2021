@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/binary_particles1.png-17b35e8b9ff9269d1ce0e74006281f7f.stex"
+path="res://.import/small_round_particle.png-1ffb2d56f49bed4031de71181065ee2e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://creatures/death_animations/binary_particles1.png"
-dest_files=[ "res://.import/binary_particles1.png-17b35e8b9ff9269d1ce0e74006281f7f.stex" ]
+source_file="res://particle effects/small_round_particle.png"
+dest_files=[ "res://.import/small_round_particle.png-1ffb2d56f49bed4031de71181065ee2e.stex" ]
 
 [params]
 

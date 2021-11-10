@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://creatures/player/abilities/shoot_action.gd" type="Script" id=1]
+[ext_resource path="res://particle effects/damage.tscn" type="PackedScene" id=2]
+[ext_resource path="res://particle effects/xsmall_round_particle.png" type="Texture" id=3]
+[ext_resource path="res://particle effects/bullet_smear.png" type="Texture" id=4]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 1 )
@@ -25,6 +28,43 @@ enabled = true
 cast_to = Vector2( 100000, 0 )
 collision_mask = 3
 collide_with_areas = true
+
+[node name="DamageParticles" parent="." instance=ExtResource( 2 )]
+emitting = false
+one_shot = true
+local_coords = false
+
+[node name="FireParticles" type="CPUParticles2D" parent="."]
+position = Vector2( 14, -18 )
+emitting = false
+amount = 4
+lifetime = 0.35
+one_shot = true
+explosiveness = 0.9
+lifetime_randomness = 1.0
+local_coords = false
+texture = ExtResource( 3 )
+emission_shape = 3
+emission_points = PoolVector2Array( 0, 2, 0, 3, 0, 4, 1, 1, 1, 2, 1, 4, 1, 5, 2, 0, 2, 1, 2, 5, 2, 6, 3, 0, 3, 6, 4, 0, 4, 1, 4, 5, 4, 6, 5, 1, 5, 2, 5, 4, 5, 5, 6, 2, 6, 3, 6, 4 )
+emission_colors = PoolColorArray(  )
+gravity = Vector2( 0, 300 )
+initial_velocity = 400.0
+initial_velocity_random = 0.4
+linear_accel = -500.0
+color = Color( 0.603922, 0.941176, 0.537255, 1 )
+
+[node name="BulletParticle" type="CPUParticles2D" parent="."]
+position = Vector2( 14, -18 )
+emitting = false
+amount = 1
+lifetime = 0.05
+one_shot = true
+local_coords = false
+texture = ExtResource( 4 )
+spread = 0.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 1000.0
+color = Color( 0.94902, 1, 0.4, 1 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.2

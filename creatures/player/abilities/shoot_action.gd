@@ -3,6 +3,9 @@ extends Node2D
 onready var _raycast_top = $RayCastTop
 onready var _raycast_center = $RayCastCenter
 onready var _raycast_bottom = $RayCastBottom
+onready var _fire_particles = $FireParticles
+onready var _damage_particles = $DamageParticles
+onready var _bullet_particle = $BulletParticle
 onready var _timer = $Timer
 
 var shoot_damage = 1
@@ -99,6 +102,28 @@ func _on_Timer_timeout():
 			elif better_collider is KinematicBody2D:
 				better_collider.bump(shoot_impact_impulse * Vector2(direction_x, -1))
 				better_collider.take_damage(shoot_damage, 0)
+			
+			# Animate damage
+			if _player.is_facing_left():
+				_damage_particles.direction.x = 1
+			else:
+				_damage_particles.direction.x = -1
+			_damage_particles.global_position = better_collider.global_position
+			_damage_particles.restart()
+		
+		# Animate fire
+		if _player.is_facing_left():
+			_fire_particles.position.x = -1 * abs(_fire_particles.position.x)
+			_fire_particles.direction.x = -1
+			_bullet_particle.position.x = -1 * abs(_bullet_particle.position.x)
+			_bullet_particle.direction.x = -1
+		else:
+			_fire_particles.position.x = abs(_fire_particles.position.x)
+			_fire_particles.direction.x = 1
+			_bullet_particle.position.x = abs(_bullet_particle.position.x)
+			_bullet_particle.direction.x = 1
+		_fire_particles.restart()
+		_bullet_particle.restart()
 		
 		# Reset direction
 		_raycast_top.cast_to.x = abs(_raycast_top.cast_to.x)
