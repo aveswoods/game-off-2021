@@ -14,7 +14,7 @@ func _ready():
 
 
 func _physics_process(_delta):
-	if not _double_jumped and Input.is_action_just_pressed("ui_up") and not _player.is_on_floor():
+	if not _double_jumped and Input.is_action_just_pressed("ui_up") and not _player.is_on_floor() and not _player.input_disabled:
 		_player.velocity.y = _player.jump_impulse
 		_double_jumped = true
 

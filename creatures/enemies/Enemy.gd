@@ -14,6 +14,7 @@ signal killed(source)
 var _stun_timer = Timer.new()
 var hp = 0
 var invincible = false
+var controlled = false
 enum death_source {
 	IMPACT, # 0
 	EXPLOSION, # 1

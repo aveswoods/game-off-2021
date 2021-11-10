@@ -17,20 +17,31 @@ func set_target_group(group):
 
 
 func _ready():
-	randomize()
 	hp = starting_hp
+	acceleration = 0.9
 	velocity.x = walk_direction * walk_speed
 
 
 func _physics_process(_delta):
-	if not _stunned:
-		movement_velocity = Vector2(walk_direction * walk_speed, 0)
+	# Mind controlled behavior
+	if controlled:
+		movement_velocity = Vector2.ZERO
+		if Input.is_action_pressed("ui_left"):
+			movement_velocity.x += -1 * walk_speed
+		if Input.is_action_pressed("ui_right"):
+			movement_velocity.x += walk_speed
+		if Input.is_action_just_pressed("ui_up") and is_on_floor():
+			velocity.y = jump_impulse
+	# Standard behavior
+	else:
+		if not _stunned:
+			movement_velocity = Vector2(walk_direction * walk_speed, 0)
 
 
 func _on_Timer_timeout():
 	# Jump!
-	if is_on_floor() and not _stunned:
-		velocity.y += jump_impulse
+	if is_on_floor() and not _stunned and not controlled:
+		velocity.y = jump_impulse
 
 
 func _on_EnemyHitbox_hitbox_entered():
