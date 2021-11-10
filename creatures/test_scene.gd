@@ -16,8 +16,8 @@ var glide_passive = load("res://creatures/player/abilities/glide_passive.gd").ne
 
 func _ready():
 	#lunge_action.equip($Player)
-	#bite_action.equip($Player)
-	blue_action.equip($Player)
+	bite_action.equip($Player)
+	#blue_action.equip($Player)
 	#charm_action.equip($Player)
 	#mindcontrol_action.equip($Player)
 	#slowmo_action.equip($Player)
@@ -27,10 +27,10 @@ func _ready():
 	#walljump_passive.equip($Player)
 	glide_passive.equip($Player)
 	#$Player.action1_script = lunge_action
-	#$Player.action1_script = bite_action
-	$Player.action2_script = blue_action
+	$Player.action1_script = bite_action
+	#$Player.action2_script = blue_action
 	#$Player.action2_script = charm_action
 	#$Player.action2_script = mindcontrol_action
 	#$Player.action2_script = slowmo_action
-	$Player.action1_script = shoot_action
+	$Player.action2_script = shoot_action
 	

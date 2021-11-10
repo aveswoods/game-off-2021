@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://creatures/player/abilities/bite_action.gd" type="Script" id=1]
 [ext_resource path="res://creatures/player/abilities/bite-swing.png" type="Texture" id=2]
 [ext_resource path="res://white_circle.png" type="Texture" id=3]
+[ext_resource path="res://particle effects/damage.tscn" type="PackedScene" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 30.0
@@ -19,6 +20,7 @@ position = Vector2( 37, 0 )
 shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="CollisionShape2D"]
+visible = false
 modulate = Color( 1, 1, 1, 0.498039 )
 scale = Vector2( 0.6, 0.6 )
 texture = ExtResource( 3 )
@@ -30,6 +32,10 @@ texture = ExtResource( 2 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.2
+one_shot = true
+
+[node name="DamageParticles" parent="." instance=ExtResource( 4 )]
+emitting = false
 one_shot = true
 
 [connection signal="body_entered" from="." to="." method="_on_Area2D_body_entered"]

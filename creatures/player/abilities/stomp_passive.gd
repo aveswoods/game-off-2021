@@ -1,9 +1,12 @@
 extends Area2D
 
+onready var _impact_particles = $ImpactParticles
+
 var stomp_damage = 0
 var stomp_enemy_impulse = Vector2(0, 30)
 var stun_time = 4
 var _player = null
+
 
 func equip(player):
 	_player = player
@@ -16,3 +19,4 @@ func _on_Area2D_body_entered(body):
 		body.bump(stomp_enemy_impulse)
 		body.take_damage(stomp_damage)
 		body.stun(stun_time)
+		_impact_particles.restart()
