@@ -12,7 +12,6 @@ signal killed(source)
 
 # Game variables
 var _stun_timer = Timer.new()
-var time_multiplier = 1.0
 var hp = 0
 var invincible = false
 var controlled = false
@@ -64,12 +63,12 @@ func _ready():
 
 func _physics_process(delta):
 	# Add gravity
-	velocity.y += gravity * pow(time_multiplier, 2)
+	velocity.y += gravity * pow(Global.time_multiplier, 2)
 	# Add friction/acceleration
 	if movement_velocity.is_equal_approx(Vector2(0, 0)):
-		velocity.x = lerp(velocity.x, 0, friction * time_multiplier) * time_multiplier
+		velocity.x = lerp(velocity.x, 0, friction * Global.time_multiplier) * Global.time_multiplier
 	else:
-		velocity.x = lerp(movement_velocity.x, velocity.x, acceleration * time_multiplier) * time_multiplier
+		velocity.x = lerp(movement_velocity.x, velocity.x, acceleration * Global.time_multiplier) * Global.time_multiplier
 	
 	if _bumping:
 		velocity += _bump_impulse

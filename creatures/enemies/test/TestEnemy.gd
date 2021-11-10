@@ -31,7 +31,7 @@ func _physics_process(_delta):
 		if Input.is_action_pressed("ui_right"):
 			movement_velocity.x += walk_speed
 		if Input.is_action_just_pressed("ui_up") and is_on_floor():
-			velocity.y = jump_impulse * time_multiplier
+			velocity.y = jump_impulse * Global.time_multiplier
 	# Standard behavior
 	else:
 		if not _stunned:
@@ -41,7 +41,7 @@ func _physics_process(_delta):
 func _on_Timer_timeout():
 	# Jump!
 	if is_on_floor() and not _stunned and not controlled:
-		velocity.y = jump_impulse * time_multiplier
+		velocity.y = jump_impulse * Global.time_multiplier
 
 
 func _on_EnemyHitbox_hitbox_entered():
