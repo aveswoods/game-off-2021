@@ -13,6 +13,8 @@ var _controlled_node = null
 func equip(player):
 	_player = player
 	_player.add_child(self)
+	
+	_player.connect("damaged", self, "_on_player_damaged")
 
 
 func trigger():
@@ -33,21 +35,30 @@ func trigger():
 		_is_controlling = true
 
 
+func _stop_controlling():
+	# Remove control
+	_controlled_node.controlled = false
+	_controlled_node.set_target_group("player")
+	_controlled_node = null
+	# Adjust player
+	_player.input_disabled = false
+	_player.gravity = _player_gravity
+	# Start recharge timer
+	_timer.wait_time = recharge_time
+	_timer.start()
+	
+	_is_controlling = false
+
+
 func _physics_process(_delta):
 	# Stop controlling if either action button is pressed
 	if _is_controlling and (Input.is_action_just_pressed("ui_accept") or Input.is_action_just_pressed("ui_select")):
-		# Remove control
-		_controlled_node.controlled = false
-		_controlled_node.set_target_group("player")
-		_controlled_node = null
-		# Adjust player
-		_player.input_disabled = false
-		_player.gravity = _player_gravity
-		# Start recharge timer
-		_timer.wait_time = recharge_time
-		_timer.start()
-		
-		_is_controlling = false
+		_stop_controlling()
+
+
+func _on_player_damaged():
+	if _is_controlling:
+		_stop_controlling()
 
 
 func _on_Timer_timeout():

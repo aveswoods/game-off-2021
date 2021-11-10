@@ -4,6 +4,7 @@ signal collided_with_body(collision)
 signal collided_with_wall
 signal collided_with_floor
 signal collided_with_ceiling
+signal damaged
 
 # Scene variables
 onready var animation_tree = $AnimationTree
@@ -66,6 +67,7 @@ func take_damage(damage):
 	_invincibility_timer.start()
 	
 	print("Player damaged!")
+	emit_signal("damaged")
 
 
 func is_facing_left():
