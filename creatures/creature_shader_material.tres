@@ -4,17 +4,31 @@
 code = "shader_type canvas_item;
 
 uniform bool stunned = false;
+uniform vec4 overlay : hint_color = vec4(1.0, 1.0, 1.0, 0.0);
+uniform float transparency : hint_range(0.0, 1.0) = 1.0;
 
 void fragment() {
 	COLOR = texture(TEXTURE, UV);
 	
+	// Apply stun filter
 	if (stunned) {
 		float avg = (COLOR.r + COLOR.g + COLOR.b) / 3.0;
 		COLOR.rgb = vec3(avg);
 	}
+	
+	// Apply overlay filter
+	float alpha = overlay.a;
+	COLOR.r = (1.0 - alpha) * COLOR.r + alpha * overlay.r;
+	COLOR.g = (1.0 - alpha) * COLOR.g + alpha * overlay.g;
+	COLOR.b = (1.0 - alpha) * COLOR.b + alpha * overlay.b;
+	
+	// Apply transparency filter
+	COLOR.a *= transparency;
 }"
 
 [resource]
 resource_local_to_scene = true
 shader = SubResource( 1 )
 shader_param/stunned = false
+shader_param/overlay = Color( 1, 1, 1, 0 )
+shader_param/transparency = 1.0

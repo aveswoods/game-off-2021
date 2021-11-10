@@ -248,12 +248,10 @@ position = Vector2( -2, -5 )
 [node name="SpriteBody" type="Sprite" parent="PlayerSprite"]
 texture = ExtResource( 6 )
 hframes = 18
-frame = 1
 
 [node name="SpriteFace" type="Sprite" parent="PlayerSprite"]
 texture = ExtResource( 7 )
 hframes = 18
-frame = 1
 
 [node name="CollisionShapeCircle" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )

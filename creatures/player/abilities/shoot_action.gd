@@ -87,7 +87,6 @@ func _on_Timer_timeout():
 		
 		# Hit collider!
 		if better_collider != null:
-			print("hit enemy")
 			var direction_x = -1 if _player.is_facing_left() else 1
 			
 			# Allow for Area2D hitbox detection
