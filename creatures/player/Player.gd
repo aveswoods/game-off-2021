@@ -52,7 +52,7 @@ func stun(time):
 # NOTE/BUG:
 # Damage is not applied if the user is inside a hitbox after the invincibility timer has expired!
 # However, the timer is so short that this is a small issue.
-func take_damage(damage):
+func take_damage(damage, _source):
 	hp -= damage
 	
 	invincible = true

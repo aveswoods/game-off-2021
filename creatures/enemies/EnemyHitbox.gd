@@ -23,6 +23,6 @@ func _on_body_entered(body: Node):
 			impulse = contact_impulse * Vector2(1, -1)
 		
 		body.bump(impulse)
-		body.take_damage(contact_damage)
+		body.take_damage(contact_damage, 0)
 		
 		emit_signal("hitbox_entered")
