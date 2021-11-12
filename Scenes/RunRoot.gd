@@ -39,12 +39,11 @@ func _connect_adjacent_rooms():
 func _on_room_change(new_room):
 	_current_room.remove_player()
 	new_room.add_player(player_node)
+	
 	_current_room = new_room
+	_current_room.camera.current = true
 	_current_room.instance_adjacent_rooms()
 	_connect_adjacent_rooms()
-	
-	_current_room.set_camera_limits()
-	_current_room.camera.current = true
 
 
 func _ready():

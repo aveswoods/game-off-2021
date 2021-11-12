@@ -1,5 +1,19 @@
 extends Node2D
 
+# Base for a Room
+# 
+# SETUP:
+#
+# TileMap MUST have its top-left corner at (0, 0). i.e., EVERY tile must be in positive
+# coordinates
+#
+# Each connected room MUST have an Area2D doorway! Each Area2D MUST have at least one tile
+# after it in order for the transition between rooms to work properly
+# Doorways must have the dimensions 32 x 8 or 8 x 32 in order for adjacent rooms to be placed
+# properly.
+#
+# Adjacent rooms must have doorways connecting between them
+
 signal room_changed(room)
 
 onready var camera = $Camera2D
@@ -51,20 +65,21 @@ func get_room_extents():
 	return Vector2(_room_extents.x, _room_extents.y)
 
 
-func set_camera_limits():
-	var used_rect = _tile_map_floor.get_used_rect()
-	var tile_size = _tile_map_floor.cell_size
-	camera.limit_top = position.y + used_rect.position.y * tile_size.y + tile_size.y / 2
-	camera.limit_left = position.x + used_rect.position.x * tile_size.x + tile_size.x / 2
-	camera.limit_bottom = position.y + used_rect.end.y * tile_size.y - tile_size.y / 2
-	camera.limit_right = position.x + used_rect.end.x * tile_size.x - tile_size.x / 2
-
-
-func remove_camera_limits():
-	camera.limit_top = -10000000
-	camera.limit_left = -10000000
-	camera.limit_bottom = 10000000
-	camera.limit_right = 10000000
+func set_limited_camera_position(cam_pos):
+	var viewport_extents = get_viewport().get_size()
+	var target_location = Vector2.ZERO
+	
+	if viewport_extents.x > _room_extents.x:
+		target_location.x = _room_extents.x / 2.0
+	else:
+		target_location.x = clamp(cam_pos.x, viewport_extents.x / 2.0, _room_extents.x - viewport_extents.x / 2.0)
+	
+	if viewport_extents.y > _room_extents.y:
+		target_location.y = _room_extents.y / 2.0
+	else:
+		target_location.y = clamp(cam_pos.y, viewport_extents.y / 2.0, _room_extents.y - viewport_extents.y / 2.0)
+	
+	camera.position = target_location
 
 
 func instance_adjacent_rooms():
@@ -72,7 +87,6 @@ func instance_adjacent_rooms():
 	if north_adjacent_room != null:
 		north_adjacent_room_instance = north_adjacent_room.instance()
 	if east_adjacent_room != null:
-		print("instancing east adj rooms")
 		east_adjacent_room_instance = east_adjacent_room.instance()
 	if south_adjacent_room != null:
 		south_adjacent_room_instance = south_adjacent_room.instance()
@@ -86,21 +100,16 @@ func change_rooms(room_instance):
 	changing_rooms = true
 	_next_room.changing_rooms = true
 	
-	# Remove camera limits so they do not affect camera transitions
-	remove_camera_limits()
-	#_next_room.remove_camera_limits()
 	
 	# Slide camera to correct position
 	_tween.interpolate_property(
 		camera,
 		"position",
 		camera.position,
-		Vector2(
-			clamp(_next_room.position.x + _next_room.camera.position.x, _next_room.camera.limit_left, _next_room.camera.limit_right),
-			clamp(_next_room.position.y + _next_room.camera.position.y, _next_room.camera.limit_top, _next_room.camera.limit_bottom)
-		),
+		_next_room.position + _next_room.camera.position,
 		1.0,
-		Tween.TRANS_EXPO, Tween.EASE_IN_OUT
+		Tween.TRANS_EXPO, Tween.EASE_IN_OUT,
+		0.5
 	)
 	_tween.start()
 
@@ -126,8 +135,7 @@ func _ready():
 	_room_extents = Vector2(used_rect.end.x * tile_size.x, used_rect.end.y * tile_size.y)
 	
 	# Set Camera posiiton
-	camera.position = player_start_location
-	set_camera_limits()
+	set_limited_camera_position(player_start_location)
 
 
 func _north_doorway_entered(body):
@@ -144,12 +152,15 @@ func _west_doorway_entered(body):
 		change_rooms(west_adjacent_room_instance)
 
 
-func _physics_process(_delta):
-	if _player != null and not changing_rooms:
-		camera.position = lerp(camera.position, _player.position, _cam_acceleration)
-
-
 func _on_room_change_tween_completed():
 	emit_signal("room_changed", _next_room)
+	
 	changing_rooms = false
 	_next_room.changing_rooms = false
+
+
+func _physics_process(_delta):
+	if _player != null and not changing_rooms:
+		set_limited_camera_position(_player.position)
+
+
