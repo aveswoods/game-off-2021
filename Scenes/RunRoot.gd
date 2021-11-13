@@ -5,6 +5,27 @@ var _current_room = null
 var _adjacent_rooms = []
 export(NodePath) var player = null
 onready var player_node = get_node(player)
+onready var _camera = $Camera2D
+
+
+func _set_limited_camera_position(cam_pos):
+	var room_extents = _current_room.get_room_extents()
+	var room_position = _current_room.position
+	var viewport_extents = get_viewport().get_size()
+	
+	var target_location = Vector2.ZERO
+	
+	if viewport_extents.x > room_extents.x:
+		target_location.x = room_position.x + room_extents.x / 2.0
+	else:
+		target_location.x = clamp(cam_pos.x, room_position.x + viewport_extents.x / 2.0, room_position.x + room_extents.x - viewport_extents.x / 2.0)
+	
+	if viewport_extents.y > room_extents.y:
+		target_location.y = room_position.y + room_extents.y / 2.0
+	else:
+		target_location.y = clamp(cam_pos.y, room_position.y + viewport_extents.y / 2.0,  room_position.y + room_extents.y - viewport_extents.y / 2.0)
+	
+	_camera.position = target_location
 
 
 func _spawn_adjacent_rooms():
@@ -108,23 +129,29 @@ func _spawn_adjacent_rooms():
 		_current_room.west_adjacent_room_instance.east_adjacent_room_instance = _current_room
 
 
-func _on_room_changed(new_room):
-	_current_room = new_room
-	#_current_room.close_doorways()
-	_spawn_adjacent_rooms()
-	_current_room.camera.current = true
-
-
 func _ready():
 	_current_room = get_node(starting_room)
+	
+	# TEST ROOMS
 	_current_room.east_adjacent_room = preload("res://Scenes/Rooms/test_room2.tscn")
 	_current_room.west_adjacent_room = preload("res://Scenes/Rooms/test_room2.tscn")
+	_current_room.south_adjacent_room = preload("res://Scenes/Rooms/test_room1.tscn")
+	
 	_current_room.connect("room_changed", self, "_on_room_changed")
 	_spawn_adjacent_rooms()
 	
 	_current_room.set_player(player_node)
-	_current_room.set_limited_camera_position(player_node.position)
-	_current_room.camera.current = true
 	
 	# For testing
 	_current_room.open_doorways()
+
+
+func _on_room_changed(new_room):
+	_current_room = new_room
+	#_current_room.close_doorways()
+	_spawn_adjacent_rooms()
+
+
+func _physics_process(_delta):
+	if not _current_room.changing_rooms:
+		_set_limited_camera_position(player_node.position)

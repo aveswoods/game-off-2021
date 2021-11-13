@@ -10,9 +10,8 @@ extends Node2D
 
 signal room_changed(room)
 
-onready var camera = $Camera2D
 onready var _tile_map_floor = $TileMapFloor
-onready var _tween = $Tween
+onready var _room_change_timer = $RoomChangeTimer
 
 # Public variables
 var changing_rooms = false
@@ -54,26 +53,6 @@ func remove_player():
 
 func get_room_extents():
 	return Vector2(_room_extents.x, _room_extents.y)
-
-
-func set_limited_camera_position(cam_pos):
-	# Put cam_pos in local space
-	cam_pos -= position
-	var viewport_extents = get_viewport().get_size()
-	var target_location = Vector2.ZERO
-	
-	if viewport_extents.x > _room_extents.x:
-		target_location.x = _room_extents.x / 2.0
-	else:
-		target_location.x = clamp(cam_pos.x, viewport_extents.x / 2.0, _room_extents.x - viewport_extents.x / 2.0)
-	
-	if viewport_extents.y > _room_extents.y:
-		target_location.y = _room_extents.y / 2.0
-	else:
-		target_location.y = clamp(cam_pos.y, viewport_extents.y / 2.0, _room_extents.y - viewport_extents.y / 2.0)
-	
-	camera.position = target_location
-
 
 
 func close_doorway(direction : int):
@@ -130,21 +109,11 @@ func open_doorways():
 
 func change_rooms(room_instance):
 	_next_room = room_instance
-	_next_room.set_limited_camera_position(_player.position)
 	changing_rooms = true
 	_next_room.changing_rooms = true
 	_player.input_disabled = true
 	
-	# Slide camera to correct position
-	_tween.interpolate_property(
-		camera,
-		"position",
-		camera.position,
-		(_next_room.position - position) + _next_room.camera.position,
-		0.5,
-		Tween.TRANS_EXPO, Tween.EASE_IN_OUT
-	)
-	_tween.start()
+	_room_change_timer.start()
 
 
 func _ready():
@@ -186,10 +155,9 @@ func _west_doorway_entered(body):
 		change_rooms(west_adjacent_room_instance)
 
 
-func _on_room_change_tween_completed():
+func _on_RoomChangeTimer_timeout():
 	changing_rooms = false
 	_next_room.changing_rooms = false
-	_next_room.camera.current = true
 	_player.input_disabled = false
 	_next_room.set_player(_player)
 	remove_player()
@@ -198,8 +166,5 @@ func _on_room_change_tween_completed():
 
 
 func _physics_process(_delta):
-	if _player != null:
-		if changing_rooms:
+	if _player != null and changing_rooms:
 			_player.velocity = changing_velocity
-		else:
-			set_limited_camera_position(_player.position)
