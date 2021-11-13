@@ -2,7 +2,7 @@ extends Node2D
 
 export(NodePath) var starting_room = null
 var _current_room = null
-var _adjacent_rooms = []
+var _loaded_rooms = []
 export(NodePath) var player = null
 onready var player_node = get_node(player)
 onready var _camera = $Camera2D
@@ -36,7 +36,7 @@ func _spawn_adjacent_rooms():
 		# Add to tree
 		add_child(_current_room.north_adjacent_room_instance)
 		# Add to array
-		_adjacent_rooms.append(_current_room.north_adjacent_room_instance)
+		_loaded_rooms.append(_current_room.north_adjacent_room_instance)
 		# Set position
 		var extents = _current_room.get_room_extents()
 		var doorway = _current_room.north_doorway_node
@@ -61,7 +61,7 @@ func _spawn_adjacent_rooms():
 		# Add to tree
 		add_child(_current_room.east_adjacent_room_instance)
 		# Add to array
-		_adjacent_rooms.append(_current_room.east_adjacent_room_instance)
+		_loaded_rooms.append(_current_room.east_adjacent_room_instance)
 		# Set position
 		var extents = _current_room.get_room_extents()
 		var doorway = _current_room.east_doorway_node
@@ -86,7 +86,7 @@ func _spawn_adjacent_rooms():
 		# Add to tree
 		add_child(_current_room.south_adjacent_room_instance)
 		# Add to array
-		_adjacent_rooms.append(_current_room.south_adjacent_room_instance)
+		_loaded_rooms.append(_current_room.south_adjacent_room_instance)
 		# Set position
 		var extents = _current_room.get_room_extents()
 		var doorway = _current_room.south_doorway_node
@@ -111,7 +111,7 @@ func _spawn_adjacent_rooms():
 		# Add to tree
 		add_child(_current_room.west_adjacent_room_instance)
 		# Add to array
-		_adjacent_rooms.append(_current_room.west_adjacent_room_instance)
+		_loaded_rooms.append(_current_room.west_adjacent_room_instance)
 		# Set position
 		var extents = _current_room.get_room_extents()
 		var doorway = _current_room.west_doorway_node
@@ -131,6 +131,8 @@ func _spawn_adjacent_rooms():
 
 func _ready():
 	_current_room = get_node(starting_room)
+	_current_room.show_room()
+	_loaded_rooms.append(_current_room)
 	
 	# TEST ROOMS
 	_current_room.east_adjacent_room = preload("res://Scenes/Rooms/test_room2.tscn")

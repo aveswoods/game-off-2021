@@ -12,6 +12,7 @@ signal room_changed(room)
 
 onready var _tile_map_floor = $TileMapFloor
 onready var _room_change_timer = $RoomChangeTimer
+onready var _tween = $Tween
 
 # Public variables
 var changing_rooms = false
@@ -42,6 +43,32 @@ var _room_extents = Vector2.ZERO
 var _player = null
 var _next_room = null
 
+
+func show_room(delay : float = 0.0):
+	print("Showing " + str(self))
+	_tween.interpolate_property(
+		self,
+		"modulate",
+		Color(1.0, 1.0, 1.0, 0.0),
+		Color(1.0, 1.0, 1.0, 1.0),
+		0.5,
+		Tween.TRANS_QUAD,Tween.EASE_IN_OUT,
+		delay
+	)
+	_tween.start()
+
+func hide_room(delay : float = 0.0):
+	print("Hiding " + str(self))
+	_tween.interpolate_property(
+		self,
+		"modulate",
+		Color(1.0, 1.0, 1.0, 1.0),
+		Color(1.0, 1.0, 1.0, 0.0),
+		0.5,
+		Tween.TRANS_QUAD,Tween.EASE_IN_OUT,
+		delay
+	)
+	_tween.start()
 
 func set_player(player):
 	_player = player
@@ -113,6 +140,9 @@ func change_rooms(room_instance):
 	_next_room.changing_rooms = true
 	_player.input_disabled = true
 	
+	hide_room(0.25)
+	_next_room.show_room()
+	
 	_room_change_timer.start()
 
 
@@ -135,6 +165,8 @@ func _ready():
 	var used_rect = _tile_map_floor.get_used_rect()
 	var tile_size = _tile_map_floor.cell_size
 	_room_extents = Vector2(used_rect.end.x * tile_size.x, used_rect.end.y * tile_size.y)
+	
+	modulate = Color(1.0, 1.0, 1.0, 0.0)
 
 
 func _north_doorway_entered(body):
@@ -153,6 +185,10 @@ func _west_doorway_entered(body):
 	if body.is_in_group("player") and not changing_rooms and _player != null:
 		changing_velocity = Vector2(-1 * _player.move_speed, 0)
 		change_rooms(west_adjacent_room_instance)
+
+
+func _set_overlay_color(color : Color):
+	material.set_shader_param("overlay", color)
 
 
 func _on_RoomChangeTimer_timeout():

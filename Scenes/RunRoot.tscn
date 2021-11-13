@@ -1,8 +1,28 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scenes/RunRoot.gd" type="Script" id=1]
 [ext_resource path="res://creatures/player/Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/Rooms/test_room2.tscn" type="PackedScene" id=4]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform vec4 overlay : hint_color = vec4(0.0);
+
+void fragment() {
+	COLOR = textureLod(SCREEN_TEXTURE, SCREEN_UV, 0.0);
+	
+	// Apply overlay filter
+	float alpha = overlay.a;
+	COLOR.r = (1.0 - alpha) * COLOR.r + alpha * overlay.r;
+	COLOR.g = (1.0 - alpha) * COLOR.g + alpha * overlay.g;
+	COLOR.b = (1.0 - alpha) * COLOR.b + alpha * overlay.b;
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/overlay = Color( 0, 0, 0, 0 )
 
 [node name="RunRoot" type="Node2D"]
 script = ExtResource( 1 )
@@ -10,6 +30,7 @@ starting_room = NodePath("Node2D")
 player = NodePath("Player")
 
 [node name="Node2D" parent="." instance=ExtResource( 4 )]
+material = SubResource( 2 )
 south_adjacent_room = null
 
 [node name="Player" parent="." instance=ExtResource( 3 )]

@@ -18,4 +18,6 @@ tile_data = PoolIntArray( 0, 0, 0, 1, 0, 1, 2, 0, 1, 3, 0, 1, 4, 0, 1, 5, 0, 1, 
 wait_time = 0.5
 one_shot = true
 
+[node name="Tween" type="Tween" parent="."]
+
 [connection signal="timeout" from="RoomChangeTimer" to="." method="_on_RoomChangeTimer_timeout"]

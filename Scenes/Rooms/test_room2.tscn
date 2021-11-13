@@ -35,4 +35,6 @@ rotation = 1.5708
 wait_time = 0.25
 one_shot = true
 
+[node name="Tween" type="Tween" parent="."]
+
 [connection signal="timeout" from="RoomChangeTimer" to="." method="_on_RoomChangeTimer_timeout"]
