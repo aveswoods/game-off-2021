@@ -5,7 +5,6 @@
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 1 )
-player_start_location = Vector2( 70, 485 )
 
 [node name="TileMapFloor" type="TileMap" parent="."]
 tile_set = ExtResource( 2 )
