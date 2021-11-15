@@ -44,6 +44,7 @@ run/main_scene="res://creatures/test_scene.tscn"
 [autoload]
 
 Global="*res://Scenes/Global Scenes/Global.tscn"
+RoomInfo="*res://Scenes/Global Scenes/RoomInfo.gd"
 
 [display]
 

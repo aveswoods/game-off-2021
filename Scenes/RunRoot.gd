@@ -7,6 +7,102 @@ export(NodePath) var player = null
 onready var player_node = get_node(player)
 onready var _camera = $Camera2D
 
+enum starting_doors {NORTH, EAST, SOUTH, WEST}
+
+
+func setup_run(starting_door : int):
+	# Generate first room with correct starting door
+	# Place adjacent rooms, breadth first, avoiding overlaps
+	# Only "branch" three times
+	# Place rooms until max number of rooms is reached
+	# Last three rooms placed will be boss room and two prize rooms
+	var rooms = []
+	var taken_space = {} # Dict of coordinates that are occupied
+	
+	var num_rooms = 1
+	var max_rooms = 2#10 + randi() % 4 # Arbitrary...
+	var branching_room1 = randi() % 2 # Rooms left until it branches
+	var branching_room2 = branching_room1 + int(max_rooms / 3) + randi() % 2 # Rooms left until it branches
+	
+	# Set up first room
+	rooms.append(RoomInfo.get_random_room(starting_door, 1)) # Get hallway room from the correct direction
+	rooms[0].previous_direction = starting_door
+	rooms[0].position = Vector2(0, 0)
+	for i in rooms[0].extents.x:
+		for j in rooms[0].extents.y:
+			taken_space[(str(i) + "," + str(j))] = true
+	
+	# Prepare it in the scene, this is done to adjacent rooms in _spawn_adjacent_rooms
+	_current_room = rooms[0].room.instance()
+	rooms[0].instance = _current_room
+	add_child(_current_room)
+	_current_room.position = Vector2(0, 0)
+	_loaded_rooms.append(_current_room)
+	_current_room.connect("room_changed", self, "_on_room_changed")
+	
+	# Add player to correct spot
+	match starting_door:
+		0: player_node.position = 32 * (rooms[0].south_door_pos + Vector2(0, -1))
+		1: player_node.position = 32 * (rooms[0].west_door_pos + Vector2(1, 0))
+		2: player_node.position = 32 * (rooms[0].north_door_pos + Vector2(0, 1))
+		3: player_node.position = 32 * (rooms[0].east_door_pos + Vector2(-1, 0))
+	
+	# Loop through the remaining rooms
+	# For every case in this loop, all elements of rooms are rooms that have been added to the scene
+	# already. For an entry in rooms, it must have its adjacent room(s) picked, then it must call
+	# _spawn_adjacent_rooms, and finally it must add its adjacent room(s) to the array rooms
+	while num_rooms < max_rooms:
+		var room = rooms.pop_front()
+		
+		# Pick north room,
+		# If has a north door AND there is not a room through the north door
+		if room.has("north_door_pos") and room.previous_direction != 2:
+			var type = 2 #TODO, branch when appropriate
+			var valid_room = false
+			var new_room = null
+			var new_pos = Vector2(0, 0)
+			# Pick a new valid room
+			while not valid_room:
+				new_room = RoomInfo.get_random_room(0, type) # Get north room
+				# Check if it overlaps with rooms, by checking that certain points are not taken
+				new_pos = Vector2(
+					room.position.x + room.north_door_pos.x - new_room.south_door_pos.x,
+					room.position.y - new_room.extents.y
+				)
+				if not (
+					# Check top-left, top-middle, top-right
+					taken_space.has(str(new_pos.x) + "," + str(new_pos.y)) or
+					taken_space.has(str(new_pos.x + new_room.extents.x / 2) + "," + str(new_pos.y)) or
+					taken_space.has(str(new_pos.x + new_room.extents.x - 1) + "," + str(new_pos.y)) or
+					# Check middle-left, true middle, middle-right
+					taken_space.has(str(new_pos.x) + "," + str(new_pos.y + (new_room.extents.y / 2))) or
+					taken_space.has(str(new_pos.x + new_room.extents.x / 2) + "," + str(new_pos.y + (new_room.extents.y / 2))) or
+					taken_space.has(str(new_pos.x + new_room.extents.x - 1) + "," + str(new_pos.y + (new_room.extents.y / 2))) or
+					# Check bottom-left, bottom-middle, bottom-right
+					taken_space.has(str(new_pos.x) + "," + str(new_pos.y + new_room.extents.y - 1)) or
+					taken_space.has(str(new_pos.x + new_room.extents.x / 2) + "," + str(new_pos.y + new_room.extents.y - 1)) or
+					taken_space.has(str(new_pos.x + new_room.extents.x - 1) + "," + str(new_pos.y + new_room.extents.y - 1))
+				):
+					valid_room = true
+				# TODO more validation that prevents overlap of future rooms
+				# e.g. making sure there is enough space after new doorways
+			
+			# From here, the room is valid
+			rooms.append(new_room)
+			new_room.previous_direction = 0
+			new_room.position = new_pos
+			for i in rooms[0].extents.x:
+				for j in rooms[0].extents.y:
+					taken_space[(str(new_pos.x + i) + "," + str(new_pos.y + j))] = true
+			
+			room.instance.north_adjacent_room = new_room.room
+			num_rooms += 1
+		
+		# All rooms have been picked and connected, so spawn them (instantiate them)
+		_spawn_adjacent_rooms(room.instance)
+		# ..and hook up to room dict objects
+		
+
 
 func _set_limited_camera_position(cam_pos):
 	var room_extents = _current_room.get_room_extents()
@@ -28,130 +124,127 @@ func _set_limited_camera_position(cam_pos):
 	_camera.position = target_location
 
 
-func _spawn_adjacent_rooms():
+func _spawn_adjacent_rooms(room):
 	# Set up North room
-	if _current_room.north_adjacent_room != null and _current_room.north_adjacent_room_instance == null:
+	if room.north_adjacent_room != null and room.north_adjacent_room_instance == null:
 		# Instantiate
-		_current_room.north_adjacent_room_instance = _current_room.north_adjacent_room.instance()
+		room.north_adjacent_room_instance = room.north_adjacent_room.instance()
 		# Add to tree
-		add_child(_current_room.north_adjacent_room_instance)
+		add_child(room.north_adjacent_room_instance)
 		# Add to array
-		_loaded_rooms.append(_current_room.north_adjacent_room_instance)
+		_loaded_rooms.append(room.north_adjacent_room_instance)
 		# Set position
-		var extents = _current_room.get_room_extents()
-		var doorway = _current_room.north_doorway_node
-		var adj_extents = _current_room.north_adjacent_room_instance.get_room_extents()
-		var adj_doorway = _current_room.north_adjacent_room_instance.south_doorway_node
-		_current_room.north_adjacent_room_instance.position = Vector2(
-			position.x + round((doorway.position.x - adj_doorway.position.x) / 32.0) * 32,
-			position.y - adj_extents.y
+		var doorway = room.north_doorway_node
+		var adj_extents = room.north_adjacent_room_instance.get_room_extents()
+		var adj_doorway = room.north_adjacent_room_instance.south_doorway_node
+		room.north_adjacent_room_instance.position = Vector2(
+			room.position.x + round((doorway.position.x - adj_doorway.position.x) / 32.0) * 32,
+			room.position.y - adj_extents.y
 			)
 		# Connect room changed signal
-		_current_room.north_adjacent_room_instance.connect("room_changed", self, "_on_room_changed")
+		room.north_adjacent_room_instance.connect("room_changed", self, "_on_room_changed")
 		# Open correct doorway
-		_current_room.north_adjacent_room_instance.open_doorway(2)
+		room.north_adjacent_room_instance.open_doorway(2)
 		
 		# Connect South room
-		_current_room.north_adjacent_room_instance.south_adjacent_room_instance = _current_room
+		room.north_adjacent_room_instance.south_adjacent_room_instance = room
 	
 	# Set up East room
-	if _current_room.east_adjacent_room != null and _current_room.east_adjacent_room_instance == null:
+	if room.east_adjacent_room != null and room.east_adjacent_room_instance == null:
 		# Instantiate
-		_current_room.east_adjacent_room_instance = _current_room.east_adjacent_room.instance()
+		room.east_adjacent_room_instance = room.east_adjacent_room.instance()
 		# Add to tree
-		add_child(_current_room.east_adjacent_room_instance)
+		add_child(room.east_adjacent_room_instance)
 		# Add to array
-		_loaded_rooms.append(_current_room.east_adjacent_room_instance)
+		_loaded_rooms.append(room.east_adjacent_room_instance)
 		# Set position
-		var extents = _current_room.get_room_extents()
-		var doorway = _current_room.east_doorway_node
-		var adj_extents = _current_room.east_adjacent_room_instance.get_room_extents()
-		var adj_doorway = _current_room.east_adjacent_room_instance.west_doorway_node
-		_current_room.east_adjacent_room_instance.position = Vector2(
-			position.x + extents.x,
-			position.y + round((doorway.position.y - adj_doorway.position.y) / 32.0) * 32
+		var extents = room.get_room_extents()
+		var doorway = room.east_doorway_node
+		var adj_doorway = room.east_adjacent_room_instance.west_doorway_node
+		room.east_adjacent_room_instance.position = Vector2(
+			room.position.x + extents.x,
+			room.position.y + round((doorway.position.y - adj_doorway.position.y) / 32.0) * 32
 			)
 		# Connect room changed signal
-		_current_room.east_adjacent_room_instance.connect("room_changed", self, "_on_room_changed")
+		room.east_adjacent_room_instance.connect("room_changed", self, "_on_room_changed")
 		# Open correct doorway
-		_current_room.east_adjacent_room_instance.open_doorway(3)
+		room.east_adjacent_room_instance.open_doorway(3)
 		
 		# Connect West room
-		_current_room.east_adjacent_room_instance.west_adjacent_room_instance = _current_room
+		room.east_adjacent_room_instance.west_adjacent_room_instance = room
 	
 	# Set up South room
-	if _current_room.south_adjacent_room != null and _current_room.south_adjacent_room_instance == null:
+	if room.south_adjacent_room != null and room.south_adjacent_room_instance == null:
 		# Instantiate
-		_current_room.south_adjacent_room_instance = _current_room.south_adjacent_room.instance()
+		room.south_adjacent_room_instance = room.south_adjacent_room.instance()
 		# Add to tree
-		add_child(_current_room.south_adjacent_room_instance)
+		add_child(room.south_adjacent_room_instance)
 		# Add to array
-		_loaded_rooms.append(_current_room.south_adjacent_room_instance)
+		_loaded_rooms.append(room.south_adjacent_room_instance)
 		# Set position
-		var extents = _current_room.get_room_extents()
-		var doorway = _current_room.south_doorway_node
-		var adj_extents = _current_room.south_adjacent_room_instance.get_room_extents()
-		var adj_doorway = _current_room.south_adjacent_room_instance.north_doorway_node
-		_current_room.south_adjacent_room_instance.position = Vector2(
-			position.x + round((doorway.position.x - adj_doorway.position.x) / 32.0) * 32,
-			position.y + extents.y
+		var extents = room.get_room_extents()
+		var doorway = room.south_doorway_node
+		var adj_doorway = room.south_adjacent_room_instance.north_doorway_node
+		room.south_adjacent_room_instance.position = Vector2(
+			room.position.x + round((doorway.position.x - adj_doorway.position.x) / 32.0) * 32,
+			room.position.y + extents.y
 			)
 		# Connect room changed signal
-		_current_room.south_adjacent_room_instance.connect("room_changed", self, "_on_room_changed")
+		room.south_adjacent_room_instance.connect("room_changed", self, "_on_room_changed")
 		# Open correct doorway
-		_current_room.south_adjacent_room_instance.open_doorway(0)
+		room.south_adjacent_room_instance.open_doorway(0)
 		
 		# Connect North room
-		_current_room.south_adjacent_room_instance.north_adjacent_room_instance = _current_room
+		room.south_adjacent_room_instance.north_adjacent_room_instance = room
 	
 	# Set up West room
-	if _current_room.west_adjacent_room != null and _current_room.west_adjacent_room_instance == null:
+	if room.west_adjacent_room != null and room.west_adjacent_room_instance == null:
 		# Instantiate
-		_current_room.west_adjacent_room_instance = _current_room.west_adjacent_room.instance()
+		room.west_adjacent_room_instance = room.west_adjacent_room.instance()
 		# Add to tree
-		add_child(_current_room.west_adjacent_room_instance)
+		add_child(room.west_adjacent_room_instance)
 		# Add to array
-		_loaded_rooms.append(_current_room.west_adjacent_room_instance)
+		_loaded_rooms.append(room.west_adjacent_room_instance)
 		# Set position
-		var extents = _current_room.get_room_extents()
-		var doorway = _current_room.west_doorway_node
-		var adj_extents = _current_room.west_adjacent_room_instance.get_room_extents()
-		var adj_doorway = _current_room.west_adjacent_room_instance.east_doorway_node
-		_current_room.west_adjacent_room_instance.position = Vector2(
-			position.x - adj_extents.x,
-			position.y + round((doorway.position.y - adj_doorway.position.y) / 32.0) * 32
+		var doorway = room.west_doorway_node
+		var adj_extents = room.west_adjacent_room_instance.get_room_extents()
+		var adj_doorway = room.west_adjacent_room_instance.east_doorway_node
+		room.west_adjacent_room_instance.position = Vector2(
+			room.position.x - adj_extents.x,
+			room.position.y + round((doorway.position.y - adj_doorway.position.y) / 32.0) * 32
 			)
 		# Connect room changed signal
-		_current_room.west_adjacent_room_instance.connect("room_changed", self, "_on_room_changed")
+		room.west_adjacent_room_instance.connect("room_changed", self, "_on_room_changed")
 		# Open correct doorway
-		_current_room.west_adjacent_room_instance.open_doorway(1)
+		room.west_adjacent_room_instance.open_doorway(1)
 		# Connect East room
-		_current_room.west_adjacent_room_instance.east_adjacent_room_instance = _current_room
+		room.west_adjacent_room_instance.east_adjacent_room_instance = room
 
 
 func _ready():
-	_current_room = get_node(starting_room)
-	_current_room.show_room()
-	_loaded_rooms.append(_current_room)
+	#_current_room = get_node(starting_room)
+	#_loaded_rooms.append(_current_room)
 	
 	# TEST ROOMS
-	_current_room.east_adjacent_room = preload("res://Scenes/Rooms/test_room2.tscn")
-	_current_room.west_adjacent_room = preload("res://Scenes/Rooms/test_room2.tscn")
-	_current_room.south_adjacent_room = preload("res://Scenes/Rooms/test_room1.tscn")
+#	_current_room.east_adjacent_room = preload("res://Scenes/Rooms/room01.tscn")
+#	_current_room.west_adjacent_room = preload("res://Scenes/Rooms/room01.tscn")
+#	_current_room.south_adjacent_room = preload("res://Scenes/Rooms/test_room1.tscn")
 	
-	_current_room.connect("room_changed", self, "_on_room_changed")
-	_spawn_adjacent_rooms()
+	#_current_room.connect("room_changed", self, "_on_room_changed")
+	#_spawn_adjacent_rooms(_current_room)
 	
+	
+	setup_run(1)
 	_current_room.set_player(player_node)
-	
-	# For testing
+	_current_room.show_room()
+	_current_room.close_doorway(3)
 	_current_room.open_doorways()
 
 
 func _on_room_changed(new_room):
 	_current_room = new_room
 	#_current_room.close_doorways()
-	_spawn_adjacent_rooms()
+	_spawn_adjacent_rooms(_current_room)
 
 
 func _physics_process(_delta):

@@ -45,7 +45,6 @@ var _next_room = null
 
 
 func show_room(delay : float = 0.0):
-	print("Showing " + str(self))
 	_tween.interpolate_property(
 		self,
 		"modulate",
@@ -58,7 +57,6 @@ func show_room(delay : float = 0.0):
 	_tween.start()
 
 func hide_room(delay : float = 0.0):
-	print("Hiding " + str(self))
 	_tween.interpolate_property(
 		self,
 		"modulate",
