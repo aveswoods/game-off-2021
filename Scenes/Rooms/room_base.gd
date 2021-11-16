@@ -61,7 +61,8 @@ func hide_room(delay : float = 0.0):
 		self,
 		"modulate",
 		Color(1.0, 1.0, 1.0, 1.0),
-		Color(1.0, 1.0, 1.0, 0.0),
+		Color(1.0, 1.0, 1.0, 1.0),
+		#Color(1.0, 1.0, 1.0, 0.0),
 		0.5,
 		Tween.TRANS_QUAD,Tween.EASE_IN_OUT,
 		delay
@@ -164,7 +165,8 @@ func _ready():
 	var tile_size = _tile_map_floor.cell_size
 	_room_extents = Vector2(used_rect.end.x * tile_size.x, used_rect.end.y * tile_size.y)
 	
-	modulate = Color(1.0, 1.0, 1.0, 0.0)
+	#modulate = Color(1.0, 1.0, 1.0, 0.0)
+	modulate = Color(1.0, 1.0, 1.0, 1.0)
 
 
 func _north_doorway_entered(body):

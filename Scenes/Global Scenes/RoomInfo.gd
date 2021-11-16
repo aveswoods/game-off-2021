@@ -28,26 +28,58 @@ const rooms = {
 		"extents": Vector2(18, 14),
 		"north_door_pos": Vector2(4, 0),
 		"west_door_pos": Vector2(0, 10)
+	},
+	"04": {
+		"room": preload("res://Scenes/Rooms/room04.tscn"),
+		"extents": Vector2(18, 16),
+		"north_door_pos": Vector2(8, 0),
+		"south_door_pos": Vector2(14, 15)
+	},
+	"05": {
+		"room": preload("res://Scenes/Rooms/room05.tscn"),
+		"extents": Vector2(18, 13),
+		"east_door_pos": Vector2(17, 9),
+		"south_door_pos": Vector2(8, 12)
+	},
+	"06": {
+		"room": preload("res://Scenes/Rooms/room06.tscn"),
+		"extents": Vector2(18, 15),
+		"south_door_pos": Vector2(8, 14),
+		"west_door_pos": Vector2(0, 8)
+	},
+	"07": {
+		"room": preload("res://Scenes/Rooms/room07.tscn"),
+		"extents": Vector2(22, 13),
+		"north_door_pos": Vector2(10, 0),
+		"east_door_pos": Vector2(21, 9)
 	}
 }
 
 const ids_with_north_doors = [
-	"03"
+	"03",
+	"04",
+	"07"
 ]
 
 const ids_with_east_doors = [
 	"01",
-	"02"
+	"02",
+	"05",
+	"07"
 ]
 
 const ids_with_south_doors = [
-	"01"
+	"01",
+	"04",
+	"05",
+	"06"
 ]
 
 const ids_with_west_doors = [
 	"01",
-	#"02",
-	"03"
+	"02",
+	"03",
+	"06"
 ]
 
 # Rooms that have three or four doorways are in here
@@ -87,5 +119,7 @@ static func get_random_room(direction : int, type : int):
 			2:
 				if is_branch:
 					valid_room = true
+	
+	print("Picked room id " + str(room_id))
 	
 	return rooms[room_id].duplicate()
