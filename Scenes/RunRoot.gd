@@ -86,6 +86,7 @@ func setup_run(starting_door : int):
 					room.position.x + room.north_door_pos.x - new_room.south_door_pos.x,
 					room.position.y - new_room.extents.y
 				)
+				print(str(new_pos) + ", " + str(new_room.extents))
 				if not (
 					# Check top-left, top-middle, top-right
 					taken_space.has(str(new_pos.x) + "," + str(new_pos.y)) or
@@ -130,7 +131,7 @@ func setup_run(starting_door : int):
 				new_room = RoomInfo.get_random_room(1, type) # Get east room
 				# Check if it overlaps with rooms, by checking that certain points are not taken
 				new_pos = Vector2(
-					room.position.x + new_room.extents.x,
+					room.position.x + room.extents.x,
 					room.position.y + room.east_door_pos.y - new_room.west_door_pos.y
 				)
 				if not (
@@ -237,7 +238,7 @@ func setup_run(starting_door : int):
 					taken_space.has(str(new_pos.x + new_room.extents.x / 2) + "," + str(new_pos.y + (new_room.extents.y / 2))) or
 					taken_space.has(str(new_pos.x + new_room.extents.x - 1) + "," + str(new_pos.y + (new_room.extents.y / 2))) or
 					# Check bottom-left, bottom-middle, bottom-right
-					taken_space.has(str(new_pos.x) + "," + str(new_pos.y + new_room.extents.y - 1)) or
+					taken_space.has(str(new_pos.x) + "," + str(new_pos.y + new_room.extents.y -1)) or
 					taken_space.has(str(new_pos.x + new_room.extents.x / 2) + "," + str(new_pos.y + new_room.extents.y - 1)) or
 					taken_space.has(str(new_pos.x + new_room.extents.x - 1) + "," + str(new_pos.y + new_room.extents.y - 1))
 				):
@@ -290,6 +291,14 @@ func setup_run(starting_door : int):
 	
 	if tries == max_tries:
 		print("Exceeded max tries for room picking")
+
+
+func _is_open_space(taken_space : Dictionary, pos : Vector2, extents : Vector2):
+	for i in extents.x:
+		for j in extents.y:
+			if taken_space.has(str(pos.x + i) + "," + str(pos.y + j)):
+				return false
+	return true
 
 
 func _set_limited_camera_position(cam_pos):
@@ -404,13 +413,16 @@ func _spawn_adjacent_rooms(room):
 		# Connect room changed signal
 		room.west_adjacent_room_instance.connect("room_changed", self, "_on_room_changed")
 		# Open doorways
-		room.west_adjacent_room_instance.open_doorways()
+		#room.west_adjacent_room_instance.open_doorways()
 		# Connect East room
 		#room.west_adjacent_room_instance.east_adjacent_room_instance = room
 
 
 func _ready():
 	randomize()
+	var seed_int = randi() % 10000
+	seed(seed_int)
+	print("Seed: " + str(seed_int))
 	var start_direction = randi() % 4
 	setup_run(start_direction)
 	_current_room.set_player(player_node)
