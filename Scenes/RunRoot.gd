@@ -438,7 +438,7 @@ func _spawn_adjacent_rooms(room):
 
 func _ready():
 	randomize()
-	var seed_int = randi() % 10000
+	var seed_int = 8454#randi() % 10000
 	seed(seed_int)
 	print("Seed: " + str(seed_int))
 	var start_direction = 1 #randi() % 4
@@ -452,7 +452,7 @@ func _ready():
 func _on_room_changed(new_room):
 	_current_room = new_room
 	#_current_room.close_doorways()
-	_spawn_adjacent_rooms(_current_room)
+	#_spawn_adjacent_rooms(_current_room)
 
 
 func _physics_process(_delta):

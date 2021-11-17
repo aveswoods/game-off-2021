@@ -1,7 +1,5 @@
 NO BRANCHING:
 2628 - need N-door E-thin room
 
-SINGLE BRANCHING:
+BRANCHING:
 8454 - sample branching with room01
-
-DOUBLE BRANCHING:

@@ -40,6 +40,8 @@ var west_doorway_node = null
 
 # Internal variables
 var _room_extents = Vector2.ZERO
+var _enemies_node = null
+var _has_enemies = false
 var _player = null
 var _next_room = null
 
@@ -61,8 +63,8 @@ func hide_room(delay : float = 0.0):
 		self,
 		"modulate",
 		Color(1.0, 1.0, 1.0, 1.0),
-		Color(1.0, 1.0, 1.0, 1.0),
-		#Color(1.0, 1.0, 1.0, 0.0),
+		#Color(1.0, 1.0, 1.0, 1.0),
+		Color(1.0, 1.0, 1.0, 0.0),
 		0.5,
 		Tween.TRANS_QUAD,Tween.EASE_IN_OUT,
 		delay
@@ -164,9 +166,13 @@ func _ready():
 	var used_rect = _tile_map_floor.get_used_rect()
 	var tile_size = _tile_map_floor.cell_size
 	_room_extents = Vector2(used_rect.end.x * tile_size.x, used_rect.end.y * tile_size.y)
+	# Set if has enemies
+	_enemies_node = get_node_or_null("Enemies")
+	if _enemies_node != null:
+		_has_enemies = _enemies_node.has_enemies()
 	
-	#modulate = Color(1.0, 1.0, 1.0, 0.0)
-	modulate = Color(1.0, 1.0, 1.0, 1.0)
+	modulate = Color(1.0, 1.0, 1.0, 0.0)
+	#modulate = Color(1.0, 1.0, 1.0, 1.0)
 
 
 func _north_doorway_entered(body):
@@ -198,9 +204,18 @@ func _on_RoomChangeTimer_timeout():
 	_next_room.set_player(_player)
 	remove_player()
 	
+	if _next_room._has_enemies:
+		_next_room._enemies_node.enable()
+		_next_room.close_doorways()
+	
 	emit_signal("room_changed", _next_room)
 
 
 func _physics_process(_delta):
 	if _player != null and changing_rooms:
 			_player.velocity = changing_velocity
+
+
+func _on_enemies_killed():
+	_has_enemies = false
+	open_doorways()

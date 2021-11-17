@@ -1,14 +1,25 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scenes/Rooms/room_base.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Tilemaps/TileMap_Floor.tres" type="TileSet" id=2]
 [ext_resource path="res://Scenes/Rooms/Doorway.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Rooms/Enemies.gd" type="Script" id=4]
+[ext_resource path="res://creatures/enemies/test/TestEnemy.tscn" type="PackedScene" id=5]
 
-[node name="Node2D" type="Node2D"]
+[node name="Room" type="Node2D"]
 script = ExtResource( 1 )
 east_doorway = NodePath("DoorwayEast")
 south_doorway = NodePath("DoorwaySouth")
 west_doorway = NodePath("DoorwayWest")
+
+[node name="Enemies" type="Node2D" parent="."]
+script = ExtResource( 4 )
+
+[node name="TestEnemy" parent="Enemies" instance=ExtResource( 5 )]
+position = Vector2( 173.673, 174.617 )
+
+[node name="TestEnemy2" parent="Enemies" instance=ExtResource( 5 )]
+position = Vector2( 124.087, 394.386 )
 
 [node name="TileMapFloor" type="TileMap" parent="."]
 tile_set = ExtResource( 2 )
@@ -35,4 +46,5 @@ one_shot = true
 
 [node name="Tween" type="Tween" parent="."]
 
+[connection signal="enemies_killed" from="Enemies" to="." method="_on_enemies_killed"]
 [connection signal="timeout" from="RoomChangeTimer" to="." method="_on_RoomChangeTimer_timeout"]

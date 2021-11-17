@@ -15,6 +15,7 @@ var _stun_timer = Timer.new()
 var hp = 0
 var invincible = false
 var controlled = false
+var disabled = false
 enum death_source {
 	IMPACT, # 0
 	EXPLOSION, # 1
@@ -51,7 +52,7 @@ func take_damage(amount : int, source = death_source.ERASE):
 			emit_signal("killed", source)
 
 # Must be implemented to be able to be charmed!
-func set_target_group(group):
+func set_target_group(_group):
 	pass
 
 
@@ -62,6 +63,9 @@ func _ready():
 
 
 func _physics_process(delta):
+	if disabled:
+		return
+	
 	# Add gravity
 	velocity.y += gravity * pow(Global.time_multiplier, 2)
 	# Add friction/acceleration
