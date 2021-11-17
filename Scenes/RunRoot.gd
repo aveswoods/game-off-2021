@@ -1,5 +1,7 @@
 extends Node2D
 
+const door_open_space = Vector2(30, 20)
+
 export(NodePath) var starting_room = null
 var _current_room = null
 var _loaded_rooms = []
@@ -23,7 +25,7 @@ func setup_run(starting_door : int):
 	
 	var num_rooms = 1
 	var max_rooms = 10 + randi() % 4 # Arbitrary...
-	var branching_room1 = randi() % 2 # Rooms left until it branches
+	var branching_room1 = 0#randi() % 2 # Rooms left until it branches
 	var branching_room2 = branching_room1 + int(max_rooms / 3) + randi() % 2 # Rooms left until it branches
 	
 	# Set up first room
@@ -33,12 +35,6 @@ func setup_run(starting_door : int):
 	for i in rooms[0].extents.x:
 		for j in rooms[0].extents.y:
 			taken_space[(str(i) + "," + str(j))] = true
-	
-	# For testing
-	var file = File.new()
-	file.open("res://taken_space.txt", File.WRITE)
-	file.store_string(str(taken_space.keys()))
-	file.close()
 	
 	# Prepare it in the scene, this is done to adjacent rooms in _spawn_adjacent_rooms
 	_current_room = rooms[0].room.instance()
@@ -61,7 +57,6 @@ func setup_run(starting_door : int):
 	# _spawn_adjacent_rooms, and finally it must add its adjacent room(s) to the array rooms
 	while num_rooms < max_rooms and tries < max_tries:
 		var room = rooms.pop_front()
-		_camera.position = room.instance.position
 		
 		# Room variables
 		var north_room = null
@@ -73,7 +68,9 @@ func setup_run(starting_door : int):
 		# | NORTH LOOP |
 		# --------------
 		if room.has("north_door_pos") and room.previous_direction != 2:
-			var type = 1 #TODO, branch when appropriate
+			var type = 1 # TODO deadend when appropriate
+			if branching_room1 == 0 or branching_room2 == 0:
+				type = 2
 			var valid_room = false
 			var new_room = null
 			var new_pos = Vector2(0, 0)
@@ -86,24 +83,30 @@ func setup_run(starting_door : int):
 					room.position.x + room.north_door_pos.x - new_room.south_door_pos.x,
 					room.position.y - new_room.extents.y
 				)
-				print(str(new_pos) + ", " + str(new_room.extents))
-				if not (
-					# Check top-left, top-middle, top-right
-					taken_space.has(str(new_pos.x) + "," + str(new_pos.y)) or
-					taken_space.has(str(new_pos.x + new_room.extents.x / 2) + "," + str(new_pos.y)) or
-					taken_space.has(str(new_pos.x + new_room.extents.x - 1) + "," + str(new_pos.y)) or
-					# Check middle-left, true middle, middle-right
-					taken_space.has(str(new_pos.x) + "," + str(new_pos.y + (new_room.extents.y / 2))) or
-					taken_space.has(str(new_pos.x + new_room.extents.x / 2) + "," + str(new_pos.y + (new_room.extents.y / 2))) or
-					taken_space.has(str(new_pos.x + new_room.extents.x - 1) + "," + str(new_pos.y + (new_room.extents.y / 2))) or
-					# Check bottom-left, bottom-middle, bottom-right
-					taken_space.has(str(new_pos.x) + "," + str(new_pos.y + new_room.extents.y - 1)) or
-					taken_space.has(str(new_pos.x + new_room.extents.x / 2) + "," + str(new_pos.y + new_room.extents.y - 1)) or
-					taken_space.has(str(new_pos.x + new_room.extents.x - 1) + "," + str(new_pos.y + new_room.extents.y - 1))
-				):
-					valid_room = true
-				# TODO more validation that prevents overlap of future rooms
-				# e.g. making sure there is enough space after new doorways
+				if _is_open_space(taken_space, new_pos, new_room.extents):
+					# Check if new doors have room for new rooms
+					if ((not new_room.has("north_door_pos") or _is_open_space(
+							taken_space,
+							Vector2(new_pos.x, new_pos.y + door_open_space.y),
+							Vector2(new_room.extents.x, door_open_space.y)
+						))
+						and
+						(not new_room.has("east_door_pos") or _is_open_space(
+							taken_space,
+							Vector2(new_pos.x + new_room.extents.x, new_pos.y),
+							Vector2(door_open_space.x, new_room.extents.y)
+						))
+						and
+						(not new_room.has("west_door_pos") or _is_open_space(
+							taken_space,
+#							Vector2(new_pos.x - door_open_space.x, new_pos.y - new_room.west_door_pos.y + door_open_space.y),
+#							door_open_space
+							Vector2(new_pos.x - door_open_space.x, new_pos.y),
+							Vector2(door_open_space.x, new_room.extents.y)
+						))
+					):
+						valid_room = true
+						print("Valid north room")
 			
 			# From here, the room is valid
 			new_room.previous_direction = 0
@@ -114,6 +117,8 @@ func setup_run(starting_door : int):
 			
 			room.instance.north_adjacent_room = new_room.room
 			num_rooms += 1
+			branching_room1 -= 1
+			branching_room2 -= 1
 			# Assign variable for connecting with dict objects
 			north_room = new_room
 		
@@ -121,7 +126,9 @@ func setup_run(starting_door : int):
 		# | EAST LOOP |
 		# -------------
 		if room.has("east_door_pos") and room.previous_direction != 3:
-			var type = 1 #TODO, branch when appropriate
+			var type = 1
+			if branching_room1 == 0 or branching_room2 == 0:
+				type = 2
 			var valid_room = false
 			var new_room = null
 			var new_pos = Vector2(0, 0)
@@ -134,23 +141,29 @@ func setup_run(starting_door : int):
 					room.position.x + room.extents.x,
 					room.position.y + room.east_door_pos.y - new_room.west_door_pos.y
 				)
-				if not (
-					# Check top-left, top-middle, top-right
-					taken_space.has(str(new_pos.x) + "," + str(new_pos.y)) or
-					taken_space.has(str(new_pos.x + new_room.extents.x / 2) + "," + str(new_pos.y)) or
-					taken_space.has(str(new_pos.x + new_room.extents.x - 1) + "," + str(new_pos.y)) or
-					# Check middle-left, true middle, middle-right
-					taken_space.has(str(new_pos.x) + "," + str(new_pos.y + (new_room.extents.y / 2))) or
-					taken_space.has(str(new_pos.x + new_room.extents.x / 2) + "," + str(new_pos.y + (new_room.extents.y / 2))) or
-					taken_space.has(str(new_pos.x + new_room.extents.x - 1) + "," + str(new_pos.y + (new_room.extents.y / 2))) or
-					# Check bottom-left, bottom-middle, bottom-right
-					taken_space.has(str(new_pos.x) + "," + str(new_pos.y + new_room.extents.y - 1)) or
-					taken_space.has(str(new_pos.x + new_room.extents.x / 2) + "," + str(new_pos.y + new_room.extents.y - 1)) or
-					taken_space.has(str(new_pos.x + new_room.extents.x - 1) + "," + str(new_pos.y + new_room.extents.y - 1))
-				):
+				if _is_open_space(taken_space, new_pos, new_room.extents):
 					valid_room = true
-				# TODO more validation that prevents overlap of future rooms
-				# e.g. making sure there is enough space after new doorways
+					# Check if new doors have room for new rooms
+					if ((not new_room.has("north_door_pos") or _is_open_space(
+							taken_space,
+							Vector2(new_pos.x, new_pos.y + door_open_space.y),
+							Vector2(new_room.extents.x, door_open_space.y)
+						))
+						and
+						(not new_room.has("east_door_pos") or _is_open_space(
+							taken_space,
+							Vector2(new_pos.x + new_room.extents.x, new_pos.y),
+							Vector2(door_open_space.x, new_room.extents.y)
+						))
+						and
+						(not new_room.has("south_door_pos") or _is_open_space(
+							taken_space,
+							Vector2(new_pos.x, new_pos.y + new_room.extents.y),
+							Vector2(new_room.extents.x, door_open_space.y)
+						))
+					):
+						valid_room = true
+						print("Valid east room")
 			
 			# From here, the room is valid
 			new_room.previous_direction = 1
@@ -161,6 +174,8 @@ func setup_run(starting_door : int):
 			
 			room.instance.east_adjacent_room = new_room.room
 			num_rooms += 1
+			branching_room1 -= 1
+			branching_room2 -= 1
 			# Assign variable for connecting with dict objects
 			east_room = new_room
 		
@@ -168,7 +183,9 @@ func setup_run(starting_door : int):
 		# | SOUTH LOOP |
 		# --------------
 		if room.has("south_door_pos") and room.previous_direction != 0:
-			var type = 1 #TODO, branch when appropriate
+			var type = 1
+			if branching_room1 == 0 or branching_room2 == 0:
+				type = 2
 			var valid_room = false
 			var new_room = null
 			var new_pos = Vector2(0, 0)
@@ -181,23 +198,27 @@ func setup_run(starting_door : int):
 					room.position.x + room.south_door_pos.x - new_room.north_door_pos.x,
 					room.position.y + room.extents.y
 				)
-				if not (
-					# Check top-left, top-middle, top-right
-					taken_space.has(str(new_pos.x) + "," + str(new_pos.y)) or
-					taken_space.has(str(new_pos.x + new_room.extents.x / 2) + "," + str(new_pos.y)) or
-					taken_space.has(str(new_pos.x + new_room.extents.x - 1) + "," + str(new_pos.y)) or
-					# Check middle-left, true middle, middle-right
-					taken_space.has(str(new_pos.x) + "," + str(new_pos.y + (new_room.extents.y / 2))) or
-					taken_space.has(str(new_pos.x + new_room.extents.x / 2) + "," + str(new_pos.y + (new_room.extents.y / 2))) or
-					taken_space.has(str(new_pos.x + new_room.extents.x - 1) + "," + str(new_pos.y + (new_room.extents.y / 2))) or
-					# Check bottom-left, bottom-middle, bottom-right
-					taken_space.has(str(new_pos.x) + "," + str(new_pos.y + new_room.extents.y - 1)) or
-					taken_space.has(str(new_pos.x + new_room.extents.x / 2) + "," + str(new_pos.y + new_room.extents.y - 1)) or
-					taken_space.has(str(new_pos.x + new_room.extents.x - 1) + "," + str(new_pos.y + new_room.extents.y - 1))
-				):
-					valid_room = true
-				# TODO more validation that prevents overlap of future rooms
-				# e.g. making sure there is enough space after new doorways
+				if _is_open_space(taken_space, new_pos, new_room.extents):
+					if ((not new_room.has("east_door_pos") or _is_open_space(
+							taken_space,
+							Vector2(new_pos.x + new_room.extents.x, new_pos.y),
+							Vector2(door_open_space.x, new_room.extents.y)
+						))
+						and
+						(not new_room.has("south_door_pos") or _is_open_space(
+							taken_space,
+							Vector2(new_pos.x, new_pos.y + new_room.extents.y),
+							Vector2(new_room.extents.x, door_open_space.y)
+						))
+						and
+						(not new_room.has("west_door_pos") or _is_open_space(
+							taken_space,
+							Vector2(new_pos.x - door_open_space.x, new_pos.y),
+							Vector2(door_open_space.x, new_room.extents.y)
+						))
+					):
+						valid_room = true
+						print("Valid south room")
 			
 			# From here, the room is valid
 			new_room.previous_direction = 2
@@ -208,6 +229,8 @@ func setup_run(starting_door : int):
 			
 			room.instance.south_adjacent_room = new_room.room
 			num_rooms += 1
+			branching_room1 -= 1
+			branching_room2 -= 1
 			# Assign variable for connecting with dict objects
 			south_room = new_room
 		
@@ -215,7 +238,9 @@ func setup_run(starting_door : int):
 		# | WEST LOOP |
 		# -------------
 		if room.has("west_door_pos") and room.previous_direction != 1:
-			var type = 1 #TODO, branch when appropriate
+			var type = 1
+			if branching_room1 == 0 or branching_room2 == 0:
+				type = 2
 			var valid_room = false
 			var new_room = null
 			var new_pos = Vector2(0, 0)
@@ -228,23 +253,27 @@ func setup_run(starting_door : int):
 					room.position.x - new_room.extents.x,
 					room.position.y + room.west_door_pos.y - new_room.east_door_pos.y
 				)
-				if not (
-					# Check top-left, top-middle, top-right
-					taken_space.has(str(new_pos.x) + "," + str(new_pos.y)) or
-					taken_space.has(str(new_pos.x + new_room.extents.x / 2) + "," + str(new_pos.y)) or
-					taken_space.has(str(new_pos.x + new_room.extents.x - 1) + "," + str(new_pos.y)) or
-					# Check middle-left, true middle, middle-right
-					taken_space.has(str(new_pos.x) + "," + str(new_pos.y + (new_room.extents.y / 2))) or
-					taken_space.has(str(new_pos.x + new_room.extents.x / 2) + "," + str(new_pos.y + (new_room.extents.y / 2))) or
-					taken_space.has(str(new_pos.x + new_room.extents.x - 1) + "," + str(new_pos.y + (new_room.extents.y / 2))) or
-					# Check bottom-left, bottom-middle, bottom-right
-					taken_space.has(str(new_pos.x) + "," + str(new_pos.y + new_room.extents.y -1)) or
-					taken_space.has(str(new_pos.x + new_room.extents.x / 2) + "," + str(new_pos.y + new_room.extents.y - 1)) or
-					taken_space.has(str(new_pos.x + new_room.extents.x - 1) + "," + str(new_pos.y + new_room.extents.y - 1))
-				):
-					valid_room = true
-				# TODO more validation that prevents overlap of future rooms
-				# e.g. making sure there is enough space after new doorways
+				if _is_open_space(taken_space, new_pos, new_room.extents):
+					if ((not new_room.has("north_door_pos") or _is_open_space(
+							taken_space,
+							Vector2(new_pos.x, new_pos.y + door_open_space.y),
+							Vector2(new_room.extents.x, door_open_space.y)
+						))
+						and
+						(not new_room.has("south_door_pos") or _is_open_space(
+							taken_space,
+							Vector2(new_pos.x, new_pos.y + new_room.extents.y),
+							Vector2(new_room.extents.x, door_open_space.y)
+						))
+						and
+						(not new_room.has("west_door_pos") or _is_open_space(
+							taken_space,
+							Vector2(new_pos.x - door_open_space.x, new_pos.y),
+							Vector2(door_open_space.x, new_room.extents.y)
+						))
+					):
+						valid_room = true
+						print("Valid west room")
 			
 			# From here, the room is valid
 			new_room.previous_direction = 3
@@ -255,6 +284,8 @@ func setup_run(starting_door : int):
 			
 			room.instance.west_adjacent_room = new_room.room
 			num_rooms += 1
+			branching_room1 -= 1
+			branching_room2 -= 1
 			# Assign variable for connecting with dict objects
 			west_room = new_room
 		
@@ -282,12 +313,6 @@ func setup_run(starting_door : int):
 			room.instance.open_doorway(3)
 			west_room.instance.open_doorway(1)
 			rooms.append(west_room)
-		
-		# For testing
-		file = File.new()
-		file.open("res://taken_space.txt", File.WRITE)
-		file.store_string(str(taken_space.keys()))
-		file.close()
 	
 	if tries == max_tries:
 		print("Exceeded max tries for room picking")
@@ -340,8 +365,6 @@ func _spawn_adjacent_rooms(room):
 			)
 		# Connect room changed signal
 		room.north_adjacent_room_instance.connect("room_changed", self, "_on_room_changed")
-		# Open doorways
-		#room.north_adjacent_room_instance.open_doorways()
 		
 		# Connect South room
 		room.north_adjacent_room_instance.south_adjacent_room_instance = room
@@ -364,8 +387,6 @@ func _spawn_adjacent_rooms(room):
 			)
 		# Connect room changed signal
 		room.east_adjacent_room_instance.connect("room_changed", self, "_on_room_changed")
-		# Open doorways
-		#room.east_adjacent_room_instance.open_doorways()
 		
 		# Connect West room
 		room.east_adjacent_room_instance.west_adjacent_room_instance = room
@@ -388,8 +409,6 @@ func _spawn_adjacent_rooms(room):
 			)
 		# Connect room changed signal
 		room.south_adjacent_room_instance.connect("room_changed", self, "_on_room_changed")
-		# Open doorways
-		#room.south_adjacent_room_instance.open_doorways()
 		
 		# Connect North room
 		room.south_adjacent_room_instance.north_adjacent_room_instance = room
@@ -412,10 +431,9 @@ func _spawn_adjacent_rooms(room):
 			)
 		# Connect room changed signal
 		room.west_adjacent_room_instance.connect("room_changed", self, "_on_room_changed")
-		# Open doorways
-		#room.west_adjacent_room_instance.open_doorways()
+		
 		# Connect East room
-		#room.west_adjacent_room_instance.east_adjacent_room_instance = room
+		room.west_adjacent_room_instance.east_adjacent_room_instance = room
 
 
 func _ready():
@@ -423,7 +441,7 @@ func _ready():
 	var seed_int = randi() % 10000
 	seed(seed_int)
 	print("Seed: " + str(seed_int))
-	var start_direction = randi() % 4
+	var start_direction = 1 #randi() % 4
 	setup_run(start_direction)
 	_current_room.set_player(player_node)
 	_current_room.show_room()

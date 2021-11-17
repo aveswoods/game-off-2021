@@ -119,7 +119,6 @@ static func get_random_room(direction : int, type : int):
 			2:
 				if is_branch:
 					valid_room = true
-	
-	print("Picked room id " + str(room_id))
+	#print("Picked room id " + str(room_id))
 	
 	return rooms[room_id].duplicate()
