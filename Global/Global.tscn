@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Audio/Music/[MP3FY] Hart - Party Till The End.wav" type="AudioStream" id=1]
-[ext_resource path="res://Scenes/Global Scenes/Global.gd" type="Script" id=2]
+[ext_resource path="res://Global/Global.gd" type="Script" id=2]
 
 [node name="Global" type="Node"]
 script = ExtResource( 2 )

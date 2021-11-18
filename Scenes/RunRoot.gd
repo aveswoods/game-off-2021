@@ -34,6 +34,9 @@ func start():
 		1.0
 	)
 	_tween.start()
+	
+	SaveData.num_runs += 1
+	SaveData.save_data()
 
 
 func stop():

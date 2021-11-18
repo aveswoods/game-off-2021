@@ -43,8 +43,9 @@ run/main_scene="res://Scenes/GameRoot.tscn"
 
 [autoload]
 
-Global="*res://Scenes/Global Scenes/Global.tscn"
-RoomInfo="*res://Scenes/Global Scenes/RoomInfo.gd"
+Global="*res://Global/Global.tscn"
+RoomInfo="*res://Global/RoomInfo.gd"
+SaveData="*res://Global/SaveData.gd"
 
 [display]
 

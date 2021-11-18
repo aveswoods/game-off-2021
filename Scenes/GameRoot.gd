@@ -10,6 +10,8 @@ func _ready():
 	VisualServer.set_default_clear_color(_background_color.color)
 	randomize()
 	
+	SaveData.load_data()
+	
 	_hub_root.start()
 
 

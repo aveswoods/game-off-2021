@@ -190,7 +190,7 @@ const deadends = [
 
 # Gets a random room dict. The room will have a door in the specified direction.
 # direction: the "going to" direction; (N, E, S, W) = (0, 1, 2, 3)
-# type: (deadend, hallway, branch) = (0, 1, 2)
+# type: (deadend, hallway, branch, boss) = (0, 1, 2)
 static func get_random_room(direction : int, type : int):
 	var valid_room = false
 	var room_id = null
