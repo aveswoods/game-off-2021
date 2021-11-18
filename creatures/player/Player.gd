@@ -28,14 +28,17 @@ var _is_facing_left = false
 
 # Physics variables
 var gravity = 30
-var jump_impulse = -640 # Instantaneous velocity that is applied when the player jumps
-var move_speed = 240 # X Velocity that is clamped to while the player is moving
+var jump_gravity_acceleration = 0.94
+var jump_impulse = -400 # Instantaneous velocity that is applied when the player jumps
+var move_speed = 180 # X Velocity that is clamped to while the player is moving
 var acceleration = 0.2 # Ratio that the X velocity is lerped to move_speed while moving with player input
 var friction = 0.15 # Ratio that the X velocity is lerped to 0 while not moving with player input
 var velocity = Vector2.ZERO
 var _bumping = false
 var _bump_impulse = Vector2.ZERO
 var _is_on_floor = false
+var _is_jumping = false
+var _jump_gravity = 0
 
 
 func bump(impulse):
@@ -68,7 +71,7 @@ func is_facing_left():
 
 func is_on_floor():
 	return _is_on_floor
-	
+
 
 func _ready():
 	animation_tree.active = true
@@ -105,6 +108,11 @@ func _physics_process(delta):
 		if Input.is_action_just_pressed("ui_up") and _air_time < _jump_forgiveness_time:
 			velocity.y = jump_impulse
 			_is_on_floor = false
+			_is_jumping = true
+			_jump_gravity = 0
+	
+	if (Input.is_action_just_released("ui_up") or velocity.y > 0 or input_disabled) and _is_jumping:
+		_is_jumping = false
 	
 	# -------------------------------
 	# | CREATE MOVEMENT AND ANIMATE |
@@ -134,7 +142,11 @@ func _physics_process(delta):
 				animation_tree.set("parameters/movement/current", 0)
 	
 	# Add gravity
-	velocity.y += gravity
+	if _is_jumping:
+		_jump_gravity = lerp(gravity, _jump_gravity, jump_gravity_acceleration)
+		velocity.y += _jump_gravity
+	else:
+		velocity.y += gravity
 	
 	# Animate fall
 	if not _is_on_floor:

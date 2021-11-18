@@ -193,7 +193,7 @@ func _ready():
 
 func _north_doorway_entered(body):
 	if body.is_in_group("player") and not changing_rooms and _player != null:
-		changing_velocity = Vector2(0, -1 * _player.move_speed)
+		changing_velocity = Vector2(0, -1 * 300)
 		change_rooms(north_adjacent_room_instance)
 func _east_doorway_entered(body):
 	if body.is_in_group("player") and not changing_rooms and _player != null:
@@ -201,7 +201,7 @@ func _east_doorway_entered(body):
 		change_rooms(east_adjacent_room_instance)
 func _south_doorway_entered(body):
 	if body.is_in_group("player") and not changing_rooms and _player != null:
-		changing_velocity = Vector2(0, _player.move_speed)
+		changing_velocity = Vector2(0, 300)
 		change_rooms(south_adjacent_room_instance)
 func _west_doorway_entered(body):
 	if body.is_in_group("player") and not changing_rooms and _player != null:
