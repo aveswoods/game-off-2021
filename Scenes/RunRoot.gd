@@ -20,12 +20,11 @@ func setup_run(starting_door : int):
 	# Last three rooms placed will be boss room and two prize rooms
 	var rooms = []
 	var taken_space = {} # Dict of coordinates that are occupied
-	var tries = 0
-	var max_tries = 100
+	var max_tries = 50
 	
 	var num_rooms = 1
-	var max_rooms = 10 + randi() % 4 # Arbitrary...
-	var branching_room1 = 0#randi() % 2 # Rooms left until it branches
+	var max_rooms = 14 + randi() % 4 # Arbitrary...
+	var branching_room1 = randi() % 2 # Rooms left until it branches
 	var branching_room2 = branching_room1 + int(max_rooms / 3) + randi() % 2 # Rooms left until it branches
 	
 	# Set up first room
@@ -55,7 +54,7 @@ func setup_run(starting_door : int):
 	# For every case in this loop, all elements of rooms are rooms that have been added to the scene
 	# already. For an entry in rooms, it must have its adjacent room(s) picked, then it must call
 	# _spawn_adjacent_rooms, and finally it must add its adjacent room(s) to the array rooms
-	while num_rooms < max_rooms and tries < max_tries:
+	while rooms.size() > 0: #num_rooms < max_rooms:
 		var room = rooms.pop_front()
 		
 		# Room variables
@@ -68,12 +67,17 @@ func setup_run(starting_door : int):
 		# | NORTH LOOP |
 		# --------------
 		if room.has("north_door_pos") and room.previous_direction != 2:
-			var type = 1 # TODO deadend when appropriate
+			var type = 1
 			if branching_room1 == 0 or branching_room2 == 0:
 				type = 2
+				if branching_room1 == branching_room2:
+					branching_room2 += 1
+			elif num_rooms >= max_rooms - 3:
+				type = 0
 			var valid_room = false
 			var new_room = null
 			var new_pos = Vector2(0, 0)
+			var tries = 0
 			# Pick a new valid room
 			while not valid_room and tries < max_tries:
 				tries += 1
@@ -87,7 +91,7 @@ func setup_run(starting_door : int):
 					# Check if new doors have room for new rooms
 					if ((not new_room.has("north_door_pos") or _is_open_space(
 							taken_space,
-							Vector2(new_pos.x, new_pos.y + door_open_space.y),
+							Vector2(new_pos.x, new_pos.y - door_open_space.y),
 							Vector2(new_room.extents.x, door_open_space.y)
 						))
 						and
@@ -108,19 +112,24 @@ func setup_run(starting_door : int):
 						valid_room = true
 						print("Valid north room")
 			
-			# From here, the room is valid
-			new_room.previous_direction = 0
-			new_room.position = new_pos
-			for i in new_room.extents.x:
-				for j in new_room.extents.y:
-					taken_space[(str(new_pos.x + i) + "," + str(new_pos.y + j))] = true
-			
-			room.instance.north_adjacent_room = new_room.room
-			num_rooms += 1
-			branching_room1 -= 1
-			branching_room2 -= 1
-			# Assign variable for connecting with dict objects
-			north_room = new_room
+			if tries == max_tries:
+				branching_room1 = 0
+				room.instance.north_doorway_node.permanently_closed = true
+				print("Could not pick valid north room")
+			else:
+				# From here, the room is valid
+				new_room.previous_direction = 0
+				new_room.position = new_pos
+				for i in new_room.extents.x:
+					for j in new_room.extents.y:
+						taken_space[(str(new_pos.x + i) + "," + str(new_pos.y + j))] = true
+				
+				room.instance.north_adjacent_room = new_room.room
+				num_rooms += 1
+				branching_room1 -= 1
+				branching_room2 -= 1
+				# Assign variable for connecting with dict objects
+				north_room = new_room
 		
 		# -------------
 		# | EAST LOOP |
@@ -129,9 +138,14 @@ func setup_run(starting_door : int):
 			var type = 1
 			if branching_room1 == 0 or branching_room2 == 0:
 				type = 2
+				if branching_room1 == branching_room2:
+					branching_room2 += 1
+			elif num_rooms >= max_rooms - 3:
+				type = 0
 			var valid_room = false
 			var new_room = null
 			var new_pos = Vector2(0, 0)
+			var tries = 0
 			# Pick a new valid room
 			while not valid_room and tries < max_tries:
 				tries += 1
@@ -146,7 +160,7 @@ func setup_run(starting_door : int):
 					# Check if new doors have room for new rooms
 					if ((not new_room.has("north_door_pos") or _is_open_space(
 							taken_space,
-							Vector2(new_pos.x, new_pos.y + door_open_space.y),
+							Vector2(new_pos.x, new_pos.y - door_open_space.y),
 							Vector2(new_room.extents.x, door_open_space.y)
 						))
 						and
@@ -165,19 +179,24 @@ func setup_run(starting_door : int):
 						valid_room = true
 						print("Valid east room")
 			
-			# From here, the room is valid
-			new_room.previous_direction = 1
-			new_room.position = new_pos
-			for i in new_room.extents.x:
-				for j in new_room.extents.y:
-					taken_space[(str(new_pos.x + i) + "," + str(new_pos.y + j))] = true
-			
-			room.instance.east_adjacent_room = new_room.room
-			num_rooms += 1
-			branching_room1 -= 1
-			branching_room2 -= 1
-			# Assign variable for connecting with dict objects
-			east_room = new_room
+			if tries == max_tries:
+				branching_room1 = 0
+				room.instance.east_doorway_node.permanently_closed = true
+				print("Could not pick valid east room")
+			else:
+				# From here, the room is valid
+				new_room.previous_direction = 1
+				new_room.position = new_pos
+				for i in new_room.extents.x:
+					for j in new_room.extents.y:
+						taken_space[(str(new_pos.x + i) + "," + str(new_pos.y + j))] = true
+				
+				room.instance.east_adjacent_room = new_room.room
+				num_rooms += 1
+				branching_room1 -= 1
+				branching_room2 -= 1
+				# Assign variable for connecting with dict objects
+				east_room = new_room
 		
 		# --------------
 		# | SOUTH LOOP |
@@ -186,9 +205,14 @@ func setup_run(starting_door : int):
 			var type = 1
 			if branching_room1 == 0 or branching_room2 == 0:
 				type = 2
+				if branching_room1 == branching_room2:
+					branching_room2 += 1
+			elif num_rooms >= max_rooms - 3:
+				type = 0
 			var valid_room = false
 			var new_room = null
 			var new_pos = Vector2(0, 0)
+			var tries = 0
 			# Pick a new valid room
 			while not valid_room and tries < max_tries:
 				tries += 1
@@ -220,19 +244,24 @@ func setup_run(starting_door : int):
 						valid_room = true
 						print("Valid south room")
 			
-			# From here, the room is valid
-			new_room.previous_direction = 2
-			new_room.position = new_pos
-			for i in new_room.extents.x:
-				for j in new_room.extents.y:
-					taken_space[(str(new_pos.x + i) + "," + str(new_pos.y + j))] = true
-			
-			room.instance.south_adjacent_room = new_room.room
-			num_rooms += 1
-			branching_room1 -= 1
-			branching_room2 -= 1
-			# Assign variable for connecting with dict objects
-			south_room = new_room
+			if tries == max_tries:
+				branching_room1 = 0
+				room.instance.south_doorway_node.permanently_closed = true
+				print("Could not pick valid south room")
+			else:
+				# From here, the room is valid
+				new_room.previous_direction = 2
+				new_room.position = new_pos
+				for i in new_room.extents.x:
+					for j in new_room.extents.y:
+						taken_space[(str(new_pos.x + i) + "," + str(new_pos.y + j))] = true
+				
+				room.instance.south_adjacent_room = new_room.room
+				num_rooms += 1
+				branching_room1 -= 1
+				branching_room2 -= 1
+				# Assign variable for connecting with dict objects
+				south_room = new_room
 		
 		# -------------
 		# | WEST LOOP |
@@ -241,9 +270,14 @@ func setup_run(starting_door : int):
 			var type = 1
 			if branching_room1 == 0 or branching_room2 == 0:
 				type = 2
+				if branching_room1 == branching_room2:
+					branching_room2 += 1
+			elif num_rooms >= max_rooms - 3:
+				type = 0
 			var valid_room = false
 			var new_room = null
 			var new_pos = Vector2(0, 0)
+			var tries = 0
 			# Pick a new valid room
 			while not valid_room and tries < max_tries:
 				tries += 1
@@ -256,7 +290,7 @@ func setup_run(starting_door : int):
 				if _is_open_space(taken_space, new_pos, new_room.extents):
 					if ((not new_room.has("north_door_pos") or _is_open_space(
 							taken_space,
-							Vector2(new_pos.x, new_pos.y + door_open_space.y),
+							Vector2(new_pos.x, new_pos.y - door_open_space.y),
 							Vector2(new_room.extents.x, door_open_space.y)
 						))
 						and
@@ -275,19 +309,24 @@ func setup_run(starting_door : int):
 						valid_room = true
 						print("Valid west room")
 			
-			# From here, the room is valid
-			new_room.previous_direction = 3
-			new_room.position = new_pos
-			for i in new_room.extents.x:
-				for j in new_room.extents.y:
-					taken_space[(str(new_pos.x + i) + "," + str(new_pos.y + j))] = true
-			
-			room.instance.west_adjacent_room = new_room.room
-			num_rooms += 1
-			branching_room1 -= 1
-			branching_room2 -= 1
-			# Assign variable for connecting with dict objects
-			west_room = new_room
+			if tries == max_tries:
+				branching_room1 = 0
+				room.instance.west_doorway_node.permanently_closed = true
+				print("Could not pick valid west room")
+			else:
+				# From here, the room is valid
+				new_room.previous_direction = 3
+				new_room.position = new_pos
+				for i in new_room.extents.x:
+					for j in new_room.extents.y:
+						taken_space[(str(new_pos.x + i) + "," + str(new_pos.y + j))] = true
+				
+				room.instance.west_adjacent_room = new_room.room
+				num_rooms += 1
+				branching_room1 -= 1
+				branching_room2 -= 1
+				# Assign variable for connecting with dict objects
+				west_room = new_room
 		
 		
 		# All rooms have been picked and connected, so spawn them (instantiate them)
@@ -314,8 +353,12 @@ func setup_run(starting_door : int):
 			west_room.instance.open_doorway(1)
 			rooms.append(west_room)
 	
-	if tries == max_tries:
-		print("Exceeded max tries for room picking")
+	# Final check, if seed is bad, start it allll over!
+	if num_rooms < max_rooms:
+		for room in _loaded_rooms:
+			remove_child(room)
+		_loaded_rooms = []
+		setup_run(starting_door)
 
 
 func _is_open_space(taken_space : Dictionary, pos : Vector2, extents : Vector2):
@@ -438,11 +481,14 @@ func _spawn_adjacent_rooms(room):
 
 func _ready():
 	randomize()
-	var seed_int = 8454#randi() % 10000
+	var seed_int = randi() % 100000
 	seed(seed_int)
 	print("Seed: " + str(seed_int))
 	var start_direction = 1 #randi() % 4
+	
+	var start_time = OS.get_ticks_usec()
 	setup_run(start_direction)
+	print(str((OS.get_ticks_usec() - start_time) / 1000.0) + " ms")
 	_current_room.set_player(player_node)
 	_current_room.show_room()
 	_current_room.open_doorways()
@@ -451,8 +497,6 @@ func _ready():
 
 func _on_room_changed(new_room):
 	_current_room = new_room
-	#_current_room.close_doorways()
-	#_spawn_adjacent_rooms(_current_room)
 
 
 func _physics_process(_delta):

@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scenes/Rooms/room_base.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Tilemaps/TileMap_Floor.tres" type="TileSet" id=2]
+[ext_resource path="res://Scenes/Rooms/Enemies.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/Rooms/Doorway.tscn" type="PackedScene" id=4]
+
+[node name="Room" type="Node2D"]
+script = ExtResource( 1 )
+north_doorway = NodePath("DoorwayNorth")
+east_doorway = NodePath("DoorwayEast")
+
+[node name="Enemies" type="Node2D" parent="."]
+script = ExtResource( 3 )
+
+[node name="TileMapFloor" type="TileMap" parent="."]
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 32, 32 )
+collision_layer = 7
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( 0, 0, 0, 1, 0, 2, 4, 0, 196608, 5, 0, 196609, 6, 0, 196609, 7, 0, 196609, 8, 0, 196609, 9, 0, 196609, 10, 0, 196609, 11, 0, 196609, 12, 0, 196609, 13, 0, 196609, 14, 0, 196609, 15, 0, 196611, 16, 0, 2, 65536, 0, 65536, 65537, 0, 65538, 65551, 0, 65536, 65552, 0, 65538, 131072, 0, 65536, 131073, 0, 65538, 131087, 0, 65536, 131088, 0, 65538, 196608, 0, 65536, 196609, 0, 65540, 196610, 0, 1, 196611, 0, 2, 196623, 0, 65536, 196624, 0, 65538, 262144, 0, 65536, 262145, 0, 65537, 262146, 0, 65537, 262147, 0, 65538, 262159, 0, 65536, 262160, 0, 65538, 327680, 0, 65536, 327681, 0, 65537, 327682, 0, 65537, 327683, 0, 196611, 327684, 0, 196609, 327685, 0, 196610, 327689, 0, 196608, 327690, 0, 196609, 327691, 0, 196610, 327695, 0, 65536, 327696, 0, 65538, 393216, 0, 65536, 393217, 0, 65537, 393218, 0, 65537, 393219, 0, 65538, 393231, 0, 65536, 393232, 0, 65538, 458752, 0, 65536, 458753, 0, 65537, 458754, 0, 65537, 458755, 0, 65538, 458767, 0, 65536, 458768, 0, 65538, 524288, 0, 65536, 524289, 0, 65537, 524290, 0, 65537, 524291, 0, 65538, 524302, 0, 196608, 524303, 0, 7, 524304, 0, 131074, 589824, 0, 65536, 589825, 0, 65537, 589826, 0, 65537, 589827, 0, 65538, 655360, 0, 65536, 655361, 0, 65537, 655362, 0, 65537, 655363, 0, 65538, 720896, 0, 65536, 720897, 0, 65537, 720898, 0, 65537, 720899, 0, 65540, 720900, 0, 1, 720901, 0, 1, 720902, 0, 1, 720903, 0, 1, 720904, 0, 1, 720905, 0, 1, 720906, 0, 1, 720907, 0, 1, 720908, 0, 1, 720909, 0, 1, 720910, 0, 1, 720911, 0, 1, 720912, 0, 2, 786432, 0, 131072, 786433, 0, 131073, 786434, 0, 131073, 786435, 0, 131073, 786436, 0, 131073, 786437, 0, 131073, 786438, 0, 131073, 786439, 0, 131073, 786440, 0, 131073, 786441, 0, 131073, 786442, 0, 131073, 786443, 0, 131073, 786444, 0, 131073, 786445, 0, 131073, 786446, 0, 131073, 786447, 0, 131073, 786448, 0, 131074 )
+
+[node name="RoomChangeTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="DoorwayNorth" parent="." instance=ExtResource( 4 )]
+position = Vector2( 96, 8 )
+rotation = 3.14159
+
+[node name="DoorwayEast" parent="." instance=ExtResource( 4 )]
+position = Vector2( 536, 320 )
+rotation = -1.5708
+
+[connection signal="enemies_killed" from="Enemies" to="." method="_on_enemies_killed"]
+[connection signal="timeout" from="RoomChangeTimer" to="." method="_on_RoomChangeTimer_timeout"]
