@@ -20,6 +20,7 @@ const _jump_forgiveness_time = 0.1 # Time after leaving a platform that the play
 var _air_time = _jump_forgiveness_time # Time that the player is in the air
 var action1_script = null
 var action2_script = null
+var disabled = false
 var input_disabled = false
 var is_outside_movement = false # Indicates that outside scripts are updating the player's velocity
 var invincible = false
@@ -80,6 +81,8 @@ func _ready():
 # Handle directional input and weapon additional input at the same time
 # Current solution is disabling input
 func _physics_process(delta):
+	if disabled:
+		return
 	
 	# -------------------
 	# | INPUT DETECTING |

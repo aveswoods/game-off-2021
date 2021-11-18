@@ -10,6 +10,9 @@ player = NodePath("Player")
 [node name="Player" parent="." instance=ExtResource( 3 )]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-current = true
 smoothing_enabled = true
 smoothing_speed = 8.0
+
+[node name="Tween" type="Tween" parent="."]
+
+[connection signal="tween_all_completed" from="Tween" to="." method="_on_Tween_tween_all_completed"]

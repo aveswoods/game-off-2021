@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://creatures/player/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Rooms/Hub/room_hub.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Rooms/Hub/room_run_portal.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/HubRoot.gd" type="Script" id=4]
+
+[node name="HubRoot" type="Node2D"]
+script = ExtResource( 4 )
+player = NodePath("Player")
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 449.56, 293.553 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+smoothing_enabled = true
+smoothing_speed = 8.0
+
+[node name="RoomHub" parent="." instance=ExtResource( 2 )]
+
+[node name="RoomRunPortal" parent="." instance=ExtResource( 3 )]
+position = Vector2( 320, -320 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[connection signal="room_changed" from="RoomHub" to="." method="_on_room_changed"]
+[connection signal="room_changed" from="RoomRunPortal" to="." method="_on_room_changed"]
+[connection signal="teleported" from="RoomRunPortal" to="." method="_on_RoomRunPortal_teleported"]
+[connection signal="tween_all_completed" from="Tween" to="." method="_on_Tween_tween_all_completed"]

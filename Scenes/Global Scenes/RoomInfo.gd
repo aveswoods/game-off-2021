@@ -22,103 +22,103 @@ const room_dict_template = {
 
 const rooms = {
 	"item_north": {
-		"room": preload("res://Scenes/Rooms/room_item_north.tscn"),
+		"room": preload("res://Scenes/Rooms/Run/room_item_north.tscn"),
 		"extents": Vector2(14, 12),
 		"south_door_pos": Vector2(6, 11)
 	},
 	"item_east": {
-		"room": preload("res://Scenes/Rooms/room_item_east.tscn"),
+		"room": preload("res://Scenes/Rooms/Run/room_item_east.tscn"),
 		"extents": Vector2(14, 10),
 		"west_door_pos": Vector2(0, 7)
 	},
 	"item_south": {
-		"room": preload("res://Scenes/Rooms/room_item_south.tscn"),
+		"room": preload("res://Scenes/Rooms/Run/room_item_south.tscn"),
 		"extents": Vector2(14, 12),
 		"north_door_pos": Vector2(6, 0)
 	},
 	"item_west": {
-		"room": preload("res://Scenes/Rooms/room_item_west.tscn"),
+		"room": preload("res://Scenes/Rooms/Run/room_item_west.tscn"),
 		"extents": Vector2(14, 10),
 		"east_door_pos": Vector2(13, 7)
 	},
 	
 	"01": {
-		"room": preload("res://Scenes/Rooms/room01.tscn"),
+		"room": preload("res://Scenes/Rooms/Run/room01.tscn"),
 		"extents": Vector2(18, 14),
 		"east_door_pos": Vector2(17, 8),
 		"south_door_pos": Vector2(11, 13),
 		"west_door_pos": Vector2(0, 8)
 	},
 	"02": {
-		"room": preload("res://Scenes/Rooms/room02.tscn"),
+		"room": preload("res://Scenes/Rooms/Run/room02.tscn"),
 		"extents": Vector2(18, 7),
 		"east_door_pos": Vector2(17, 3),
 		"west_door_pos": Vector2(0, 3)
 	},
 	"03": {
-		"room": preload("res://Scenes/Rooms/room03.tscn"),
+		"room": preload("res://Scenes/Rooms/Run/room03.tscn"),
 		"extents": Vector2(18, 14),
 		"north_door_pos": Vector2(4, 0),
 		"west_door_pos": Vector2(0, 10)
 	},
 	"04": {
-		"room": preload("res://Scenes/Rooms/room04.tscn"),
+		"room": preload("res://Scenes/Rooms/Run/room04.tscn"),
 		"extents": Vector2(18, 16),
 		"north_door_pos": Vector2(8, 0),
 		"south_door_pos": Vector2(14, 15)
 	},
 	"05": {
-		"room": preload("res://Scenes/Rooms/room05.tscn"),
+		"room": preload("res://Scenes/Rooms/Run/room05.tscn"),
 		"extents": Vector2(18, 13),
 		"east_door_pos": Vector2(17, 9),
 		"south_door_pos": Vector2(8, 12)
 	},
 	"06": {
-		"room": preload("res://Scenes/Rooms/room06.tscn"),
+		"room": preload("res://Scenes/Rooms/Run/room06.tscn"),
 		"extents": Vector2(18, 15),
 		"south_door_pos": Vector2(8, 14),
 		"west_door_pos": Vector2(0, 8)
 	},
 	"07": {
-		"room": preload("res://Scenes/Rooms/room07.tscn"),
+		"room": preload("res://Scenes/Rooms/Run/room07.tscn"),
 		"extents": Vector2(22, 13),
 		"north_door_pos": Vector2(10, 0),
 		"east_door_pos": Vector2(21, 9),
 		"west_door_pos": Vector2(0, 9)
 	},
 	"08": {
-		"room": preload("res://Scenes/Rooms/room08.tscn"),
+		"room": preload("res://Scenes/Rooms/Run/room08.tscn"),
 		"extents": Vector2(14, 12),
 		"north_door_pos": Vector2(11, 0),
 		"west_door_pos": Vector2(0, 8)
 	},
 	"09": {
-		"room": preload("res://Scenes/Rooms/room09.tscn"),
+		"room": preload("res://Scenes/Rooms/Run/room09.tscn"),
 		"extents": Vector2(15, 14),
 		"south_door_pos": Vector2(11, 13),
 		"west_door_pos": Vector2(0, 2)
 	},
 	"10": {
-		"room": preload("res://Scenes/Rooms/room10.tscn"),
+		"room": preload("res://Scenes/Rooms/Run/room10.tscn"),
 		"extents": Vector2(13, 15),
 		"east_door_pos": Vector2(12, 1),
 		"south_door_pos": Vector2(2, 14),
 	},
 	"11": {
-		"room": preload("res://Scenes/Rooms/room11.tscn"),
+		"room": preload("res://Scenes/Rooms/Run/room11.tscn"),
 		"extents": Vector2(17, 13),
 		"north_door_pos": Vector2(2, 0),
 		"east_door_pos": Vector2(16, 9)
 	},
 	"12": {
-		"room": preload("res://Scenes/Rooms/room12.tscn"),
+		"room": preload("res://Scenes/Rooms/Run/room12.tscn"),
 		"extents": Vector2(18, 17),
 		"north_door_pos": Vector2(8, 0),
 		"east_door_pos": Vector2(17, 7),
 		"south_door_pos": Vector2(4, 16)
 	},
 	"13": {
-		"room": preload("res://Scenes/Rooms/room13.tscn"),
+		"room": preload("res://Scenes/Rooms/Run/room13.tscn"),
 		"extents": Vector2(18, 17),
 		"north_door_pos": Vector2(9, 0),
 		"south_door_pos": Vector2(5, 16),

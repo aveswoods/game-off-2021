@@ -9,6 +9,7 @@ extends Node2D
 # Each connected room MUST have a Doorway! Doorways should be placed on the EDGE of the room
 
 signal room_changed(room)
+signal teleported(destination)
 
 onready var _tile_map_floor = $TileMapFloor
 onready var _room_change_timer = $RoomChangeTimer
@@ -21,19 +22,19 @@ var changing_velocity = Vector2.ZERO
 #export(Vector2) var player_start_location = Vector2.ZERO
 # Adjacent rooms are Scenes, Doorways are Area2Ds, where if the player enters them, the camera is
 # moved to the next room
-export(PackedScene) var north_adjacent_room = null
+var north_adjacent_room = null
 var north_adjacent_room_instance = null
 export(NodePath) var north_doorway = null
 var north_doorway_node = null
-export(PackedScene) var east_adjacent_room = null
+var east_adjacent_room = null
 var east_adjacent_room_instance = null
 export(NodePath) var east_doorway = null
 var east_doorway_node = null
-export(PackedScene) var south_adjacent_room = null
+var south_adjacent_room = null
 var south_adjacent_room_instance = null
 export(NodePath) var south_doorway = null
 var south_doorway_node = null
-export(PackedScene) var west_adjacent_room = null
+var west_adjacent_room = null
 var west_adjacent_room_instance = null
 export(NodePath) var west_doorway = null
 var west_doorway_node = null
@@ -44,6 +45,17 @@ var _enemies_node = null
 var _has_enemies = false
 var _player = null
 var _next_room = null
+var _teleporter = null
+
+
+func disable_collisions():
+	_tile_map_floor.set_collision_layer_bit(0, false)
+	_tile_map_floor.set_collision_layer_bit(1, false)
+	_tile_map_floor.set_collision_layer_bit(2, false)
+func enable_collisions():
+	_tile_map_floor.set_collision_layer_bit(0, true)
+	_tile_map_floor.set_collision_layer_bit(1, true)
+	_tile_map_floor.set_collision_layer_bit(2, true)
 
 
 func show_room(delay : float = 0.0):
@@ -71,9 +83,9 @@ func hide_room(delay : float = 0.0):
 	)
 	_tween.start()
 
+
 func set_player(player):
 	_player = player
-
 
 func remove_player():
 	_player = null
@@ -170,6 +182,10 @@ func _ready():
 	_enemies_node = get_node_or_null("Enemies")
 	if _enemies_node != null:
 		_has_enemies = _enemies_node.has_enemies()
+	# Set signal connection
+	_teleporter = get_node_or_null("Teleporter")
+	if _teleporter != null:
+		_teleporter.connect("teleported", self, "_on_teleported")
 	
 	modulate = Color(1.0, 1.0, 1.0, 0.0)
 	#modulate = Color(1.0, 1.0, 1.0, 1.0)
@@ -219,3 +235,7 @@ func _physics_process(_delta):
 func _on_enemies_killed():
 	_has_enemies = false
 	open_doorways()
+
+
+func _on_teleported(destination):
+	emit_signal("teleported", destination)

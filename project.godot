@@ -39,7 +39,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Game Off 2021"
-run/main_scene="res://creatures/test_scene.tscn"
+run/main_scene="res://Scenes/GameRoot.tscn"
 
 [autoload]
 

@@ -2,14 +2,57 @@ extends Node2D
 
 const door_open_space = Vector2(30, 20)
 
-export(NodePath) var starting_room = null
 var _current_room = null
 var _loaded_rooms = []
 export(NodePath) var player = null
 onready var player_node = get_node(player)
 onready var _camera = $Camera2D
+onready var _tween = $Tween
+var _visible = false
 
 enum starting_doors {NORTH, EAST, SOUTH, WEST}
+
+
+func start():
+	player_node.set_collision_layer_bit(0, true)
+	player_node.set_collision_mask_bit(0, true)
+	player_node.set_collision_mask_bit(1, true)
+	player_node.visible = true
+	player_node.disabled = false
+	player_node.input_disabled = true
+	_visible = true
+	_current_room.set_player(player_node)
+	_current_room.modulate = Color(1.0, 1.0, 1.0, 1.0)
+	_camera.current = true
+	_tween.interpolate_property(
+		self,
+		"modulate",
+		Color(1.0, 1.0, 1.0, 0.0),
+		Color(1.0, 1.0, 1.0, 1.0),
+		0.25,
+		Tween.TRANS_QUAD,Tween.EASE_IN_OUT,
+		1.0
+	)
+	_tween.start()
+
+
+func stop():
+	player_node.set_collision_layer_bit(0, false)
+	player_node.set_collision_mask_bit(0, false)
+	player_node.set_collision_mask_bit(1, false)
+	player_node.visible = false
+	player_node.disabled = true
+	_visible = false
+	_tween.interpolate_property(
+		self,
+		"modulate",
+		Color(1.0, 1.0, 1.0, 1.0),
+		Color(1.0, 1.0, 1.0, 0.0),
+		1.0,
+		Tween.TRANS_LINEAR,Tween.EASE_IN,
+		0.5
+	)
+	_tween.start()
 
 
 func setup_run(starting_door : int):
@@ -42,6 +85,10 @@ func setup_run(starting_door : int):
 	_current_room.position = Vector2(0, 0)
 	_loaded_rooms.append(_current_room)
 	_current_room.connect("room_changed", self, "_on_room_changed")
+	
+	# Close appropriate door
+	_current_room.open_doorways()
+	_current_room.close_doorway((starting_door + 2) % 4)
 	
 	# Add player to correct spot
 	match starting_door:
@@ -361,6 +408,16 @@ func setup_run(starting_door : int):
 		setup_run(starting_door)
 
 
+func _ready():
+	player_node.set_collision_layer_bit(0, false)
+	player_node.set_collision_mask_bit(0, false)
+	player_node.set_collision_mask_bit(1, false)
+	player_node.visible = false
+	player_node.disabled = true
+	_visible = false
+	modulate = Color(1.0, 1.0, 1.0, 0.0)
+
+
 func _is_open_space(taken_space : Dictionary, pos : Vector2, extents : Vector2):
 	for i in extents.x:
 		for j in extents.y:
@@ -479,26 +536,19 @@ func _spawn_adjacent_rooms(room):
 		room.west_adjacent_room_instance.east_adjacent_room_instance = room
 
 
-func _ready():
-	randomize()
-	var seed_int = randi() % 100000
-	seed(seed_int)
-	print("Seed: " + str(seed_int))
-	var start_direction = 1 #randi() % 4
-	
-	var start_time = OS.get_ticks_usec()
-	setup_run(start_direction)
-	print(str((OS.get_ticks_usec() - start_time) / 1000.0) + " ms")
-	_current_room.set_player(player_node)
-	_current_room.show_room()
-	_current_room.open_doorways()
-	_current_room.close_doorway((start_direction + 2) % 4)
-
-
 func _on_room_changed(new_room):
 	_current_room = new_room
 
 
 func _physics_process(_delta):
-	if not _current_room.changing_rooms:
+	if _visible and not _current_room.changing_rooms:
 		_set_limited_camera_position(player_node.position)
+
+
+func _on_Tween_tween_all_completed():
+	if _visible:
+		player_node.input_disabled = false
+	else:
+		for room in _loaded_rooms:
+			remove_child(room)
+		_loaded_rooms = []
