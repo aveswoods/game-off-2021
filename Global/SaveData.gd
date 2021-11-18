@@ -13,7 +13,10 @@ var num_runs = 0
 var currency = 0
 var unlocks = {}
 var equipped_unlocks = {}
-var item_pool = {}
+var item_pool = [
+	"doublejump",
+	"glide"
+] # Only the id's
 
 
 func save_data():

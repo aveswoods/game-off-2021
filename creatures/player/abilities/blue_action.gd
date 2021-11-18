@@ -11,6 +11,9 @@ var _active_blue_node_index = -1
 func equip(player):
 	_player = player
 	_player.add_child(self)
+func unequip():
+	_player.remove_child(self)
+	_player = null
 
 
 func trigger():

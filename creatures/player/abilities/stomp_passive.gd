@@ -11,6 +11,9 @@ var _player = null
 func equip(player):
 	_player = player
 	_player.add_child(self)
+func unequip():
+	_player.remove_child(self)
+	_player = null
 
 
 func _on_Area2D_body_entered(body):

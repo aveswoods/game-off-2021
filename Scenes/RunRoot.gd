@@ -14,16 +14,19 @@ enum starting_doors {NORTH, EAST, SOUTH, WEST}
 
 
 func start():
+	# Make player active
 	player_node.set_collision_layer_bit(0, true)
 	player_node.set_collision_mask_bit(0, true)
 	player_node.set_collision_mask_bit(1, true)
 	player_node.visible = true
 	player_node.disabled = false
 	player_node.input_disabled = true
+	# Make scene visible
 	_visible = true
 	_current_room.set_player(player_node)
 	_current_room.modulate = Color(1.0, 1.0, 1.0, 1.0)
 	_camera.current = true
+	
 	_tween.interpolate_property(
 		self,
 		"modulate",

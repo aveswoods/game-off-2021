@@ -14,6 +14,11 @@ var _player = null
 func equip(player):
 	_player = player
 	_player.add_child(self)
+	_can_bite = true
+	_is_dead_time = false
+func unequip():
+	_player.remove_child(self)
+	_player = null
 
 
 func trigger():

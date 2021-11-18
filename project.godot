@@ -46,6 +46,7 @@ run/main_scene="res://Scenes/GameRoot.tscn"
 Global="*res://Global/Global.tscn"
 RoomInfo="*res://Global/RoomInfo.gd"
 SaveData="*res://Global/SaveData.gd"
+Items="*res://Global/Items.gd"
 
 [display]
 

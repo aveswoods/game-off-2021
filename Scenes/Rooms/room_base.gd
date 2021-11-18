@@ -46,6 +46,7 @@ var _has_enemies = false
 var _player = null
 var _next_room = null
 var _teleporter = null
+var _pedestal = null
 
 
 func disable_collisions():
@@ -59,6 +60,12 @@ func enable_collisions():
 
 
 func show_room(delay : float = 0.0):
+	# If there is a pedestal, set the item
+	if _pedestal != null and not _pedestal.is_item_set():
+		var item_id = Items.get_random_item_id_from_pool()
+		if item_id != "":
+			_pedestal.set_item(item_id)
+	
 	_tween.interpolate_property(
 		self,
 		"modulate",
@@ -186,6 +193,8 @@ func _ready():
 	_teleporter = get_node_or_null("Teleporter")
 	if _teleporter != null:
 		_teleporter.connect("teleported", self, "_on_teleported")
+	# Set pedestal, if applicable
+	_pedestal = get_node_or_null("Pedestal")
 	
 	modulate = Color(1.0, 1.0, 1.0, 0.0)
 	#modulate = Color(1.0, 1.0, 1.0, 1.0)

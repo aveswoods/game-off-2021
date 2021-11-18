@@ -3,14 +3,11 @@
 [ext_resource path="res://Scenes/Rooms/Doorway.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Tilemaps/TileMap_Floor.tres" type="TileSet" id=2]
 [ext_resource path="res://Scenes/Rooms/room_base.gd" type="Script" id=3]
-[ext_resource path="res://Scenes/Rooms/Enemies.gd" type="Script" id=4]
+[ext_resource path="res://Scenes/Rooms/Pedestal.tscn" type="PackedScene" id=5]
 
 [node name="Room" type="Node2D"]
 script = ExtResource( 3 )
 east_doorway = NodePath("DoorwayEast")
-
-[node name="Enemies" type="Node2D" parent="."]
-script = ExtResource( 4 )
 
 [node name="TileMapFloor" type="TileMap" parent="."]
 tile_set = ExtResource( 2 )
@@ -30,5 +27,7 @@ one_shot = true
 position = Vector2( 440.858, 256 )
 rotation = -1.5708
 
-[connection signal="enemies_killed" from="Enemies" to="." method="_on_enemies_killed"]
+[node name="Pedestal" parent="." instance=ExtResource( 5 )]
+position = Vector2( 160, 176 )
+
 [connection signal="timeout" from="RoomChangeTimer" to="." method="_on_RoomChangeTimer_timeout"]

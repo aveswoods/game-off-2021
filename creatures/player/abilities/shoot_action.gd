@@ -24,6 +24,15 @@ func equip(player):
 	_raycast_center.add_exception(_player)
 	_raycast_bottom.add_exception(_player)
 	_player.connect("damaged", self, "_on_player_damaged")
+func unequip():
+	_raycast_top.remove_exception(_player)
+	_raycast_center.remove_exception(_player)
+	_raycast_bottom.remove_exception(_player)
+	if _player.is_connected("damaged", self, "_on_player_damaged"):
+		_player.disconnect("damaged", self, "_on_player_damaged")
+	
+	_player.remove_child(self)
+	_player = null
 
 
 func trigger():

@@ -15,6 +15,11 @@ func equip(player):
 	_player.add_child(self)
 	
 	_player.connect("damaged", self, "_on_player_damaged")
+func unequip():
+	if _player.is_connected("damaged", self, "_on_player_damaged"):
+		_player.disconnect("damaged", self, "_on_player_damaged")
+	_player.remove_child(self)
+	_player = null
 
 
 func trigger():

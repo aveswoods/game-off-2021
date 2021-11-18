@@ -16,6 +16,13 @@ var _player_gravity = 0
 func equip(player):
 	_player = player
 	_player.add_child(self)
+	is_decelerating = false
+	is_lunging = false
+	_can_lunge = true
+	_player_gravity = 0
+func unequip():
+	_player.remove_child(self)
+	_player = null
 
 
 func trigger():

@@ -7,5 +7,8 @@ extends Node
 func equip(player):
 	pass
 
+func unequip():
+	pass
+
 func trigger():
 	pass

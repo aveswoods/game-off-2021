@@ -13,6 +13,9 @@ var _charmed_bodies = []
 func equip(player):
 	_player = player
 	_player.add_child(self)
+func unequip():
+	_player.remove_child(self)
+	_player = null
 
 
 func trigger():

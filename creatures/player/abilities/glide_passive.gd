@@ -10,6 +10,10 @@ var _gliding = false
 func equip(player):
 	_player = player
 	_player.add_child(self)
+	_gliding = false
+func unequip():
+	_player.remove_child(self)
+	_player = null
 
 
 func _ready():
