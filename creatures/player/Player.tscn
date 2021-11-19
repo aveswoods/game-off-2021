@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://creatures/player/Player.gd" type="Script" id=2]
 [ext_resource path="res://creatures/player/frames/bbaa.png" type="Texture" id=6]
@@ -24,6 +24,62 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 10, 11, 12, 13 ]
+}
+
+[sub_resource type="Animation" id=21]
+resource_name = "damaged"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("PlayerSprite/SpriteBody:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 18, 19, 20 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("PlayerSprite/SpriteFace:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 18, 19, 20 ]
+}
+
+[sub_resource type="Animation" id=22]
+resource_name = "death"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/path = NodePath("PlayerSprite/SpriteBody:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 21, 22, 23, 24, 25, 26, 27, 28 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("PlayerSprite/SpriteFace:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 21, 22, 23, 24, 25, 26, 27, 28 ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -209,7 +265,7 @@ input_1/name = "run"
 input_1/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=20]
-graph_offset = Vector2( -452.029, -60.2729 )
+graph_offset = Vector2( -585.819, -95.8477 )
 nodes/Animation/node = SubResource( 14 )
 nodes/Animation/position = Vector2( -702, -221 )
 "nodes/Animation 2/node" = SubResource( 9 )
@@ -233,11 +289,9 @@ nodes/in_air_state/position = Vector2( 455, 65 )
 nodes/movement/node = SubResource( 19 )
 nodes/movement/position = Vector2( -351, -169 )
 nodes/output/position = Vector2( 949, 26 )
-node_connections = [ "output", 0, "OneShot", "OneShot", 0, "in_air_state", "OneShot", 1, "Animation 5", "in_air_state", 0, "OneShot 2", "in_air_state", 1, "in_air", "in_air", 0, "Animation 4", "in_air", 1, "Animation 3", "movement", 0, "Animation", "movement", 1, "Animation 2", "OneShot 2", 0, "movement", "OneShot 2", 1, "Animation 6" ]
+node_connections = [ "output", 0, "OneShot", "OneShot", 0, "in_air_state", "OneShot", 1, "Animation 5", "in_air", 0, "Animation 4", "in_air", 1, "Animation 3", "in_air_state", 0, "OneShot 2", "in_air_state", 1, "in_air", "movement", 0, "Animation", "movement", 1, "Animation 2", "OneShot 2", 0, "movement", "OneShot 2", 1, "Animation 6" ]
 
-[node name="Player" type="KinematicBody2D" groups=[
-"player",
-]]
+[node name="Player" type="KinematicBody2D" groups=["player"]]
 process_priority = 10
 collision_mask = 3
 script = ExtResource( 2 )
@@ -247,13 +301,11 @@ position = Vector2( -2, -5 )
 
 [node name="SpriteBody" type="Sprite" parent="PlayerSprite"]
 texture = ExtResource( 6 )
-hframes = 18
-frame = 1
+hframes = 30
 
 [node name="SpriteFace" type="Sprite" parent="PlayerSprite"]
 texture = ExtResource( 7 )
-hframes = 18
-frame = 1
+hframes = 30
 
 [node name="CollisionShapeCircle" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -283,6 +335,8 @@ one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/bite = SubResource( 3 )
+anims/damaged = SubResource( 21 )
+anims/death = SubResource( 22 )
 anims/fall = SubResource( 4 )
 anims/idle = SubResource( 5 )
 anims/jump = SubResource( 6 )

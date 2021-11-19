@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/fm.png-f4397210a8e02b92978f339d9b608c45.stex"
+path="res://.import/gladiator bug game 37 SPRITESHEET.png-02e75c6eb3a22fa6fa7548ee7e0903a8.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://creatures/player/frames/fm.png"
-dest_files=[ "res://.import/fm.png-f4397210a8e02b92978f339d9b608c45.stex" ]
+source_file="res://creatures/enemies/enemy sprites/gladiator bug game 37 SPRITESHEET.png"
+dest_files=[ "res://.import/gladiator bug game 37 SPRITESHEET.png-02e75c6eb3a22fa6fa7548ee7e0903a8.stex" ]
 
 [params]
 
