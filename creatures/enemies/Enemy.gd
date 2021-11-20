@@ -80,7 +80,7 @@ func _physics_process(delta):
 	
 	# Checks for body collisions
 	var collision = move_and_collide(delta * velocity, true, true, true)
-	if collision != null and not collision.collider is TileMap:
+	if collision != null and collision.collider is KinematicBody2D:
 		emit_signal("collided_with_body", collision)
 	
 	 # Move based on velocity

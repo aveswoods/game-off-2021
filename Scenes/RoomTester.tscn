@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://creatures/player/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/RoomTester.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Rooms/Run/room08.tscn" type="PackedScene" id=3]
+[ext_resource path="res://creatures/enemies/Beetle Bug.tscn" type="PackedScene" id=4]
+
+[node name="RoomTester" type="Node2D"]
+script = ExtResource( 2 )
+room = NodePath("Room")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 90.5386, 187.662 )
+
+[node name="Room" parent="." instance=ExtResource( 3 )]
+
+[node name="Beetle Bug" parent="." instance=ExtResource( 4 )]
+position = Vector2( 60.9943, 304.868 )
+
+[node name="Beetle Bug2" parent="." instance=ExtResource( 4 )]
+position = Vector2( 319.401, 208.23 )

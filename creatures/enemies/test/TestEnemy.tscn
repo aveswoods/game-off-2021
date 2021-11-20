@@ -12,9 +12,7 @@ extents = Vector2( 14, 10 )
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 13.0
 
-[node name="TestEnemy" type="KinematicBody2D" groups=[
-"enemy",
-]]
+[node name="TestEnemy" type="KinematicBody2D" groups=["enemy"]]
 collision_layer = 2
 collision_mask = 3
 script = ExtResource( 4 )
@@ -29,9 +27,7 @@ script = ExtResource( 2 )
 position = Vector2( 0, 1 )
 shape = SubResource( 1 )
 
-[node name="EnemyHitbox" type="Area2D" parent="." groups=[
-"enemy",
-]]
+[node name="EnemyHitbox" type="Area2D" parent="." groups=["enemy"]]
 collision_layer = 2
 script = ExtResource( 3 )
 
