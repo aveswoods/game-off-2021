@@ -11,6 +11,7 @@ const charge_speed = 600
 const bump_absorbance = 1
 const slow_acceleration = 0.95
 var facing_direction = 1
+var _damaged = false
 var _stunned = false
 var _dead = false
 
@@ -48,7 +49,7 @@ func _physics_process(delta):
 	if controlled:
 		if _charging:
 			movement_velocity = Vector2(facing_direction * charge_speed, 0)
-		else:
+		elif not _damaged:
 			var idle = true
 			if Input.is_action_pressed("ui_left"):
 				movement_velocity.x += -1 * walk_speed
@@ -77,7 +78,7 @@ func _physics_process(delta):
 		if not _stunned:
 			if _charging:
 				movement_velocity = Vector2(facing_direction * charge_speed, 0)
-			else:
+			elif not _damaged:
 				if _raycast.is_colliding() and _raycast.get_collider() is KinematicBody2D and _raycast.get_collider().is_in_group(_hitbox.target_group):
 					acceleration = 0.5
 					_animation_player.play("charge")
@@ -109,6 +110,10 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 			gravity = 0
 			_charging = true
 			bump(Vector2(facing_direction * charge_speed / 4.0, 0))
+		"damaged":
+			if not _stunned:
+				_animation_player.play("RESET")
+			_damaged = false
 
 
 func _on_Beetle_Bug_collided_with_wall():
@@ -130,7 +135,6 @@ func _on_Beetle_Bug_collided_with_body(collision):
 	
 	var collision_velocity = collision.collider_velocity
 	var collision_length = collision_velocity.length()
-	print(collision_length)
 	var collision_direction = collision_velocity.normalized()
 	
 	# Bump self
@@ -145,24 +149,49 @@ func _on_Beetle_Bug_collided_with_body(collision):
 			collision.collider.bump(-1 * collision_length * (collision_direction + Vector2(0, -0.5)))
 
 
+func _on_Beetle_Bug_damaged():
+	_animation_player.play("damaged")
+	_damaged = true
+
+
 func _on_Beetle_Bug_stunned():
 	_hitbox.monitoring = false
-	#_sprite.animate_stun()
+	_sprite.animate_stun()
 	_stunned = true
+	_walking = false
 	_stop_charging()
 	_animation_player.play("damaged")
 
 
 func _on_Beetle_Bug_unstunned():
 	_hitbox.monitoring = true
-	#_sprite.animate_stun()
+	_sprite.animate_unstun()
 	_animation_player.play("RESET")
 	_stunned = false
 
 
-func _on_Beetle_Bug_killed(_source):
-	queue_free()
+func _on_Beetle_Bug_killed(source):
+	if not _dead:
+		_dead = true
+		_hitbox.set_deferred("monitoring", false)
+		_animation_player.play("death")
+	
+		match source:
+			death_source.IMPACT:
+				_sprite.animate_explode()
+			death_source.EXPLOSION:
+				_sprite.animate_big_explode()
+			death_source.ERASE:
+				_sprite.animate_fade_away()
+			death_source.WATER:
+				_sprite.animate_disintegrate()
 
 
 func _on_EnemyHitbox_hitbox_entered():
 	_stop_charging()
+
+
+func _on_CreatureSprite_finished_death_animation():
+	queue_free()
+
+

@@ -1,6 +1,23 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://creatures/enemies/enemy sprites/fly mouth_20.png" type="Texture" id=1]
+[ext_resource path="res://creatures/CreatureSprite.gd" type="Script" id=2]
+[ext_resource path="res://creatures/enemies/EnemyHitbox.gd" type="Script" id=3]
+[ext_resource path="res://creatures/enemies/Fly Mouth.gd" type="Script" id=4]
+[ext_resource path="res://creatures/creature_shader_material.tres" type="Material" id=5]
+
+[sub_resource type="CircleShape2D" id=11]
+radius = 13.0
+
+[sub_resource type="CapsuleShape2D" id=7]
+radius = 8.0
+height = 4.0
+
+[sub_resource type="CircleShape2D" id=8]
+radius = 12.0
+
+[sub_resource type="CircleShape2D" id=9]
+radius = 15.0
 
 [sub_resource type="Animation" id=1]
 length = 0.001
@@ -15,6 +32,42 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ 1 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CreatureSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("EnemyHitbox/CollisionShapeActive:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("CollisionShapeBite:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
 }
 
 [sub_resource type="Animation" id=2]
@@ -32,6 +85,42 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 8, 9, 10 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("CreatureSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 8, 9, 10 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("EnemyHitbox/CollisionShapeActive:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("CollisionShapeBite:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
 
 [sub_resource type="Animation" id=3]
 resource_name = "damaged"
@@ -48,6 +137,18 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 12, 13, 14 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("CreatureSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 12, 13, 14 ]
+}
 
 [sub_resource type="Animation" id=4]
 resource_name = "death"
@@ -59,6 +160,18 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 15, 16, 17, 18, 19 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CreatureSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 1,
@@ -81,6 +194,18 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 0, 1, 2, 3 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("CreatureSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
 
 [sub_resource type="Animation" id=6]
 resource_name = "walk"
@@ -98,13 +223,65 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 3, 4, 5, 6 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("CreatureSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 3, 4, 5, 6 ]
+}
 
-[node name="Fly Mouth" type="KinematicBody2D"]
+[sub_resource type="CircleShape2D" id=10]
+radius = 160.0
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="Fly Mouth" type="KinematicBody2D" groups=["enemy"]]
+collision_layer = 2
+collision_mask = 3
+script = ExtResource( 4 )
+
+[node name="CreatureSprite" type="Sprite" parent="."]
+material = ExtResource( 5 )
+position = Vector2( -3, -7 )
 texture = ExtResource( 1 )
 hframes = 20
 frame = 1
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 1 )
+hframes = 20
+frame = 1
+
+[node name="CollisionShapeBite" type="CollisionShape2D" parent="."]
+position = Vector2( 4, -4 )
+rotation = 1.5708
+shape = SubResource( 11 )
+disabled = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 1 )
+rotation = 1.5708
+shape = SubResource( 7 )
+
+[node name="EnemyHitbox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 3
+script = ExtResource( 3 )
+
+[node name="CollisionShapePassive" type="CollisionShape2D" parent="EnemyHitbox"]
+position = Vector2( 0, 2 )
+shape = SubResource( 8 )
+
+[node name="CollisionShapeActive" type="CollisionShape2D" parent="EnemyHitbox"]
+position = Vector2( 4, -4 )
+shape = SubResource( 9 )
+disabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 1 )
@@ -113,3 +290,23 @@ anims/damaged = SubResource( 3 )
 anims/death = SubResource( 4 )
 anims/idle = SubResource( 5 )
 anims/walk = SubResource( 6 )
+
+[node name="AreaVision" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 3
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaVision"]
+shape = SubResource( 10 )
+
+[connection signal="collided_with_body" from="." to="." method="_on_Fly_Mouth_collided_with_body"]
+[connection signal="collided_with_ceiling" from="." to="." method="_on_Fly_Mouth_collided_with_ceiling"]
+[connection signal="collided_with_floor" from="." to="." method="_on_Fly_Mouth_collided_with_floor"]
+[connection signal="damaged" from="." to="." method="_on_Fly_Mouth_damaged"]
+[connection signal="killed" from="." to="." method="_on_Fly_Mouth_killed"]
+[connection signal="stunned" from="." to="." method="_on_Fly_Mouth_stunned"]
+[connection signal="unstunned" from="." to="." method="_on_Fly_Mouth_unstunned"]
+[connection signal="finished_death_animation" from="CreatureSprite" to="." method="_on_CreatureSprite_finished_death_animation"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+[connection signal="body_entered" from="AreaVision" to="." method="_on_AreaVision_body_entered"]
+[connection signal="body_exited" from="AreaVision" to="." method="_on_AreaVision_body_exited"]

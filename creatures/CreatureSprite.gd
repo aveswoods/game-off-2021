@@ -112,6 +112,8 @@ func _set_shader_transparency(transparency : float):
 func _ready():
 	# Setup dimensions
 	_dimensions = texture.get_size()
+	_dimensions.x /= hframes
+	_dimensions.y /= vframes
 	
 	# Add death animation timer
 	_death_animation_timer.one_shot = true

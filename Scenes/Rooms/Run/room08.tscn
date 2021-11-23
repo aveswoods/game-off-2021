@@ -1,14 +1,25 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scenes/Rooms/Doorway.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Tilemaps/TileMap_Floor.tres" type="TileSet" id=2]
 [ext_resource path="res://Scenes/Rooms/room_base.gd" type="Script" id=3]
 [ext_resource path="res://Scenes/Rooms/Enemies.gd" type="Script" id=4]
+[ext_resource path="res://Scenes/Tilemaps/TileMap_Detail.tres" type="TileSet" id=5]
+[ext_resource path="res://Scenes/Tilemaps/circuitboard.tscn" type="PackedScene" id=6]
 
 [node name="Room" type="Node2D"]
 script = ExtResource( 3 )
 north_doorway = NodePath("DoorwayNorth")
 west_doorway = NodePath("DoorwayWest")
+
+[node name="Circuitboard" parent="." instance=ExtResource( 6 )]
+position = Vector2( 129.925, 174.727 )
+
+[node name="TileMapDetail" type="TileMap" parent="."]
+tile_set = ExtResource( 5 )
+cell_size = Vector2( 32, 32 )
+format = 1
+tile_data = PoolIntArray( 11, 0, 262151, 12, 0, 262151, 65546, 0, 458752, 65547, 0, 262151, 65548, 0, 262151, 131074, 0, 8, 131075, 0, 8, 131076, 0, 8, 131077, 0, 8, 131078, 0, 8, 131079, 0, 8, 131080, 0, 8, 131081, 0, 8, 131082, 0, 8, 131083, 0, 8, 131084, 0, 8, 196610, 0, 65544, 196611, 0, 65544, 196612, 0, 65544, 196613, 0, 65544, 196614, 0, 14, 196615, 0, 12, 196616, 0, 13, 196617, 0, 14, 196618, 0, 458752, 196619, 0, 393229, 196620, 0, 196619, 262146, 0, 65550, 262147, 0, 131085, 262148, 0, 196619, 262149, 0, 458752, 262150, 0, 196620, 262151, 0, 65545, 262152, 0, 458752, 262153, 0, 458752, 262154, 0, 196620, 262155, 0, 458752, 327682, 0, 196620, 327683, 0, 131079, 327684, 0, 131080, 327685, 0, 458752, 327686, 0, 65547, 327687, 0, 131082, 327688, 0, 131081, 327689, 0, 458752, 327690, 0, 458752, 327691, 0, 458752, 327692, 0, 393216, 393218, 0, 393228, 393219, 0, 458752, 393220, 0, 131083, 393221, 0, 131084, 393222, 0, 65546, 393223, 0, 196618, 393224, 0, 458752, 393225, 0, 393227, 393226, 0, 393228, 393227, 0, 393229, 393228, 0, 393216, 458755, 0, 196623, 458756, 0, 458752, 458757, 0, 196620, 458758, 0, 131082, 458759, 0, 131083, 458760, 0, 131084, 524288, 0, 458752, 524289, 0, 196621, 524290, 0, 458752, 524291, 0, 458752, 524292, 0, 196623, 524293, 0, 196623, 524294, 0, 458752, 524295, 0, 458752, 524296, 0, 458752, 524297, 0, 196619, 524298, 0, 393216, 524299, 0, 393217, 589824, 0, 458752, 589825, 0, 393229, 589826, 0, 393227, 589827, 0, 196623, 589828, 0, 262155, 589829, 0, 262157, 589830, 0, 262156, 589831, 0, 393228, 589832, 0, 262155, 589833, 0, 458752, 589834, 0, 393216, 589835, 0, 393217 )
 
 [node name="Enemies" type="Node2D" parent="."]
 script = ExtResource( 4 )

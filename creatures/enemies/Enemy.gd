@@ -6,6 +6,7 @@ signal collided_with_body(collision)
 signal collided_with_wall
 signal collided_with_floor
 signal collided_with_ceiling
+signal damaged
 signal stunned
 signal unstunned
 signal killed(source)
@@ -13,6 +14,7 @@ signal killed(source)
 # Game variables
 var _stun_timer = Timer.new()
 var hp = 0
+var flying = false
 var invincible = false
 var controlled = false
 var disabled = false
@@ -36,7 +38,7 @@ var _bump_impulse = Vector2.ZERO
 
 func bump(impulse: Vector2):
 	_bumping = true
-	_bump_impulse = impulse
+	_bump_impulse += impulse
 
 
 func stun(time: float):
@@ -50,6 +52,8 @@ func take_damage(amount : int, source = death_source.ERASE):
 		hp -= amount
 		if hp <= 0:
 			emit_signal("killed", source)
+		else:
+			emit_signal("damaged")
 
 # Must be implemented to be able to be charmed!
 func set_target_group(_group):
@@ -71,12 +75,17 @@ func _physics_process(delta):
 	# Add friction/acceleration
 	if movement_velocity.is_equal_approx(Vector2(0, 0)):
 		velocity.x = lerp(velocity.x, 0, friction * Global.time_multiplier) * Global.time_multiplier
+		if flying:
+			velocity.y = lerp(velocity.y, 0, friction * Global.time_multiplier) * Global.time_multiplier
 	else:
 		velocity.x = lerp(movement_velocity.x, velocity.x, acceleration * Global.time_multiplier) * Global.time_multiplier
+		if flying:
+			velocity.y = lerp(movement_velocity.y, velocity.y, acceleration * Global.time_multiplier) * Global.time_multiplier
 	
 	if _bumping:
 		velocity += _bump_impulse
 		_bumping = false
+		_bump_impulse = Vector2.ZERO
 	
 	# Checks for body collisions
 	var collision = move_and_collide(delta * velocity, true, true, true)

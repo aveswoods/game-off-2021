@@ -43,7 +43,7 @@ var _is_on_floor = false
 
 func bump(impulse):
 	_bumping = true
-	_bump_impulse = impulse
+	_bump_impulse += impulse
 
 
 func stun(time):
@@ -161,7 +161,8 @@ func _physics_process(delta):
 		velocity.x = _bump_impulse.x
 		velocity.y = _bump_impulse.y
 		_bumping = false
-		_is_on_floor = false
+		_is_on_floor = _bump_impulse.y < 0
+		_bump_impulse = Vector2.ZERO
 	
 	# ------------------
 	# | APPLY MOVEMENT |

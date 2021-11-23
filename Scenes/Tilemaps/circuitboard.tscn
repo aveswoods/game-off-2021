@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Tilemaps/circuitboard.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/Tilemaps/circuitboard.gd" type="Script" id=2]
+
+[node name="Circuitboard" type="Sprite"]
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 64, 64 )
+script = ExtResource( 2 )

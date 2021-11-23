@@ -12,6 +12,7 @@ signal room_changed(room)
 signal teleported(destination)
 
 onready var _tile_map_floor = $TileMapFloor
+onready var _circuitboard = get_node_or_null("Circuitboard")
 onready var _room_change_timer = $RoomChangeTimer
 onready var _tween = $Tween
 
@@ -75,6 +76,16 @@ func show_room(delay : float = 0.0):
 		Tween.TRANS_QUAD,Tween.EASE_IN_OUT,
 		delay
 	)
+	if _circuitboard != null:
+		_tween.interpolate_property(
+			_circuitboard,
+			"modulate",
+			Color(1.0, 1.0, 1.0, 0.0),
+			Color(1.0, 1.0, 1.0, 1.0),
+			1.5,
+			Tween.TRANS_QUAD,Tween.EASE_IN_OUT,
+			delay
+		)
 	_tween.start()
 
 func hide_room(delay : float = 0.0):

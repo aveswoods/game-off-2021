@@ -1,15 +1,16 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://creatures/enemies/enemy sprites/tauros_28.png" type="Texture" id=1]
 [ext_resource path="res://creatures/CreatureSprite.gd" type="Script" id=2]
 [ext_resource path="res://creatures/enemies/EnemyHitbox.gd" type="Script" id=3]
 [ext_resource path="res://creatures/enemies/Beetle Bug.gd" type="Script" id=4]
+[ext_resource path="res://creatures/creature_shader_material.tres" type="Material" id=5]
 
 [sub_resource type="RectangleShape2D" id=9]
 extents = Vector2( 12.6905, 9 )
 
 [sub_resource type="CapsuleShape2D" id=10]
-radius = 11.4026
+radius = 10.0407
 height = 15.4579
 
 [sub_resource type="Animation" id=1]
@@ -205,6 +206,7 @@ collision_mask = 3
 script = ExtResource( 4 )
 
 [node name="CreatureSprite" type="Sprite" parent="."]
+material = ExtResource( 5 )
 position = Vector2( 2, -9 )
 texture = ExtResource( 1 )
 hframes = 28
@@ -224,6 +226,7 @@ shape = SubResource( 9 )
 
 [node name="EnemyHitbox" type="Area2D" parent="."]
 collision_layer = 2
+collision_mask = 3
 script = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyHitbox"]
@@ -244,11 +247,14 @@ anims/walk = SubResource( 8 )
 [node name="RayCast2D" type="RayCast2D" parent="."]
 enabled = true
 cast_to = Vector2( 192, 0 )
+collision_mask = 3
 
 [connection signal="collided_with_body" from="." to="." method="_on_Beetle_Bug_collided_with_body"]
 [connection signal="collided_with_wall" from="." to="." method="_on_Beetle_Bug_collided_with_wall"]
+[connection signal="damaged" from="." to="." method="_on_Beetle_Bug_damaged"]
 [connection signal="killed" from="." to="." method="_on_Beetle_Bug_killed"]
 [connection signal="stunned" from="." to="." method="_on_Beetle_Bug_stunned"]
 [connection signal="unstunned" from="." to="." method="_on_Beetle_Bug_unstunned"]
+[connection signal="finished_death_animation" from="CreatureSprite" to="." method="_on_CreatureSprite_finished_death_animation"]
 [connection signal="hitbox_entered" from="EnemyHitbox" to="." method="_on_EnemyHitbox_hitbox_entered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

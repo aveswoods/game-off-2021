@@ -28,14 +28,17 @@ func _set_limited_camera_position(cam_pos):
 
 func _ready():
 	randomize()
+	VisualServer.set_default_clear_color(Color("#27232a"))
 	
 	_current_room = get_node(room)
 	_current_room.close_doorways()
 	_current_room.show_room()
 	
 	Items.set_player(_player)
-	#Items.equip_item("bite")
-	Items.equip_item("mindcontrol")
+	#Items.equip_item("mindcontrol")
+	Items.equip_item("bite")
+	#Items.equip_item("stun")
+	#Items.equip_item("charm")
 	Items.equip_item("glide")
 	
 
