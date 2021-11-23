@@ -1,6 +1,6 @@
 extends Enemy
 
-onready var _sprite = $Sprite
+onready var _sprite = $CreatureSprite
 onready var _animation_player = $AnimationPlayer
 onready var _hitbox = $EnemyHitbox
 onready var _raycast = $RayCast2D
@@ -122,6 +122,11 @@ func _on_Beetle_Bug_collided_with_wall():
 func _on_Beetle_Bug_collided_with_body(collision):
 	if _charging:
 		_stop_charging()
+		bump(Vector2(facing_direction * charge_speed, -1 * charge_speed / 2.0))
+		# Bump other object
+		if collision.collider.has_method("bump") and not collision.collider.is_in_group("player"):
+			collision.collider.bump(Vector2(-1 * facing_direction * charge_speed, -1 * charge_speed / 2.0))
+		return
 	
 	var collision_velocity = collision.collider_velocity
 	var collision_length = collision_velocity.length()
@@ -130,14 +135,14 @@ func _on_Beetle_Bug_collided_with_body(collision):
 	
 	# Bump self
 	if collision_length > bump_absorbance:
-		bump(-1 * (collision_length - bump_absorbance) * (collision_direction + Vector2(0, -0.5)))
+		bump((collision_length - bump_absorbance) * (collision_direction + Vector2(0, -0.5)))
 	
 	# Bump other object
-	if collision.collider.has_method("bump"):
+	if collision.collider.has_method("bump") and not collision.collider.is_in_group("player"):
 		if collision.collider.has_meta("bump_absorbance"):
 			collision_length -= collision.collider.bump_absorbance
-			if collision_length > 0:
-				collision.collider.bump(collision_length * (collision_direction + Vector2(0, -0.5)))
+		if collision_length > 0:
+			collision.collider.bump(-1 * collision_length * (collision_direction + Vector2(0, -0.5)))
 
 
 func _on_Beetle_Bug_stunned():
