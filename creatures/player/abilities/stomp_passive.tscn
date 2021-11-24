@@ -13,7 +13,7 @@ monitorable = false
 script = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 14 )
+position = Vector2( 0, 15 )
 shape = SubResource( 1 )
 
 [node name="ImpactParticles" parent="." instance=ExtResource( 2 )]

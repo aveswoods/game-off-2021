@@ -25,10 +25,16 @@ func set_target_group(group):
 
 
 func _ready():
+	randomize()
+	
 	hp = starting_hp
 	friction = 0.25
 	acceleration = slow_acceleration
 	_idle_time = 2 + randi() % 3
+	
+	var start_direction = randi() % 2
+	if start_direction == 0:
+		_change_direction()
 
 
 func _change_direction():

@@ -24,6 +24,8 @@ func set_target_group(group):
 
 
 func _ready():
+	randomize()
+	
 	hp = starting_hp
 	flying = true
 	friction = 0.05
@@ -31,6 +33,10 @@ func _ready():
 	gravity = 0
 	_idle_time = 2 + randi() % 3
 	_animation_player.play("idle")
+	
+	var start_direction = randi() % 2
+	if start_direction == 0:
+		_change_direction(-1)
 
 
 func _change_direction(direction):

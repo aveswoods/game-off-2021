@@ -37,7 +37,7 @@ func _ready():
 	Items.set_player(_player)
 	#Items.equip_item("mindcontrol")
 	Items.equip_item("bite")
-	#Items.equip_item("stun")
+	Items.equip_item("stun")
 	#Items.equip_item("charm")
 	Items.equip_item("glide")
 	
