@@ -14,8 +14,10 @@ west_doorway = NodePath("DoorwayWest")
 
 [node name="Circuitboard" parent="." instance=ExtResource( 6 )]
 position = Vector2( 129.925, 174.727 )
+z_index = -5
 
 [node name="TileMapDetail" type="TileMap" parent="."]
+z_index = -1
 tile_set = ExtResource( 5 )
 cell_size = Vector2( 32, 32 )
 format = 1

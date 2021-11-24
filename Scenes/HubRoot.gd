@@ -114,5 +114,6 @@ func _on_Tween_tween_all_completed():
 	if _visible:
 		player_node.visible = true
 		player_node.disabled = false
+		_current_room.show_circuitboard()
 	else:
 		emit_signal("run_start_entered")

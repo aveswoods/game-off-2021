@@ -9,9 +9,6 @@
 script = ExtResource( 4 )
 player = NodePath("Player")
 
-[node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 449.56, 293.553 )
-
 [node name="Camera2D" type="Camera2D" parent="."]
 smoothing_enabled = true
 smoothing_speed = 8.0
@@ -20,6 +17,9 @@ smoothing_speed = 8.0
 
 [node name="RoomRunPortal" parent="." instance=ExtResource( 3 )]
 position = Vector2( 320, -320 )
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 448.088, 341.8 )
 
 [node name="Tween" type="Tween" parent="."]
 

@@ -89,6 +89,8 @@ func show_room(delay : float = 0.0):
 	_tween.start()
 
 func hide_room(delay : float = 0.0):
+	if _circuitboard != null:
+		_circuitboard.modulate = Color(1.0, 1.0, 1.0, 0.0)
 	_tween.interpolate_property(
 		self,
 		"modulate",
@@ -100,6 +102,19 @@ func hide_room(delay : float = 0.0):
 		delay
 	)
 	_tween.start()
+
+func show_circuitboard():
+	if _circuitboard != null:
+		_tween.interpolate_property(
+			_circuitboard,
+			"modulate",
+			Color(1.0, 1.0, 1.0, 0.0),
+			Color(1.0, 1.0, 1.0, 1.0),
+			1.5,
+			Tween.TRANS_QUAD,Tween.EASE_IN_OUT
+		)
+	_tween.start()
+
 
 
 func set_player(player):
