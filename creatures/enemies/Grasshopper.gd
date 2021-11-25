@@ -10,8 +10,6 @@ const jump_gravity_acceleration = 0.05
 const bump_absorbance = 0.1
 var facing_direction = 1
 var _damaged = false
-var _stunned = false
-var _dead = false
 
 var _jumping = false
 var _in_air = false
@@ -58,7 +56,7 @@ func _physics_process(delta):
 		pass
 	# Standard behavior
 	else:
-		if not _stunned and not _damaged:
+		if not stunned and not _damaged:
 			_idle_time -= delta
 			if _jumping:
 				if _in_air:
@@ -93,7 +91,7 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 		"land":
 			_animation_player.play("idle")
 		"damaged":
-			if not _stunned:
+			if not stunned:
 				_animation_player.play("idle")
 			_damaged = false
 
@@ -107,7 +105,7 @@ func _on_Grasshopper_damaged():
 func _on_Grasshopper_stunned():
 	_hitbox.monitoring = false
 	_sprite.animate_stun()
-	_stunned = true
+	stunned = true
 	_jumping = false
 	_animation_player.play("damaged")
 
@@ -115,14 +113,14 @@ func _on_Grasshopper_stunned():
 func _on_Grasshopper_unstunned():
 	_hitbox.monitoring = true
 	_sprite.animate_unstun()
-	_stunned = false
+	stunned = false
 	_animation_player.play("idle")
 	_idle_time = 0.5 * (1 + randi() % 2)
 
 
 func _on_Grasshopper_killed(source):
-	if not _dead:
-		_dead = true
+	if not dead:
+		dead = true
 		_hitbox.set_deferred("monitoring", false)
 		_animation_player.play("death")
 	

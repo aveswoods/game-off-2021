@@ -16,6 +16,8 @@ var _stun_timer = Timer.new()
 var hp = 0
 var flying = false
 var invincible = false
+var stunned = false
+var dead = false
 var controlled = false
 var disabled = false
 enum death_source {
@@ -42,9 +44,10 @@ func bump(impulse: Vector2):
 
 
 func stun(time: float):
-	emit_signal("stunned")
-	_stun_timer.wait_time = time
-	_stun_timer.start()
+	if not dead:
+		emit_signal("stunned")
+		_stun_timer.wait_time = time
+		_stun_timer.start()
 
 
 func take_damage(amount : int, source = death_source.ERASE):

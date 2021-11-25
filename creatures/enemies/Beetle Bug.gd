@@ -12,8 +12,6 @@ const bump_absorbance = 1
 const slow_acceleration = 0.95
 var facing_direction = 1
 var _damaged = false
-var _stunned = false
-var _dead = false
 
 var _charging = false
 var _walking = false
@@ -81,7 +79,7 @@ func _physics_process(delta):
 			
 	# Standard behavior
 	else:
-		if not _stunned:
+		if not stunned:
 			if _charging:
 				movement_velocity = Vector2(facing_direction * charge_speed, 0)
 			elif not _damaged:
@@ -117,7 +115,7 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 			_charging = true
 			bump(Vector2(facing_direction * charge_speed / 4.0, 0))
 		"damaged":
-			if not _stunned:
+			if not stunned:
 				_animation_player.play("RESET")
 			_damaged = false
 
@@ -163,7 +161,7 @@ func _on_Beetle_Bug_damaged():
 func _on_Beetle_Bug_stunned():
 	_hitbox.monitoring = false
 	_sprite.animate_stun()
-	_stunned = true
+	stunned = true
 	_walking = false
 	_stop_charging()
 	_animation_player.play("damaged")
@@ -173,12 +171,12 @@ func _on_Beetle_Bug_unstunned():
 	_hitbox.monitoring = true
 	_sprite.animate_unstun()
 	_animation_player.play("RESET")
-	_stunned = false
+	stunned = false
 
 
 func _on_Beetle_Bug_killed(source):
-	if not _dead:
-		_dead = true
+	if not dead:
+		dead = true
 		_hitbox.set_deferred("monitoring", false)
 		_animation_player.play("death")
 	

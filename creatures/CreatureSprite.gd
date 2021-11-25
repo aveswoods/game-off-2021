@@ -96,7 +96,35 @@ func animate_big_explode():
 	_tween.start()
 
 func animate_fade_away():
-	emit_signal("finished_death_animation")
+	_death_animation_timer.wait_time = 1.5
+	_death_animation_timer.start()
+	_tween.interpolate_method(
+		self,
+		"_set_shader_overlay",
+		Color(1.0, 1.0, 1.0, 0.0),
+		Color(1.0, 1.0, 1.0, 1.0),
+		1.0,
+		Tween.TRANS_LINEAR
+	)
+	_tween.interpolate_method(
+		self,
+		"_set_shader_transparency",
+		1.0,
+		0.0,
+		0.75,
+		Tween.TRANS_EXPO,Tween.EASE_IN,
+		0.75
+	)
+	_tween.interpolate_property(
+		self,
+		"scale",
+		Vector2(1, 1),
+		Vector2(3, 3),
+		0.5,
+		Tween.TRANS_BACK,Tween.EASE_IN,
+		1.0
+	)
+	_tween.start()
 
 func animate_disintegrate():
 	emit_signal("finished_death_animation")

@@ -28,6 +28,7 @@ func _on_HubRoot_run_start_entered():
 	# Equip starting item to add ability paths to item pool
 	Items.set_player(_run_root.player_node)
 	Items.equip_item("bite")
+	Items.equip_item("stun")
 	
 	var start_time = OS.get_ticks_usec()
 	_run_root.call_deferred("setup_run")

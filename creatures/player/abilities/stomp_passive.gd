@@ -4,7 +4,7 @@ onready var _impact_particles = $ImpactParticles
 
 var stomp_damage = 0
 var stomp_enemy_impulse = Vector2(0, 30)
-var stun_time = 4
+var stun_time = 6
 var _player = null
 
 

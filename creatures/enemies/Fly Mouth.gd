@@ -11,8 +11,6 @@ const fly_speed = 180
 const bump_absorbance = 0.1
 var facing_direction = 1
 var _damaged = false
-var _stunned = false
-var _dead = false
 
 var _walking = false
 var _idle_time = 0
@@ -77,7 +75,7 @@ func _physics_process(delta):
 				_animation_player.play("walk")
 	# Standard behavior
 	else:
-		if not _stunned and not _damaged:
+		if not stunned and not _damaged:
 			if _target != null:
 				var target_displacement = _target.global_position - global_position
 				movement_velocity = fly_speed * target_displacement.normalized()
@@ -132,7 +130,7 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 			else:
 				_animation_player.play("idle")
 		"damaged":
-			if not _stunned:
+			if not stunned:
 				if _target != null:
 					_animation_player.play("walk")
 				else:
@@ -158,7 +156,7 @@ func _on_Fly_Mouth_damaged():
 func _on_Fly_Mouth_stunned():
 	_hitbox.monitoring = false
 	_sprite.animate_stun()
-	_stunned = true
+	stunned = true
 	_walking = false
 	_animation_player.play("damaged")
 
@@ -170,12 +168,12 @@ func _on_Fly_Mouth_unstunned():
 		_animation_player.play("walk")
 	else:
 		_animation_player.play("idle")
-	_stunned = false
+	stunned = false
 
 
 func _on_Fly_Mouth_killed(source):
-	if not _dead:
-		_dead = true
+	if not dead:
+		dead = true
 		_hitbox.set_deferred("monitoring", false)
 		_animation_player.play("death")
 	

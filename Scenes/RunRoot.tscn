@@ -1,11 +1,18 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scenes/RunRoot.gd" type="Script" id=1]
+[ext_resource path="res://UI/Health/HeartHUD.tscn" type="PackedScene" id=2]
 [ext_resource path="res://creatures/player/Player.tscn" type="PackedScene" id=3]
 
 [node name="RunRoot" type="Node2D"]
 script = ExtResource( 1 )
 player = NodePath("Player")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HeartHUD" parent="CanvasLayer" instance=ExtResource( 2 )]
+margin_right = 10.0
+margin_bottom = 10.0
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 
@@ -15,5 +22,6 @@ smoothing_speed = 8.0
 
 [node name="Tween" type="Tween" parent="."]
 
+[connection signal="damaged" from="Player" to="." method="_on_Player_damaged"]
 [connection signal="killed" from="Player" to="." method="_on_Player_killed"]
 [connection signal="tween_all_completed" from="Tween" to="." method="_on_Tween_tween_all_completed"]
