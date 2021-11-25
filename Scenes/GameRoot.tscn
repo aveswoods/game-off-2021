@@ -7,16 +7,13 @@
 [node name="GameRoot" type="Node"]
 script = ExtResource( 2 )
 
-[node name="BackgroundColor" type="ColorRect" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color( 0.152941, 0.137255, 0.164706, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="RunRoot" parent="." instance=ExtResource( 1 )]
 
 [node name="HubRoot" parent="." instance=ExtResource( 3 )]
 
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="player_killed" from="RunRoot" to="." method="_on_RunRoot_player_killed"]
 [connection signal="run_start_entered" from="HubRoot" to="." method="_on_HubRoot_run_start_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

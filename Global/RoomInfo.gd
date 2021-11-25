@@ -21,6 +21,27 @@ const room_dict_template = {
 }
 
 const rooms = {
+	"start_north": {
+		"room": preload("res://Scenes/Rooms/Run/room_start_north.tscn"),
+		"extents": Vector2(12, 9),
+		"south_door_pos": Vector2(5, 8)
+	},
+	"start_east": {
+		"room": preload("res://Scenes/Rooms/Run/room_start_east.tscn"),
+		"extents": Vector2(12, 7),
+		"west_door_pos": Vector2(0, 3)
+	},
+	"start_south": {
+		"room": preload("res://Scenes/Rooms/Run/room_start_south.tscn"),
+		"extents": Vector2(12, 9),
+		"north_door_pos": Vector2(5, 0)
+	},
+	"start_west": {
+		"room": preload("res://Scenes/Rooms/Run/room_start_west.tscn"),
+		"extents": Vector2(12, 7),
+		"east_door_pos": Vector2(11, 3)
+	},
+	
 	"item_north": {
 		"room": preload("res://Scenes/Rooms/Run/room_item_north.tscn"),
 		"extents": Vector2(14, 12),
@@ -188,6 +209,20 @@ const deadends = [
 	"item_west"
 ]
 
+# Rooms that the run begins in
+const starting_rooms = [
+	"start_north",
+	"start_east",
+	"start_south",
+	"start_west"
+]
+
+
+static func get_random_starting_room():
+	var room_id = starting_rooms[randi() % starting_rooms.size()]
+	return rooms[room_id].duplicate()
+
+
 # Gets a random room dict. The room will have a door in the specified direction.
 # direction: the "going to" direction; (N, E, S, W) = (0, 1, 2, 3)
 # type: (deadend, hallway, branch, boss) = (0, 1, 2)
@@ -215,6 +250,5 @@ static func get_random_room(direction : int, type : int):
 			2:
 				if is_branch:
 					valid_room = true
-	#print("Picked room id " + str(room_id))
 	
 	return rooms[room_id].duplicate()

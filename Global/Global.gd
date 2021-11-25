@@ -10,6 +10,9 @@ onready var _viewport = get_viewport()
 # Allows for slowdown of flow of time for everything except for the player
 var time_multiplier = 1.0
 
+# Additional upgrades
+var bonus_hp = 0
+
 
 func _ready() -> void:
 	# Set up screen resize connection

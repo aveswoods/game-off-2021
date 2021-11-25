@@ -5,6 +5,7 @@ signal collided_with_wall
 signal collided_with_floor
 signal collided_with_ceiling
 signal damaged
+signal killed
 
 # Scene variables
 onready var animation_tree = $AnimationTree
@@ -16,6 +17,7 @@ onready var _stun_timer = $StunTimer
 
 # Game variables
 var hp = 0
+const base_hp = 3
 const _jump_forgiveness_time = 0.1 # Time after leaving a platform that the player can still jump
 var _air_time = _jump_forgiveness_time # Time that the player is in the air
 var action1_script = null
@@ -62,8 +64,13 @@ func take_damage(damage, _source):
 	invincible = true
 	_invincibility_timer.start()
 	
-	print("Player damaged!")
-	emit_signal("damaged")
+	if hp > 0:
+		animation_tree.set("parameters/OneShot 3/active", true)
+		emit_signal("damaged")
+	elif not input_disabled:
+		animation_tree.set("parameters/death_state/current", 1)
+		input_disabled = true
+		emit_signal("killed")
 
 
 func is_facing_left():
@@ -71,6 +78,9 @@ func is_facing_left():
 
 func is_on_floor():
 	return _is_on_floor
+
+func reset():
+	animation_tree.set("parameters/death_state/current", 0)
 
 
 func _ready():

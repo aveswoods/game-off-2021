@@ -20,7 +20,7 @@ onready var _tween = $Tween
 var changing_rooms = false
 var changing_velocity = Vector2.ZERO
 
-#export(Vector2) var player_start_location = Vector2.ZERO
+export(Vector2) var player_start_location = Vector2.ZERO
 # Adjacent rooms are Scenes, Doorways are Area2Ds, where if the player enters them, the camera is
 # moved to the next room
 var north_adjacent_room = null

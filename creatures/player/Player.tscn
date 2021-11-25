@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://creatures/player/Player.gd" type="Script" id=2]
 [ext_resource path="res://creatures/player/frames/bbaa.png" type="Texture" id=6]
@@ -236,12 +236,27 @@ animation = "bite"
 [sub_resource type="AnimationNodeAnimation" id=13]
 animation = "shoot"
 
+[sub_resource type="AnimationNodeAnimation" id=23]
+animation = "damaged"
+
+[sub_resource type="AnimationNodeAnimation" id=26]
+animation = "death"
+
 [sub_resource type="AnimationNodeAnimation" id=14]
 animation = "idle"
 
 [sub_resource type="AnimationNodeOneShot" id=15]
 
+[sub_resource type="AnimationNodeOneShot" id=24]
+
 [sub_resource type="AnimationNodeOneShot" id=16]
+
+[sub_resource type="AnimationNodeTransition" id=25]
+input_count = 2
+input_0/name = "alive"
+input_0/auto_advance = true
+input_1/name = "dead"
+input_1/auto_advance = false
 
 [sub_resource type="AnimationNodeTransition" id=17]
 input_count = 2
@@ -265,7 +280,7 @@ input_1/name = "run"
 input_1/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=20]
-graph_offset = Vector2( 466.869, 48.0333 )
+graph_offset = Vector2( 395.997, 49 )
 nodes/Animation/node = SubResource( 14 )
 nodes/Animation/position = Vector2( -702, -221 )
 "nodes/Animation 2/node" = SubResource( 9 )
@@ -278,18 +293,26 @@ nodes/Animation/position = Vector2( -702, -221 )
 "nodes/Animation 5/position" = Vector2( 494, 312 )
 "nodes/Animation 6/node" = SubResource( 13 )
 "nodes/Animation 6/position" = Vector2( -416, 117 )
+"nodes/Animation 7/node" = SubResource( 23 )
+"nodes/Animation 7/position" = Vector2( 1160, 400 )
+"nodes/Animation 8/node" = SubResource( 26 )
+"nodes/Animation 8/position" = Vector2( 900, 300 )
 nodes/OneShot/node = SubResource( 16 )
 nodes/OneShot/position = Vector2( 700, 120 )
 "nodes/OneShot 2/node" = SubResource( 15 )
 "nodes/OneShot 2/position" = Vector2( 26, -65 )
+"nodes/OneShot 3/node" = SubResource( 24 )
+"nodes/OneShot 3/position" = Vector2( 1380, 120 )
+nodes/death_state/node = SubResource( 25 )
+nodes/death_state/position = Vector2( 1140, 120 )
 nodes/in_air/node = SubResource( 17 )
 nodes/in_air/position = Vector2( 13, 351 )
 nodes/in_air_state/node = SubResource( 18 )
 nodes/in_air_state/position = Vector2( 455, 65 )
 nodes/movement/node = SubResource( 19 )
 nodes/movement/position = Vector2( -351, -169 )
-nodes/output/position = Vector2( 949, 26 )
-node_connections = [ "output", 0, "OneShot", "OneShot 2", 0, "movement", "OneShot 2", 1, "Animation 6", "in_air", 0, "Animation 4", "in_air", 1, "Animation 3", "in_air_state", 0, "OneShot 2", "in_air_state", 1, "in_air", "movement", 0, "Animation", "movement", 1, "Animation 2", "OneShot", 0, "in_air_state", "OneShot", 1, "Animation 5" ]
+nodes/output/position = Vector2( 1640, 120 )
+node_connections = [ "output", 0, "OneShot 3", "death_state", 0, "OneShot", "death_state", 1, "Animation 8", "OneShot 3", 0, "death_state", "OneShot 3", 1, "Animation 7", "movement", 0, "Animation", "movement", 1, "Animation 2", "OneShot 2", 0, "movement", "OneShot 2", 1, "Animation 6", "OneShot", 0, "in_air_state", "OneShot", 1, "Animation 5", "in_air_state", 0, "OneShot 2", "in_air_state", 1, "in_air", "in_air", 0, "Animation 4", "in_air", 1, "Animation 3" ]
 
 [node name="Player" type="KinematicBody2D" groups=["player"]]
 process_priority = 10
@@ -351,6 +374,8 @@ anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/OneShot/active = false
 "parameters/OneShot 2/active" = false
+"parameters/OneShot 3/active" = false
+parameters/death_state/current = 0
 parameters/in_air/current = 1
 parameters/in_air_state/current = 0
 parameters/movement/current = 0

@@ -1,0 +1,44 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Scenes/Rooms/room_base.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Tilemaps/TileMap_Floor.tres" type="TileSet" id=2]
+[ext_resource path="res://Scenes/Rooms/Doorway.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Rooms/Teleporter.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/Tilemaps/TileMap_Detail.tres" type="TileSet" id=5]
+
+[node name="Room" type="Node2D"]
+script = ExtResource( 1 )
+player_start_location = Vector2( 192, 176 )
+north_doorway = NodePath("Doorway")
+
+[node name="TileMapDetail" type="TileMap" parent="."]
+z_index = -1
+tile_set = ExtResource( 5 )
+cell_size = Vector2( 32, 32 )
+format = 1
+tile_data = PoolIntArray( 5, 0, 458752, 6, 0, 458752, 65538, 0, 327684, 65539, 0, 458752, 65540, 0, 196619, 65541, 0, 458752, 65542, 0, 458752, 65543, 0, 458752, 65544, 0, 458752, 65545, 0, 327685, 131074, 0, 327684, 131075, 0, 131085, 131076, 0, 65550, 131077, 0, 65548, 131078, 0, 458752, 131079, 0, 65546, 131080, 0, 458752, 131081, 0, 393221, 196610, 0, 327684, 196611, 0, 196622, 196612, 0, 65549, 196615, 0, 131082, 196616, 0, 131084, 196617, 0, 262149, 262146, 0, 393220, 262147, 0, 458752, 262148, 0, 196620, 262149, 0, 393216, 262150, 0, 393218, 262151, 0, 131082, 262152, 0, 131081, 262153, 0, 393221, 327683, 0, 196619, 327684, 0, 458752, 327685, 0, 393216, 327686, 0, 393218, 327687, 0, 196618, 327688, 0, 458752, 393219, 0, 393229, 393220, 0, 458752, 393221, 0, 393216, 393222, 0, 393218, 393223, 0, 393227, 393224, 0, 393228, 458758, 0, 393218 )
+
+[node name="TileMapFloor" type="TileMap" parent="."]
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 32, 32 )
+collision_layer = 7
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( 0, 0, 0, 1, 0, 196611, 2, 0, 196609, 3, 0, 196609, 4, 0, 196610, 7, 0, 196608, 8, 0, 196609, 9, 0, 196609, 10, 0, 196611, 11, 0, 2, 65536, 0, 65536, 65537, 0, 65538, 65546, 0, 65536, 65547, 0, 65538, 131072, 0, 65536, 131073, 0, 65538, 131082, 0, 65536, 131083, 0, 65538, 196608, 0, 65536, 196609, 0, 65538, 196613, 0, 196608, 196614, 0, 196610, 196618, 0, 65536, 196619, 0, 65538, 262144, 0, 65536, 262145, 0, 65538, 262154, 0, 65536, 262155, 0, 65538, 327680, 0, 65536, 327681, 0, 65540, 327682, 0, 2, 327689, 0, 0, 327690, 0, 65541, 327691, 0, 65538, 393216, 0, 65536, 393217, 0, 65537, 393218, 0, 65538, 393225, 0, 65536, 393226, 0, 65537, 393227, 0, 65538, 458752, 0, 65536, 458753, 0, 65537, 458754, 0, 65540, 458755, 0, 1, 458756, 0, 1, 458757, 0, 1, 458758, 0, 1, 458759, 0, 1, 458760, 0, 1, 458761, 0, 65541, 458762, 0, 65537, 458763, 0, 65538, 524288, 0, 131072, 524289, 0, 131073, 524290, 0, 131073, 524291, 0, 131073, 524292, 0, 131073, 524293, 0, 131073, 524294, 0, 131073, 524295, 0, 131073, 524296, 0, 131073, 524297, 0, 131073, 524298, 0, 131073, 524299, 0, 131074 )
+
+[node name="RoomChangeTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Teleporter" parent="." instance=ExtResource( 4 )]
+position = Vector2( 192, 192 )
+z_index = -1
+disabled = true
+
+[node name="Doorway" parent="." instance=ExtResource( 3 )]
+position = Vector2( 192, 8 )
+rotation = 3.14159
+
+[connection signal="timeout" from="RoomChangeTimer" to="." method="_on_RoomChangeTimer_timeout"]

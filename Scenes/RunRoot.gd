@@ -1,5 +1,7 @@
 extends Node2D
 
+signal player_killed
+
 const door_open_space = Vector2(30, 20)
 
 var _current_room = null
@@ -10,8 +12,6 @@ onready var _camera = $Camera2D
 onready var _tween = $Tween
 var _visible = false
 
-enum starting_doors {NORTH, EAST, SOUTH, WEST}
-
 
 func start():
 	# Make player active
@@ -21,6 +21,7 @@ func start():
 	player_node.visible = true
 	player_node.disabled = false
 	player_node.input_disabled = true
+	player_node.hp = player_node.base_hp + Global.bonus_hp
 	# Make scene visible
 	_visible = true
 	_current_room.set_player(player_node)
@@ -43,25 +44,20 @@ func start():
 
 
 func stop():
-	player_node.set_collision_layer_bit(0, false)
-	player_node.set_collision_mask_bit(0, false)
-	player_node.set_collision_mask_bit(1, false)
-	player_node.visible = false
-	player_node.disabled = true
 	_visible = false
 	_tween.interpolate_property(
 		self,
 		"modulate",
 		Color(1.0, 1.0, 1.0, 1.0),
 		Color(1.0, 1.0, 1.0, 0.0),
-		1.0,
+		2.0,
 		Tween.TRANS_LINEAR,Tween.EASE_IN,
-		0.5
+		2.0
 	)
 	_tween.start()
 
 
-func setup_run(starting_door : int):
+func setup_run():
 	# Generate first room with correct starting door
 	# Place adjacent rooms, breadth first, avoiding overlaps
 	# Only "branch" three times
@@ -77,8 +73,8 @@ func setup_run(starting_door : int):
 	var branching_room2 = branching_room1 + int(max_rooms / 3) + randi() % 2 # Rooms left until it branches
 	
 	# Set up first room
-	rooms.append(RoomInfo.get_random_room(starting_door, 1)) # Get hallway room from the correct direction
-	rooms[0].previous_direction = starting_door
+	rooms.append(RoomInfo.get_random_starting_room())
+	rooms[0].previous_direction = -1
 	rooms[0].position = Vector2(0, 0)
 	for i in rooms[0].extents.x:
 		for j in rooms[0].extents.y:
@@ -94,14 +90,9 @@ func setup_run(starting_door : int):
 	
 	# Close appropriate door
 	_current_room.open_doorways()
-	_current_room.close_doorway((starting_door + 2) % 4)
 	
 	# Add player to correct spot
-	match starting_door:
-		0: player_node.position = 32 * (rooms[0].south_door_pos + Vector2(0, -1))
-		1: player_node.position = 32 * (rooms[0].west_door_pos + Vector2(1, 0))
-		2: player_node.position = 32 * (rooms[0].north_door_pos + Vector2(0, 1))
-		3: player_node.position = 32 * (rooms[0].east_door_pos + Vector2(-1, 0))
+	player_node.position = _current_room.player_start_location
 	
 	# Loop through the remaining rooms
 	# For every case in this loop, all elements of rooms are rooms that have been added to the scene
@@ -411,7 +402,7 @@ func setup_run(starting_door : int):
 		for room in _loaded_rooms:
 			remove_child(room)
 		_loaded_rooms = []
-		setup_run(starting_door)
+		setup_run()
 
 
 func _ready():
@@ -555,6 +546,17 @@ func _on_Tween_tween_all_completed():
 	if _visible:
 		player_node.input_disabled = false
 	else:
+		player_node.set_collision_layer_bit(0, false)
+		player_node.set_collision_mask_bit(0, false)
+		player_node.set_collision_mask_bit(1, false)
+		player_node.visible = false
+		player_node.disabled = true
+		player_node.reset()
+		
 		for room in _loaded_rooms:
 			remove_child(room)
 		_loaded_rooms = []
+
+
+func _on_Player_killed():
+	emit_signal("player_killed")

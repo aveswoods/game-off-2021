@@ -31,7 +31,7 @@ one_shot = true
 [node name="Tween" type="Tween" parent="."]
 
 [node name="Teleporter" parent="." instance=ExtResource( 4 )]
-position = Vector2( 528, 240 )
+position = Vector2( 528, 224 )
 destination = 1
 
 [node name="Doorway" parent="." instance=ExtResource( 5 )]
@@ -48,10 +48,10 @@ __meta__ = {
 }
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="."]
-margin_left = 510.03
-margin_top = 169.361
-margin_right = 550.03
-margin_bottom = 209.361
+margin_left = 513.049
+margin_top = 160.304
+margin_right = 553.049
+margin_bottom = 200.304
 text = "Start Run!"
 __meta__ = {
 "_edit_use_anchors_": false

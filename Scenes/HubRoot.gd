@@ -1,6 +1,6 @@
 extends Node2D
 
-signal run_start_entered()
+signal run_start_entered
 
 onready var _room_hub = $RoomHub
 onready var _room_run_portal = $RoomRunPortal
@@ -31,7 +31,8 @@ func start():
 		Color(1.0, 1.0, 1.0, 0.0),
 		Color(1.0, 1.0, 1.0, 1.0),
 		2.0,
-		Tween.TRANS_LINEAR
+		Tween.TRANS_LINEAR,
+		0.5
 	)
 	_tween.start()
 

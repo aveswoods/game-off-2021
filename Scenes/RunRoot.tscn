@@ -15,4 +15,5 @@ smoothing_speed = 8.0
 
 [node name="Tween" type="Tween" parent="."]
 
+[connection signal="killed" from="Player" to="." method="_on_Player_killed"]
 [connection signal="tween_all_completed" from="Tween" to="." method="_on_Tween_tween_all_completed"]

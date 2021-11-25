@@ -80,12 +80,25 @@ func get_random_item_id_from_pool():
 
 # Sets item pool to the player's default unlocked item pool
 func reset_item_pool():
-	_item_pool = SaveData.item_pool
+	_item_pool = SaveData.item_pool.duplicate()
+
+
+func unequip_all():
+	for id in _equipped_items:
+		var item = ids_to_items[id]
+		item.unequip()
+	
+	_equipped_items.clear()
+	
+	if _player.action1_script != null:
+		_player.action1_script = null
+	if _player.action2_script != null:
+		_player.action2_script = null
 
 
 # Unequips equipped items from current player, and equips them on a new player
 func set_player(player):
-	if _player != null:
+	if _player != null and _player != player:
 		# Transfer items to new player
 		for id in _equipped_items:
 			var item = ids_to_items[id]

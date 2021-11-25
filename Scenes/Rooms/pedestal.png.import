@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/teleporter_temp.png-151f4eeaf4e2a3543c46ee49f9b917ae.stex"
+path="res://.import/pedestal.png-3d2105f93bfdabe4d270ed06c50c6a0d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Rooms/teleporter_temp.png"
-dest_files=[ "res://.import/teleporter_temp.png-151f4eeaf4e2a3543c46ee49f9b917ae.stex" ]
+source_file="res://Scenes/Rooms/pedestal.png"
+dest_files=[ "res://.import/pedestal.png-3d2105f93bfdabe4d270ed06c50c6a0d.stex" ]
 
 [params]
 
