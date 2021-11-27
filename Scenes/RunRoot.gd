@@ -11,6 +11,7 @@ onready var player_node = get_node(player)
 onready var _camera = $Camera2D
 onready var _tween = $Tween
 onready var _heart_hud = $CanvasLayer/HeartHUD
+onready var _active_items_hud = $CanvasLayer/ActiveItemsHUD
 var _visible = false
 
 
@@ -47,6 +48,8 @@ func start():
 func stop():
 	_visible = false
 	_heart_hud.close()
+	_active_items_hud.close()
+	_active_items_hud.remove_items()
 	_tween.interpolate_property(
 		self,
 		"modulate",
@@ -549,6 +552,7 @@ func _on_Tween_tween_all_completed():
 		player_node.input_disabled = false
 		# Spawn hearts in HUD
 		_heart_hud.spawn_and_animate_hearts(player_node.hp)
+		_active_items_hud.open()
 	else:
 		player_node.set_collision_layer_bit(0, false)
 		player_node.set_collision_mask_bit(0, false)

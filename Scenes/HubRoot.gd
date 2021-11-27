@@ -1,9 +1,14 @@
 extends Node2D
 
 signal run_start_entered
+signal item_selected(item_id)
 
 onready var _room_hub = $RoomHub
 onready var _room_run_portal = $RoomRunPortal
+onready var _red_pedestal = $RoomRunPortal/StartingPedestalRed
+onready var _green_pedestal = $RoomRunPortal/StartingPedestalGreen
+onready var _blue_pedestal = $RoomRunPortal/StartingPedestalBlue
+onready var _run_teleporter = $RoomRunPortal/Teleporter
 onready var _tween = $Tween
 export(NodePath) var player = null
 onready var player_node = get_node(player)
@@ -14,6 +19,7 @@ var _current_room = null
 var _visible = false
 
 func start():
+	_run_teleporter.disable()
 	_room_hub.enable_collisions()
 	_room_hub.set_player(player_node)
 	_room_hub.modulate = Color(1.0, 1.0, 1.0, 1.0)
@@ -60,10 +66,16 @@ func stop():
 
 
 func _ready():
+	# Connect rooms
 	_room_hub.north_adjacent_room_instance = _room_run_portal
 	_room_hub.open_doorways()
 	_room_run_portal.south_adjacent_room_instance = _room_hub
 	_room_run_portal.open_doorways()
+	
+	# Listen for signals of items selected
+	_red_pedestal.connect("selected", self, "_on_item_selected")
+	_green_pedestal.connect("selected", self, "_on_item_selected")
+	_blue_pedestal.connect("selected", self, "_on_item_selected")
 	
 	_room_hub.disable_collisions()
 	_room_hub.remove_player()
@@ -104,6 +116,11 @@ func _on_RoomRunPortal_teleported(_destination):
 
 func _on_room_changed(new_room):
 	_current_room = new_room
+
+
+func _on_item_selected(item_id):
+	_run_teleporter.enable()
+	emit_signal("item_selected", item_id)
 
 
 func _physics_process(_delta):

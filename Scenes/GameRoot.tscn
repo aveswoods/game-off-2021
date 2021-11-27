@@ -15,5 +15,6 @@ script = ExtResource( 2 )
 one_shot = true
 
 [connection signal="player_killed" from="RunRoot" to="." method="_on_RunRoot_player_killed"]
+[connection signal="item_selected" from="HubRoot" to="." method="_on_HubRoot_item_selected"]
 [connection signal="run_start_entered" from="HubRoot" to="." method="_on_HubRoot_run_start_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

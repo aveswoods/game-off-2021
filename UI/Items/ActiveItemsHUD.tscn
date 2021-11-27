@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://UI/Items/ActiveItemBox.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Fonts/Pizel.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://UI/Items/ActiveItemsHUD.gd" type="Script" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+font_data = ExtResource( 2 )
+
+[node name="ActiveItemsHUD" type="Control"]
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ActiveItemBox1" parent="." instance=ExtResource( 1 )]
+position = Vector2( -84, 6 )
+
+[node name="ActiveItemBox2" parent="." instance=ExtResource( 1 )]
+position = Vector2( -42, 6 )
+
+[node name="Label1" type="RichTextLabel" parent="."]
+margin_left = -70.0
+margin_top = 48.0
+margin_right = -50.0
+margin_bottom = 68.0
+custom_fonts/normal_font = SubResource( 1 )
+text = "Z"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="RichTextLabel" parent="."]
+margin_left = -28.0
+margin_top = 48.0
+margin_right = -8.0
+margin_bottom = 68.0
+custom_fonts/normal_font = SubResource( 1 )
+text = "X"
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -11,13 +11,14 @@ func equip(player):
 	_player = player
 	_player.add_child(self)
 	_gliding = false
+	
+	_player.connect("collided_with_floor", self, "_on_player_hits_floor")
 func unequip():
+	if _player.is_connected("collided_with_floor", self, "_on_player_hits_floor"):
+		_player.disconnect("collided_with_floor", self, "_on_player_hits_floor")
+	
 	_player.remove_child(self)
 	_player = null
-
-
-func _ready():
-	_player.connect("collided_with_floor", self, "_on_player_hits_floor")
 
 
 func _physics_process(_delta):

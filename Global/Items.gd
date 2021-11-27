@@ -31,6 +31,12 @@ var ids_to_items = {
 	"walljump": walljump_passive
 }
 
+var ids_to_sprites = {
+	"bite": preload("res://creatures/player/abilities/frames/Bite.tscn"),
+	"stun": preload("res://creatures/player/abilities/frames/Stun.tscn")
+}
+
+
 const active_items = [
 	"bite",
 	"blue",
@@ -53,14 +59,22 @@ var _item_pool = []
 var _player = null
 
 
+func is_active(item_id):
+	return item_id in active_items
+
+
 # Adds item to the equipped_items array, removes it from the item pool, and adds new items to the pool
-func equip_item(item_id : String):
+# If it is an action, it equips it to the action button specified. This only matters when the item is an action
+func equip_item(item_id : String, action : int = 1):
 	var item = ids_to_items[item_id]
 	# Equip it to player
 	item.equip(_player)
 	# Make it an action if applicable
 	if item_id in active_items:
-		_player.action1_script = item
+		if action == 1:
+			_player.action1_script = item
+		else:
+			_player.action2_script = item
 	# Add to equipped items
 	_equipped_items.append(item_id)
 	# Take out of item pool
@@ -76,6 +90,13 @@ func get_random_item_id_from_pool():
 		return ""
 	else:
 		return _item_pool[randi() % _item_pool.size()]
+
+
+func get_item_sprite(item_id):
+	if ids_to_sprites.has(item_id):
+		return ids_to_sprites[item_id].instance()
+	else:
+		return null
 
 
 # Sets item pool to the player's default unlocked item pool

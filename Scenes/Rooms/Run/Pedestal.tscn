@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://white_square.png" type="Texture" id=1]
-[ext_resource path="res://Scenes/Rooms/pedestal.png" type="Texture" id=2]
-[ext_resource path="res://Scenes/Rooms/Pedestal.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/Rooms/Run/pedestal.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/Rooms/Run/Pedestal.gd" type="Script" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 24, 3 )
@@ -24,9 +24,9 @@ shape = SubResource( 1 )
 
 [node name="ItemArea" type="Area2D" parent="."]
 position = Vector2( 0, -16 )
+collision_layer = 0
 monitoring = false
 monitorable = false
-collision_layer = 0
 
 [node name="ItemSprite" type="Sprite" parent="ItemArea"]
 visible = false
