@@ -1,6 +1,6 @@
 extends Control
 
-signal active_slot_picked(slot_num)
+signal active_slot_picked(item_id, slot_num)
 signal opened
 signal closed
 
@@ -14,12 +14,14 @@ onready var _tween = $Tween
 const active_text = "[center]Press Z or X to place in an active item slot[/center]"
 const passive_text = "[center]Press Z or X to continue[/center]"
 
+var _item_id = ""
 var _active_item = false
 var _open = false
 var _tweening = false
 
 
 func open(item_id : String, active_item : bool = false):
+	_item_id = item_id
 	_active_item = active_item
 	
 	# Set item
@@ -194,12 +196,12 @@ func _process(_delta):
 			close()
 			_open = false
 			if _active_item:
-				emit_signal("active_slot_picked", 1)
+				emit_signal("active_slot_picked", _item_id, 1)
 		elif Input.is_action_just_pressed("ui_select"):
 			close()
 			_open = false
 			if _active_item:
-				emit_signal("active_slot_picked", 2)
+				emit_signal("active_slot_picked", _item_id, 2)
 
 
 func _on_Tween_tween_all_completed():

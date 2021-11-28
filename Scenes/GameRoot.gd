@@ -19,9 +19,17 @@ func _ready():
 	# Connect Item signals with active item HUD
 	Items.connect("recharging", self, "_on_active_item_recharging")
 	Items.connect("charged", self, "_on_active_item_charged")
+	Items.connect("equipped", self, "_on_item_equipped")
 	
 	_current_root = "hub"
 	_hub_root.start()
+
+
+func _on_item_equipped(item_id):
+	var is_active = Items.is_active(item_id)
+	_item_display_hud.open(item_id, is_active)
+	if not is_active:
+		Items.equip_item(item_id)
 
 
 func _on_active_item_recharging(action_num):
@@ -39,7 +47,7 @@ func _on_active_item_charged(action_num):
 
 func _on_HubRoot_item_selected(item_id):
 	_starting_item_selected = item_id
-	_item_display_hud.open(item_id, Items.is_active(item_id))
+	_item_display_hud.open(item_id)
 	print("equipped " + str(item_id))
 
 
@@ -57,10 +65,6 @@ func _on_HubRoot_run_start_entered():
 	# Add it to HUD box 1, if applicable
 	if Items.is_active(_starting_item_selected):
 		_run_active_item_hud.set_item(1, _starting_item_selected)
-	
-	# FOR TESTING
-	Items.equip_item("mindcontrol", 2)
-	_run_active_item_hud.set_item(2, "mindcontrol")
 	
 	
 	var start_time = OS.get_ticks_usec()
@@ -96,3 +100,9 @@ func _on_ItemDisplayHUD_closed():
 			_hub_root.player_node.input_disabled = false
 		"run":
 			_run_root.player_node.input_disabled = false
+
+
+func _on_ItemDisplayHUD_active_slot_picked(item_id, slot_num):
+	if _current_root == "run":
+		Items.equip_item(item_id, slot_num)
+		_run_active_item_hud.set_item(slot_num, item_id)

@@ -16,14 +16,14 @@ collision_mask = 3
 collide_with_areas = true
 
 [node name="RayCastCenter" type="RayCast2D" parent="."]
-position = Vector2( 0, -5 )
+position = Vector2( 0, -4 )
 enabled = true
 cast_to = Vector2( 100000, 0 )
 collision_mask = 3
 collide_with_areas = true
 
 [node name="RayCastBottom" type="RayCast2D" parent="."]
-position = Vector2( 0, 10 )
+position = Vector2( 0, 12 )
 enabled = true
 cast_to = Vector2( 100000, 0 )
 collision_mask = 3
@@ -32,7 +32,6 @@ collide_with_areas = true
 [node name="DamageParticles" parent="." instance=ExtResource( 2 )]
 emitting = false
 one_shot = true
-local_coords = false
 
 [node name="FireParticles" type="CPUParticles2D" parent="."]
 position = Vector2( 14, -18 )

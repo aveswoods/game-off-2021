@@ -2,6 +2,7 @@ extends Node
 
 signal recharging(action_num)
 signal charged(action_num)
+signal equipped(item_id)
 
 # Actions
 var bite_action = load("res://creatures/player/abilities/bite_action.tscn").instance()
@@ -111,6 +112,8 @@ func equip_item(item_id : String, action : int = 1):
 	# Add new items to item pool
 	if pickup_unlocks.has(item_id):
 		_item_pool.append_array(pickup_unlocks[item_id])
+	
+	#emit_signal("equipped", item_id)
 
 
 # Returns the empty string if there are no ids to pick from

@@ -23,7 +23,8 @@ func set_item(item_id):
 
 func _on_ItemArea_body_entered(body):
 	if body.is_in_group("player"):
-		Items.equip_item(_item_id)
 		_item_sprite.visible = false
 		_item_area.set_deferred("monitoring", false)
 		_debug_text.visible = false
+		
+		Items.emit_signal("equipped", _item_id)
