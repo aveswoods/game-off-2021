@@ -19,6 +19,7 @@ var _target = null
 
 func set_target_group(group):
 	_hitbox.target_group = group
+	_target = null
 
 
 func _ready():

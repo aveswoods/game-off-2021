@@ -1,5 +1,8 @@
 extends RayCast2D
 
+signal recharging
+signal charged
+
 onready var _timer = $Timer
 
 var recharge_time = 4
@@ -54,6 +57,7 @@ func _stop_controlling():
 	_timer.start()
 	
 	_is_controlling = false
+	emit_signal("recharging")
 
 
 func _physics_process(_delta):
@@ -69,3 +73,4 @@ func _on_player_damaged():
 
 func _on_Timer_timeout():
 	_can_control = true
+	emit_signal("charged")

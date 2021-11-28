@@ -2,23 +2,44 @@ extends Node
 
 onready var _run_root = $RunRoot
 onready var _run_active_item_hud = $RunRoot/CanvasLayer/ActiveItemsHUD
+onready var _item_display_hud = $CanvasLayer/ItemDisplayHUD
 onready var _hub_root = $HubRoot
 onready var _timer = $Timer
 
 const game_over_timer = 4
 
 var _starting_item_selected = ""
+var _current_root = ""
 
 func _ready():
 	VisualServer.set_default_clear_color(Color("#27232a"))
 	randomize()
 	SaveData.load_data()
 	
+	# Connect Item signals with active item HUD
+	Items.connect("recharging", self, "_on_active_item_recharging")
+	Items.connect("charged", self, "_on_active_item_charged")
+	
+	_current_root = "hub"
 	_hub_root.start()
+
+
+func _on_active_item_recharging(action_num):
+	if action_num == 1:
+		_run_active_item_hud.inactive(action_num)
+	elif action_num == 2:
+		_run_active_item_hud.inactive(action_num)
+
+func _on_active_item_charged(action_num):
+	if action_num == 1:
+		_run_active_item_hud.active(action_num)
+	elif action_num == 2:
+		_run_active_item_hud.active(action_num)
 
 
 func _on_HubRoot_item_selected(item_id):
 	_starting_item_selected = item_id
+	_item_display_hud.open(item_id, Items.is_active(item_id))
 	print("equipped " + str(item_id))
 
 
@@ -37,9 +58,15 @@ func _on_HubRoot_run_start_entered():
 	if Items.is_active(_starting_item_selected):
 		_run_active_item_hud.set_item(1, _starting_item_selected)
 	
+	# FOR TESTING
+	Items.equip_item("mindcontrol", 2)
+	_run_active_item_hud.set_item(2, "mindcontrol")
+	
+	
 	var start_time = OS.get_ticks_usec()
 	_run_root.call_deferred("setup_run")
 	print(str((OS.get_ticks_usec() - start_time) / 1000.0) + " ms")
+	_current_root = "run"
 	_run_root.call_deferred("start")
 
 
@@ -51,4 +78,21 @@ func _on_RunRoot_player_killed():
 
 func _on_Timer_timeout():
 	Items.unequip_all()
+	_current_root = "hub"
 	_hub_root.start()
+
+
+func _on_ItemDisplayHUD_opened():
+	match _current_root:
+		"hub":
+			_hub_root.player_node.input_disabled = true
+		"run":
+			_run_root.player_node.input_disabled = true
+
+
+func _on_ItemDisplayHUD_closed():
+	match _current_root:
+		"hub":
+			_hub_root.player_node.input_disabled = false
+		"run":
+			_run_root.player_node.input_disabled = false

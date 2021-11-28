@@ -1,5 +1,8 @@
 extends Node2D
 
+signal recharging
+signal charged
+
 onready var _timer = $Timer
 
 var _player = null
@@ -30,8 +33,10 @@ func _on_Timer_timeout():
 	if _is_recharging:
 		_can_slow_mo = true
 		_is_recharging = false
+		emit_signal("charged")
 	else:
 		Global.time_multiplier = 1.0
 		_timer.wait_time = recharge_time
 		_timer.start()
 		_is_recharging = true
+		emit_signal("recharging")

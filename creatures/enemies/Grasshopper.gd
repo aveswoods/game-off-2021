@@ -53,7 +53,20 @@ func _jump():
 func _physics_process(delta):
 	# Mind controlled behavior
 	if controlled:
-		pass
+		if Input.is_action_just_pressed("ui_left") and not _jumping:
+			_change_direction(-1)
+		elif Input.is_action_just_pressed("ui_right") and not _jumping:
+			_change_direction(1)
+		if Input.is_action_just_pressed("ui_up"):
+			_animation_player.play("jump")
+			_jumping = true
+		elif Input.is_action_just_released("ui_up") and not _in_air:
+			_animation_player.play("idle")
+			_jumping = false
+		if _jumping:
+			if _in_air:
+				_gravity = lerp(_gravity, 30, jump_gravity_acceleration)
+				gravity = _gravity
 	# Standard behavior
 	else:
 		if not stunned and not _damaged:

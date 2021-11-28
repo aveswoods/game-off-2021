@@ -16,6 +16,19 @@ func remove_items():
 	_box2.remove_item()
 
 
+func inactive(action_num):
+	if action_num == 1:
+		_box1.inactive()
+	elif action_num == 2:
+		_box2.inactive()
+
+func active(action_num):
+	if action_num == 1:
+		_box1.active()
+	elif action_num == 2:
+		_box2.active()
+
+
 func open():
 	modulate = Color(1.0, 1.0, 1.0, 1.0)
 func close():

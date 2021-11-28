@@ -1,5 +1,8 @@
 extends Node
 
+signal recharging(action_num)
+signal charged(action_num)
+
 # Actions
 var bite_action = load("res://creatures/player/abilities/bite_action.tscn").instance()
 var blue_action = load("res://creatures/player/abilities/blue_action.tscn").instance()
@@ -31,9 +34,22 @@ var ids_to_items = {
 	"walljump": walljump_passive
 }
 
-var ids_to_sprites = {
+const ids_to_sprites = {
 	"bite": preload("res://creatures/player/abilities/frames/Bite.tscn"),
-	"stun": preload("res://creatures/player/abilities/frames/Stun.tscn")
+	"stun": preload("res://creatures/player/abilities/frames/Stun.tscn"),
+	"mindcontrol": preload("res://white_square_sprite.tscn") # FOR TESTING
+}
+
+const ids_to_text = {
+	"bite": "[center]Active Item\n\nBite and slice through your enemies.[/center]",
+	"blue": "",
+	"doublejump": "",
+	"glide": "",
+	"lunge": "",
+	"mincontrol": "",
+	"shoot": "",
+	"slowmo": "",
+	"stun": "[center]Passive Item\n\nStomp on enemies to temporarily stun them. Enemies disappear if all in a room are stunned.[/center]"
 }
 
 
@@ -57,7 +73,8 @@ const pickup_unlocks = {
 var _equipped_items = []
 var _item_pool = []
 var _player = null
-
+var _recharge_action_item1 = null
+var _recharge_action_item2 = null
 
 func is_active(item_id):
 	return item_id in active_items
@@ -73,8 +90,20 @@ func equip_item(item_id : String, action : int = 1):
 	if item_id in active_items:
 		if action == 1:
 			_player.action1_script = item
-		else:
+		elif action == 2:
 			_player.action2_script = item
+		
+		# Connect recharging and charged signals if applicable
+		if item.has_signal("recharging") and item.has_signal("charged"):
+			if action == 1:
+				item.connect("recharging", self, "_on_action1_recharging")
+				item.connect("charged", self, "_on_action1_charged")
+				_recharge_action_item1 = item
+			elif action == 2:
+				item.connect("recharging", self, "_on_action2_recharging")
+				item.connect("charged", self, "_on_action2_charged")
+				_recharge_action_item2 = item
+	
 	# Add to equipped items
 	_equipped_items.append(item_id)
 	# Take out of item pool
@@ -99,12 +128,28 @@ func get_item_sprite(item_id):
 		return null
 
 
+func get_item_text(item_id):
+	if ids_to_text.has(item_id):
+		return ids_to_text[item_id]
+	else:
+		return ""
+
+
 # Sets item pool to the player's default unlocked item pool
 func reset_item_pool():
 	_item_pool = SaveData.item_pool.duplicate()
 
 
 func unequip_all():
+	if _recharge_action_item1 != null:
+		_recharge_action_item1.disconnect("recharging", self, "_on_action1_recharging")
+		_recharge_action_item1.disconnect("charged", self, "_on_action1_charged")
+		_recharge_action_item1 = null
+	if _recharge_action_item2 != null:
+		_recharge_action_item2.disconnect("recharging", self, "_on_action2_recharging")
+		_recharge_action_item2.disconnect("charged", self, "_on_action2_charged")
+		_recharge_action_item2 = null
+	
 	for id in _equipped_items:
 		var item = ids_to_items[id]
 		item.unequip()
@@ -133,3 +178,13 @@ func set_player(player):
 				player.action2_script = item
 	
 	_player = player
+
+
+func _on_action1_recharging():
+	emit_signal("recharging", 1)
+func _on_action1_charged():
+	emit_signal("charged", 1)
+func _on_action2_recharging():
+	emit_signal("recharging", 2)
+func _on_action2_charged():
+	emit_signal("charged", 2)
