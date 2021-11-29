@@ -28,7 +28,6 @@ func unequip():
 func trigger():
 	# Take control of closest enemy directly below! Disable Player input and gravity
 	var collider = get_collider()
-	print(collider)
 	if _can_control and collider != null and not collider is TileMap and collider.is_in_group("enemy"):
 		# Take control
 		_controlled_node = collider

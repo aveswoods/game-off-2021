@@ -62,7 +62,7 @@ func enable_collisions():
 
 func show_room(delay : float = 0.0):
 	# If there is a pedestal, set the item
-	if _pedestal != null and not _pedestal.is_item_set():
+	if _pedestal != null and (_teleporter == null or _teleporter.is_disabled()) and not _pedestal.is_item_set():
 		var item_id = Items.get_random_item_id_from_pool()
 		if item_id != "":
 			_pedestal.set_item(item_id)
@@ -115,6 +115,10 @@ func show_circuitboard():
 		)
 	_tween.start()
 
+func show_teleporter():
+	if _teleporter != null:
+		_teleporter.enable()
+		_teleporter.visible = true
 
 
 func set_player(player):

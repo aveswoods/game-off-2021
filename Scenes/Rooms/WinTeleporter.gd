@@ -1,36 +1,32 @@
 extends Node2D
 
-signal teleported(destination)
+signal player_wins
 
-enum destinations { HUB, RUN, BOSS }
-export(destinations) var destination
 export(bool) var disabled = false
 
 onready var _doorway_hitbox = $Area2D
+onready var _sprite = $Sprite
+onready var _animation_player = $AnimationPlayer
 var _in_doorway = false
-var _disabled = false
+
 
 func enable():
 	_doorway_hitbox.monitoring = true
-	_disabled = false
+	_animation_player.play("open")
 func disable():
 	_doorway_hitbox.monitoring = false
-	_disabled = true
-
-func is_disabled():
-	return _disabled
+	_animation_player.play("close")
 
 
 func _ready():
 	if disabled:
-		disable()
-		_disabled = true
+		_sprite.material.set_shader_param("transparency", 0)
 
 
 func _process(_delta):
-	if Input.is_action_just_pressed("ui_accept") and not _disabled and _in_doorway:
-		emit_signal("teleported", destination)
-		print("teleported: " + str(destination))
+	if Input.is_action_just_pressed("ui_accept") and not disabled and _in_doorway:
+		print("player wins")
+		emit_signal("player_wins")
 
 
 func _on_Area2D_body_entered(body):

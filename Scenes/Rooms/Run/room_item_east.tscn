@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scenes/Rooms/Doorway.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Tilemaps/TileMap_Floor.tres" type="TileSet" id=2]
 [ext_resource path="res://Scenes/Rooms/room_base.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/Rooms/Teleporter.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/Rooms/Run/Pedestal.tscn" type="PackedScene" id=5]
 
 [node name="Room" type="Node2D"]
@@ -29,5 +30,12 @@ rotation = 1.5708
 
 [node name="Pedestal" parent="." instance=ExtResource( 5 )]
 position = Vector2( 288, 176 )
+
+[node name="Teleporter" parent="." instance=ExtResource( 4 )]
+visible = false
+position = Vector2( 288, 160 )
+z_index = -1
+destination = 2
+disabled = true
 
 [connection signal="timeout" from="RoomChangeTimer" to="." method="_on_RoomChangeTimer_timeout"]

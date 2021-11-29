@@ -104,7 +104,6 @@ func _on_Timer_timeout():
 			# Allow for Area2D hitbox detection
 			if better_collider is Area2D:
 				var parent = better_collider.get_parent()
-				print(parent)
 				if parent is KinematicBody2D:
 					parent.bump(shoot_impact_impulse * Vector2(direction_x, -1))
 					parent.take_damage(shoot_damage, 0)

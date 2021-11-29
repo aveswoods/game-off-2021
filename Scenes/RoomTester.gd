@@ -30,18 +30,20 @@ func _ready():
 	randomize()
 	VisualServer.set_default_clear_color(Color("#27232a"))
 	
-	_player.hp = 1000
+	_player.hp = 5
 	
 	_current_room = get_node(room)
 	_current_room.close_doorways()
 	_current_room.show_room()
 	
 	Items.set_player(_player)
-	#Items.equip_item("mindcontrol")
-	Items.equip_item("bite")
 	Items.equip_item("shoot")
+	#Items.equip_item("stun")
+	#Items.equip_item("doublejump")
 	#Items.equip_item("charm")
-	Items.equip_item("glide")
+	#Items.equip_item("glide")
+	
+	$"Gladiator Boss".set_player(_player)
 	
 
 	

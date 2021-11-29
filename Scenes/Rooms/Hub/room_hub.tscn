@@ -31,18 +31,18 @@ tile_data = PoolIntArray( 13, 0, 393217, 14, 0, 393217, 65549, 0, 393217, 65550,
 position = Vector2( 496, 432 )
 scale = Vector2( -1, 1 )
 z_index = 5
-frame = 0
+frame = 2
 
 [node name="SplashRight2" parent="Water" instance=ExtResource( 5 )]
 position = Vector2( 816, 400 )
 scale = Vector2( -1, 1 )
 z_index = 5
-frame = 2
+frame = 0
 
 [node name="SplashLeft" parent="Water" instance=ExtResource( 5 )]
 position = Vector2( 400, 432 )
 z_index = 5
-frame = 0
+frame = 2
 
 [node name="SourceRight" parent="Water" instance=ExtResource( 6 )]
 position = Vector2( 496, 304 )

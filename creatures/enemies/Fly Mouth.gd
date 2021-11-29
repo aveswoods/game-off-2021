@@ -87,7 +87,7 @@ func _physics_process(delta):
 						_animation_player.play("walk")
 					_change_direction(sign(target_displacement.x))
 			else:
-				_idle_time -= delta
+				_idle_time -= delta * Global.time_multiplier
 				if _idle_time < 0:
 					if _animation_player.current_animation == "walk":
 						_animation_player.play("idle")

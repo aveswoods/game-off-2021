@@ -17,6 +17,7 @@ script = ExtResource( 1 )
 south_doorway = NodePath("Doorway")
 
 [node name="TileMapDetails" type="TileMap" parent="."]
+z_index = -1
 tile_set = ExtResource( 3 )
 cell_size = Vector2( 32, 32 )
 format = 1
@@ -38,6 +39,7 @@ one_shot = true
 
 [node name="Teleporter" parent="." instance=ExtResource( 4 )]
 position = Vector2( 528, 224 )
+z_index = -1
 destination = 1
 
 [node name="Doorway" parent="." instance=ExtResource( 5 )]

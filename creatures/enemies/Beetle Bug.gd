@@ -89,7 +89,7 @@ func _physics_process(delta):
 					_idle_time = 3 + randi() % 2
 					_walking = false
 				else:
-					_idle_time -= delta
+					_idle_time -= delta * Global.time_multiplier
 					if _idle_time < 0:
 						if _animation_player.current_animation == "walk":
 							_animation_player.play("RESET")

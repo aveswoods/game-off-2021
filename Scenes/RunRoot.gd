@@ -74,6 +74,7 @@ func setup_run():
 	
 	var num_rooms = 1
 	var max_rooms = 14 + randi() % 4 # Arbitrary...
+	var last_room = null
 	var branching_room1 = randi() % 2 # Rooms left until it branches
 	var branching_room2 = branching_room1 + int(max_rooms / 3) + randi() % 2 # Rooms left until it branches
 	
@@ -179,6 +180,9 @@ func setup_run():
 				branching_room2 -= 1
 				# Assign variable for connecting with dict objects
 				north_room = new_room
+				# If it is the last room
+				if num_rooms == max_rooms:
+					last_room = new_room
 		
 		# -------------
 		# | EAST LOOP |
@@ -246,6 +250,9 @@ func setup_run():
 				branching_room2 -= 1
 				# Assign variable for connecting with dict objects
 				east_room = new_room
+				# If it is the last room
+				if num_rooms == max_rooms:
+					last_room = new_room
 		
 		# --------------
 		# | SOUTH LOOP |
@@ -311,6 +318,9 @@ func setup_run():
 				branching_room2 -= 1
 				# Assign variable for connecting with dict objects
 				south_room = new_room
+				# If it is the last room
+				if num_rooms == max_rooms:
+					last_room = new_room
 		
 		# -------------
 		# | WEST LOOP |
@@ -376,6 +386,9 @@ func setup_run():
 				branching_room2 -= 1
 				# Assign variable for connecting with dict objects
 				west_room = new_room
+				# If it is the last room
+				if num_rooms == max_rooms:
+					last_room = new_room
 		
 		
 		# All rooms have been picked and connected, so spawn them (instantiate them)
@@ -401,6 +414,9 @@ func setup_run():
 			room.instance.open_doorway(3)
 			west_room.instance.open_doorway(1)
 			rooms.append(west_room)
+		# Enable boss door in last room
+		if last_room != null:
+			last_room.instance.show_teleporter()
 	
 	# Final check, if seed is bad, start it allll over!
 	if num_rooms < max_rooms:

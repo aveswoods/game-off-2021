@@ -217,10 +217,18 @@ const starting_rooms = [
 	"start_west"
 ]
 
+const boss_rooms = [
+	preload("res://Scenes/Rooms/Boss/GladiatorBossRoom.tscn")
+]
+
 
 static func get_random_starting_room():
 	var room_id = starting_rooms[randi() % starting_rooms.size()]
 	return rooms[room_id].duplicate()
+
+
+static func get_random_boss_room():
+	return boss_rooms[randi() % boss_rooms.size()].duplicate()
 
 
 # Gets a random room dict. The room will have a door in the specified direction.
