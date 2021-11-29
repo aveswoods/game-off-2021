@@ -3,6 +3,9 @@ extends RayCast2D
 signal recharging
 signal charged
 
+onready var _splash_particles = $SplashParticles
+onready var _cast_particles = $CastParticles
+onready var _bullet_particle = $BulletParticle
 onready var _timer = $Timer
 
 var recharge_time = 4
@@ -28,6 +31,12 @@ func unequip():
 func trigger():
 	# Take control of closest enemy directly below! Disable Player input and gravity
 	var collider = get_collider()
+	
+	# Animate trigger
+	if _can_control:
+		_cast_particles.emitting = true
+		_bullet_particle.emitting = true
+	
 	if _can_control and collider != null and not collider is TileMap and collider.is_in_group("enemy"):
 		# Take control
 		_controlled_node = collider
@@ -41,6 +50,11 @@ func trigger():
 		
 		_can_control = false
 		_is_controlling = true
+		
+		# Animate flash and splash
+		_splash_particles.global_position = collider.global_position
+		_splash_particles.emitting = true
+		Global.flash_color_overlay(Color("#b4085562"))
 
 
 func _stop_controlling():

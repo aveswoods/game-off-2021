@@ -14,10 +14,11 @@ onready var _raycast_gravity_R = $CollisionGravityRayCastR
 onready var _raycast_gravity_L = $CollisionGravityRayCastL
 onready var _invincibility_timer = $InvincibilityTimer
 onready var _stun_timer = $StunTimer
+onready var _tween = $Tween
 
 # Game variables
 var hp = 0
-const base_hp = 3
+const base_hp = 8
 const _jump_forgiveness_time = 0.1 # Time after leaving a platform that the player can still jump
 var _air_time = _jump_forgiveness_time # Time that the player is in the air
 var action1_script = null
@@ -41,6 +42,21 @@ var is_jumping = false
 var _bumping = false
 var _bump_impulse = Vector2.ZERO
 var _is_on_floor = false
+
+
+func hide():
+	_tween.interpolate_property(
+		self,
+		"modulate",
+		Color(1.0, 1.0, 1.0, 1.0),
+		Color(1.0, 1.0, 1.0, 0.0),
+		0.25,
+		Tween.TRANS_QUAD,Tween.EASE_IN_OUT
+	)
+	_tween.start()
+
+func show():
+	modulate = Color(1.0, 1.0, 1.0, 1.0)
 
 
 func bump(impulse):

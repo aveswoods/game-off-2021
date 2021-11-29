@@ -1,11 +1,13 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scenes/Rooms/room_base.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Tilemaps/TileMap_Floor.tres" type="TileSet" id=2]
+[ext_resource path="res://creatures/player/Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/Tilemaps/TileMap_Detail.tres" type="TileSet" id=4]
 [ext_resource path="res://Scenes/Tilemaps/circuitboard.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/Rooms/Teleporter.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/Rooms/WinTeleporter.tscn" type="PackedScene" id=7]
+[ext_resource path="res://creatures/enemies/Bosses/Gladiator Boss.tscn" type="PackedScene" id=8]
 
 [node name="Room" type="Node2D"]
 script = ExtResource( 1 )
@@ -45,5 +47,11 @@ wait_time = 0.5
 one_shot = true
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="Player" parent="." instance=ExtResource( 3 )]
+position = Vector2( 449.879, 291.027 )
+
+[node name="Boss" parent="." instance=ExtResource( 8 )]
+position = Vector2( 197.57, 284.092 )
 
 [connection signal="timeout" from="RoomChangeTimer" to="." method="_on_RoomChangeTimer_timeout"]

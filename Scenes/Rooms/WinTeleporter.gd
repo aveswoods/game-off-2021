@@ -12,9 +12,11 @@ var _in_doorway = false
 
 func enable():
 	_doorway_hitbox.monitoring = true
+	disabled = false
 	_animation_player.play("open")
 func disable():
 	_doorway_hitbox.monitoring = false
+	disabled = true
 	_animation_player.play("close")
 
 
@@ -25,7 +27,6 @@ func _ready():
 
 func _process(_delta):
 	if Input.is_action_just_pressed("ui_accept") and not disabled and _in_doorway:
-		print("player wins")
 		emit_signal("player_wins")
 
 

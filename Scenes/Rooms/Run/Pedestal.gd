@@ -1,21 +1,23 @@
 extends Node2D
 
 onready var _sprite = $Sprite
-onready var _item_sprite = $ItemArea/ItemSprite
 onready var _item_area = $ItemArea
 
 var _item_id = ""
+var _item_sprite = null
 var _item_picked = false
 
 
 func disable():
 	_sprite.visible = false
 	_item_area.monitoring = false
-	_item_sprite.visible = false
+	if _item_sprite != null:
+		_item_sprite.visible = false
 func enable():
 	_sprite.visible = true
-	_item_sprite.visible = true
 	_item_area.monitoring = true
+	if _item_sprite != null:
+		_item_sprite.visible = true
 
 
 func is_item_set():
@@ -25,7 +27,12 @@ func is_item_set():
 func set_item(item_id):
 	enable()
 	_item_id = item_id
-	# TODO set sprite dynamically instead of text
+	_item_sprite = Items.get_item_sprite(item_id)
+	if _item_sprite != null:
+		_item_area.add_child(_item_sprite)
+		var animator = _item_sprite.get_node_or_null("AnimationPlayer")
+		if animator != null:
+			animator.play("animated")
 	_item_picked = true
 
 

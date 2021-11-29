@@ -47,6 +47,6 @@ func _on_AreaDamage_body_entered(body):
 		body.bump(velocity)
 	if body.has_method("take_damage"):
 		if body.is_in_group("player"):
-			body.take_damage(damage)
+			body.take_damage(1)
 		else:
-			body.take_damage(damage, 0)
+			body.take_damage(damage * Global.damage_multiplier, 0)

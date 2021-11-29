@@ -30,7 +30,6 @@ func _ready():
 func _process(_delta):
 	if Input.is_action_just_pressed("ui_accept") and not _disabled and _in_doorway:
 		emit_signal("teleported", destination)
-		print("teleported: " + str(destination))
 
 
 func _on_Area2D_body_entered(body):

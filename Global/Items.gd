@@ -10,10 +10,12 @@ var blue_action = load("res://creatures/player/abilities/blue_action.tscn").inst
 var charm_action = load("res://creatures/player/abilities/charm_action.tscn").instance()
 var lunge_action = load("res://creatures/player/abilities/lunge_action.tscn").instance()
 var mindcontrol_action = load("res://creatures/player/abilities/mindcontrol_action.tscn").instance()
-var slowmo_action = load("res://creatures/player/abilities/slowmo_action.tscn").instance()
 var shoot_action = load("res://creatures/player/abilities/shoot_action.tscn").instance()
+var slowmo_action = load("res://creatures/player/abilities/slowmo_action.tscn").instance()
+var stunbomb_action = load("res://creatures/player/abilities/stunbomb_action.tscn").instance()
 # Passives
 var stun_passive = load("res://creatures/player/abilities/stomp_passive.tscn").instance()
+var damageupgrade_passive = load("res://creatures/player/abilities/damageupgrade_passive.gd").new()
 var doublejump_passive = load("res://creatures/player/abilities/doublejump_passive.gd").new()
 var walljump_passive = load("res://creatures/player/abilities/walljump_passive.tscn").instance()
 var glide_passive = load("res://creatures/player/abilities/glide_passive.gd").new()
@@ -28,7 +30,10 @@ var ids_to_items = {
 	"mindcontrol": mindcontrol_action,
 	"shoot": shoot_action,
 	"slowmo": slowmo_action,
+	"stunbomb": stunbomb_action,
 	# Passives
+	"cubeupgrade": damageupgrade_passive,
+	"redupgrade": damageupgrade_passive,
 	"doublejump": doublejump_passive,
 	"glide": glide_passive,
 	"stun": stun_passive,
@@ -37,20 +42,32 @@ var ids_to_items = {
 
 const ids_to_sprites = {
 	"bite": preload("res://creatures/player/abilities/frames/Bite.tscn"),
+	"blue": preload("res://creatures/player/abilities/frames/Blue.tscn"),
+	"cubeupgrade": preload("res://creatures/player/abilities/frames/CubeUpgrade.tscn"),
+	"doublejump": preload("res://creatures/player/abilities/frames/DoubleJump.tscn"),
+	"glide": preload("res://creatures/player/abilities/frames/Glide.tscn"),
+	"lunge": preload("res://creatures/player/abilities/frames/Lunge.tscn"),
+	"mindcontrol": preload("res://creatures/player/abilities/frames/MindControl.tscn"),
+	"redupgrade": preload("res://creatures/player/abilities/frames/RedUpgrade.tscn"),
+	"shoot": preload("res://creatures/player/abilities/frames/Shoot.tscn"),
+	"slowmo": preload("res://creatures/player/abilities/frames/Slowmo.tscn"),
 	"stun": preload("res://creatures/player/abilities/frames/Stun.tscn"),
-	"mindcontrol": preload("res://white_square_sprite.tscn") # FOR TESTING
+	"stunbomb": preload("res://creatures/player/abilities/frames/StunBomb.tscn")
 }
 
 const ids_to_text = {
-	"bite": "[center]Active Item\n\nBite and slice through your enemies.[/center]",
-	"blue": "",
-	"doublejump": "",
-	"glide": "",
-	"lunge": "",
-	"mincontrol": "",
-	"shoot": "",
-	"slowmo": "",
-	"stun": "[center]Passive Item\n\nStomp on enemies to temporarily stun them. Enemies disappear if all in a room are stunned.[/center]"
+	"bite": "[center]Bite and slice through your enemies.[/center]",
+	"blue": "[center]Connect with a room's Blue Bells to control your environment.[/center]",
+	"cubeupgrade": "[center]Blue cubes deal double damage.[/center]",
+	"doublejump": "[center]Jump once more in the air.[/center]",
+	"glide": "[center]Hold jump while in the air to gently glide to the ground.[/center]",
+	"lunge": "[center]Lunge with great force, bashing your enemies away.[/center]",
+	"mincontrol": "[center]Use while above an enemy to take control of its mind[/center]",
+	"redupgrade": "[center]Your attacks deal double damage.[/center]",
+	"shoot": "[center]Shoot enemies from a distance.[/center]",
+	"slowmo": "[center]Slow down your enemies for a short period of time.[/center]",
+	"stun": "[center]Stomp on enemies to temporarily stun them. Clear rooms by stunning all enemies.[/center]",
+	"stunbomb": "[center]Launch a bomb that stuns nearby enemies on impact.[/center]"
 }
 
 
@@ -61,14 +78,15 @@ const active_items = [
 	"lunge",
 	"mindcontrol",
 	"shoot",
-	"slowmo"
+	"slowmo",
+	"stunbomb"
 ]
 
 # Indicates which items should be added to the item pool after an item is picked up
 const pickup_unlocks = {
-	"bite": ["shoot"],
-	"blue": ["charm"],
-	"charm": ["mindcontrol"]
+	"bite": ["shoot", "redupgrade"],
+	"stun": ["slowmo", "stunbomb"],
+	"blue": ["mindcontrol", "cubeupgrade"],
 }
 
 var _equipped_items = []

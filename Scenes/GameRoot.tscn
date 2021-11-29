@@ -1,14 +1,23 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scenes/RunRoot.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/GameRoot.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/HubRoot.tscn" type="PackedScene" id=3]
 [ext_resource path="res://UI/Items/ItemDisplayHUD.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/BossRoot.tscn" type="PackedScene" id=5]
 
 [node name="GameRoot" type="Node"]
 script = ExtResource( 2 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 1, 1, 1, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ItemDisplayHUD" parent="CanvasLayer" instance=ExtResource( 4 )]
 
@@ -16,13 +25,20 @@ script = ExtResource( 2 )
 
 [node name="HubRoot" parent="." instance=ExtResource( 3 )]
 
-[node name="Timer" type="Timer" parent="."]
-one_shot = true
+[node name="BossRoot" parent="." instance=ExtResource( 5 )]
 
 [connection signal="active_slot_picked" from="CanvasLayer/ItemDisplayHUD" to="." method="_on_ItemDisplayHUD_active_slot_picked"]
 [connection signal="closed" from="CanvasLayer/ItemDisplayHUD" to="." method="_on_ItemDisplayHUD_closed"]
 [connection signal="opened" from="CanvasLayer/ItemDisplayHUD" to="." method="_on_ItemDisplayHUD_opened"]
+[connection signal="boss_room_entered" from="RunRoot" to="." method="_on_RunRoot_boss_room_entered"]
 [connection signal="player_killed" from="RunRoot" to="." method="_on_RunRoot_player_killed"]
+[connection signal="started" from="RunRoot" to="." method="_on_RunRoot_started"]
+[connection signal="stopped" from="RunRoot" to="." method="_on_RunRoot_stopped"]
 [connection signal="item_selected" from="HubRoot" to="." method="_on_HubRoot_item_selected"]
 [connection signal="run_start_entered" from="HubRoot" to="." method="_on_HubRoot_run_start_entered"]
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="started" from="HubRoot" to="." method="_on_HubRoot_started"]
+[connection signal="stopped" from="HubRoot" to="." method="_on_HubRoot_stopped"]
+[connection signal="player_killed" from="BossRoot" to="." method="_on_BossRoot_player_killed"]
+[connection signal="player_wins" from="BossRoot" to="." method="_on_BossRoot_player_wins"]
+[connection signal="started" from="BossRoot" to="." method="_on_BossRoot_started"]
+[connection signal="stopped" from="BossRoot" to="." method="_on_BossRoot_stopped"]

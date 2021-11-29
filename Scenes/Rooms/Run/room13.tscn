@@ -28,6 +28,7 @@ position = Vector2( 346.505, 333.926 )
 [node name="TileMapFloor" type="TileMap" parent="."]
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 32, 32 )
+collision_use_kinematic = true
 collision_layer = 7
 collision_mask = 0
 format = 1

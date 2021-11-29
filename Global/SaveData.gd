@@ -14,7 +14,8 @@ var unlocks = {}
 var equipped_unlocks = {}
 var item_pool = [
 	"doublejump",
-	"glide"
+	"glide",
+	"lunge"
 ] # Only the id's
 
 

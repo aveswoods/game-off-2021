@@ -58,7 +58,7 @@ __meta__ = {
 
 [node name="StartingPedestalBlue" parent="." instance=ExtResource( 6 )]
 position = Vector2( 400, 240 )
-disabled = true
+item_id = "blue"
 
 [node name="StartingPedestalGreen" parent="." instance=ExtResource( 6 )]
 position = Vector2( 320, 240 )

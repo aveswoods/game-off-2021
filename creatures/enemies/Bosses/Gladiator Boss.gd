@@ -1,5 +1,7 @@
 extends Enemy
 
+signal erased
+
 onready var _sprite = $Sprite
 onready var _animation_player = $AnimationPlayer
 onready var _animation_player_damaged = $AnimationPlayerDamaged
@@ -18,7 +20,7 @@ enum states {
 	DEAD
 }
 
-const starting_hp = 5
+const starting_hp = 20
 const walk_speed = 100
 const lunge_speed = 1000
 
@@ -32,9 +34,9 @@ func set_player(player):
 	_player = player
 
 func stun(_time : float):
-	if not stunned:
-		.stun(0.5)
 	take_damage(1)
+	if not stunned and not dead:
+		.stun(0.5)
 
 
 func _ready():
@@ -181,3 +183,4 @@ func _on_Gladiator_Boss_killed(_source):
 func _on_AnimationPlayerDamaged_animation_finished(anim_name):
 	if anim_name == "dead":
 		queue_free()
+		emit_signal("erased")

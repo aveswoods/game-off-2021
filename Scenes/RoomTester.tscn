@@ -2,8 +2,8 @@
 
 [ext_resource path="res://creatures/player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/RoomTester.gd" type="Script" id=2]
-[ext_resource path="res://Scenes/Rooms/Boss/GladiatorBossRoom.tscn" type="PackedScene" id=3]
-[ext_resource path="res://creatures/enemies/Bosses/Gladiator Boss.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/Rooms/Run/room08.tscn" type="PackedScene" id=3]
+[ext_resource path="res://creatures/enemies/Grasshopper.tscn" type="PackedScene" id=6]
 
 [node name="RoomTester" type="Node2D"]
 script = ExtResource( 2 )
@@ -15,9 +15,24 @@ smoothing_enabled = true
 smoothing_speed = 8.0
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 403.341, 295.527 )
+position = Vector2( 127.351, 279.635 )
 
 [node name="Room" parent="." instance=ExtResource( 3 )]
 
-[node name="Gladiator Boss" parent="." instance=ExtResource( 4 )]
-position = Vector2( 217.305, 281.692 )
+[node name="Grasshopper" parent="." instance=ExtResource( 6 )]
+position = Vector2( 262.064, 307.421 )
+
+[node name="Grasshopper2" parent="." instance=ExtResource( 6 )]
+position = Vector2( 224.266, 308.681 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_right = 500.0
+margin_bottom = 500.0
+color = Color( 1, 1, 1, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

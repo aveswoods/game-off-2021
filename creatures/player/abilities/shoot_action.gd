@@ -106,11 +106,11 @@ func _on_Timer_timeout():
 				var parent = better_collider.get_parent()
 				if parent is KinematicBody2D:
 					parent.bump(shoot_impact_impulse * Vector2(direction_x, -1))
-					parent.take_damage(shoot_damage, 0)
+					parent.take_damage(shoot_damage * Global.damage_multiplier, 0)
 			# ...or simply collision with the physics body itself
 			elif better_collider is KinematicBody2D:
 				better_collider.bump(shoot_impact_impulse * Vector2(direction_x, -1))
-				better_collider.take_damage(shoot_damage, 0)
+				better_collider.take_damage(shoot_damage * Global.damage_multiplier, 0)
 			
 			# Animate damage
 			if _player.is_facing_left():

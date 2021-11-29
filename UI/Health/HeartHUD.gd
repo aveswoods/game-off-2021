@@ -31,14 +31,17 @@ func close():
 	_heart_nodes.clear()
 
 
-func spawn_hearts(num : int = 3):
+func open(num : int = 3, num_healthy : int = 3):
 	num_hearts = num
-	_healthy_index = num - 1
+	_healthy_index = clamp(num_healthy - 1, 0, num - 1)
 	for i in num:
 		var heart_node = heart.instance()
+		if i > _healthy_index:
+			heart_node.frame = 21
 		heart_node.position.x = i * _heart_width
 		_heart_nodes.append(heart_node)
 		add_child(heart_node)
+
 
 func spawn_and_animate_hearts(num : int = 3):
 	num_hearts = num

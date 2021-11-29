@@ -1,5 +1,7 @@
 extends Node2D
 
+signal started
+signal stopped
 signal run_start_entered
 signal item_selected(item_id)
 
@@ -47,11 +49,10 @@ func stop():
 	_room_hub.remove_player()
 	_room_run_portal.disable_collisions()
 	_room_run_portal.remove_player()
-	player_node.set_collision_layer_bit(0, false)
-	player_node.set_collision_mask_bit(0, false)
-	player_node.set_collision_mask_bit(1, false)
-	player_node.visible = false
+	
+	player_node.hide()
 	player_node.disabled = true
+	
 	_visible = false
 	_tween.interpolate_property(
 		self,
@@ -111,7 +112,7 @@ func _set_limited_camera_position(cam_pos):
 
 
 func _on_RoomRunPortal_teleported(_destination):
-	stop()
+	emit_signal("run_start_entered")
 
 
 func _on_room_changed(new_room):
@@ -131,7 +132,15 @@ func _physics_process(_delta):
 func _on_Tween_tween_all_completed():
 	if _visible:
 		player_node.visible = true
+		player_node.show()
 		player_node.disabled = false
 		_current_room.show_circuitboard()
+		
+		emit_signal("started")
 	else:
-		emit_signal("run_start_entered")
+		player_node.set_collision_layer_bit(0, false)
+		player_node.set_collision_mask_bit(0, false)
+		player_node.set_collision_mask_bit(1, false)
+		player_node.visible = false
+		
+		emit_signal("stopped")

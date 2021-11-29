@@ -115,6 +115,11 @@ func show_circuitboard():
 		)
 	_tween.start()
 
+func hide_circuitboard():
+	if _circuitboard != null:
+		_circuitboard.modulate = Color(1.0, 1.0, 1.0, 0.0)
+
+
 func show_teleporter():
 	if _teleporter != null:
 		_teleporter.enable()

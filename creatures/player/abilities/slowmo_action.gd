@@ -3,6 +3,7 @@ extends Node2D
 signal recharging
 signal charged
 
+onready var _particles = $CPUParticles2D
 onready var _timer = $Timer
 
 var _player = null
@@ -27,6 +28,10 @@ func trigger():
 		_timer.wait_time = slow_mo_time
 		_timer.start()
 		_can_slow_mo = false
+		
+		# Animate
+		_particles.emitting = true
+		Global.flash_color_overlay(Color("#78f2ff66"))
 
 
 func _on_Timer_timeout():

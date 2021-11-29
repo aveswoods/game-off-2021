@@ -29,6 +29,7 @@ func _set_limited_camera_position(cam_pos):
 func _ready():
 	randomize()
 	VisualServer.set_default_clear_color(Color("#27232a"))
+	Global.color_overlay = $ColorRect
 	
 	_player.hp = 5
 	
@@ -37,14 +38,14 @@ func _ready():
 	_current_room.show_room()
 	
 	Items.set_player(_player)
-	Items.equip_item("shoot")
-	#Items.equip_item("stun")
+	#Items.equip_item("shoot")
+	Items.equip_item("stun")
+	#Items.equip_item("stunbomb")
+	Items.equip_item("slowmo")
+	#Items.equip_item("mindcontrol")
 	#Items.equip_item("doublejump")
 	#Items.equip_item("charm")
-	#Items.equip_item("glide")
-	
-	$"Gladiator Boss".set_player(_player)
-	
+	Items.equip_item("glide")
 
 	
 func _physics_process(_delta):

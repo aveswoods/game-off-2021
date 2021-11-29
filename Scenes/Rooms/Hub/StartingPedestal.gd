@@ -38,9 +38,9 @@ func _input(event):
 		_can_select = false
 
 
-func _on_SelectArea_body_entered(body):
+func _on_SelectArea_body_entered(_body):
 	_can_select = true
 	# TODO animate button
 
-func _on_SelectArea_body_exited(body):
+func _on_SelectArea_body_exited(_body):
 	_can_select = false

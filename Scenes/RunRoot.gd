@@ -1,6 +1,9 @@
 extends Node2D
 
+signal started
+signal stopped
 signal player_killed
+signal boss_room_entered
 
 const door_open_space = Vector2(30, 20)
 
@@ -21,6 +24,7 @@ func start():
 	player_node.set_collision_mask_bit(0, true)
 	player_node.set_collision_mask_bit(1, true)
 	player_node.visible = true
+	player_node.show()
 	player_node.disabled = false
 	player_node.input_disabled = true
 	player_node.hp = player_node.base_hp + Global.bonus_hp
@@ -37,7 +41,7 @@ func start():
 		Color(1.0, 1.0, 1.0, 1.0),
 		0.25,
 		Tween.TRANS_QUAD,Tween.EASE_IN_OUT,
-		1.0
+		0.25
 	)
 	_tween.start()
 	
@@ -47,9 +51,6 @@ func start():
 
 func stop():
 	_visible = false
-	_heart_hud.close()
-	_active_items_hud.close()
-	_active_items_hud.remove_items()
 	_tween.interpolate_property(
 		self,
 		"modulate",
@@ -58,6 +59,21 @@ func stop():
 		2.0,
 		Tween.TRANS_LINEAR,Tween.EASE_IN,
 		2.0
+	)
+	_tween.start()
+
+
+func fast_stop():
+	player_node.hide()
+	_visible = false
+	_tween.interpolate_property(
+		self,
+		"modulate",
+		Color(1.0, 1.0, 1.0, 1.0),
+		Color(1.0, 1.0, 1.0, 0.0),
+		0.5,
+		Tween.TRANS_LINEAR,Tween.EASE_IN,
+		0.5
 	)
 	_tween.start()
 
@@ -415,8 +431,9 @@ func setup_run():
 			west_room.instance.open_doorway(1)
 			rooms.append(west_room)
 		# Enable boss door in last room
-		if last_room != null:
+		if last_room != null and not last_room.instance.is_connected("teleported", self, "_on_teleported"):
 			last_room.instance.show_teleporter()
+			last_room.instance.connect("teleported", self, "_on_teleported")
 	
 	# Final check, if seed is bad, start it allll over!
 	if num_rooms < max_rooms:
@@ -569,6 +586,8 @@ func _on_Tween_tween_all_completed():
 		# Spawn hearts in HUD
 		_heart_hud.spawn_and_animate_hearts(player_node.hp)
 		_active_items_hud.open()
+		
+		emit_signal("started")
 	else:
 		player_node.set_collision_layer_bit(0, false)
 		player_node.set_collision_mask_bit(0, false)
@@ -577,13 +596,23 @@ func _on_Tween_tween_all_completed():
 		player_node.disabled = true
 		player_node.reset()
 		
+		_heart_hud.close()
+		_active_items_hud.close()
+		_active_items_hud.remove_items()
+		
 		for room in _loaded_rooms:
 			remove_child(room)
 		_loaded_rooms = []
+		
+		emit_signal("stopped")
 
 
 func _on_Player_damaged():
 	_heart_hud.damage()
 
 func _on_Player_killed():
+	_heart_hud.damage()
 	emit_signal("player_killed")
+
+func _on_teleported(_destination):
+	emit_signal("boss_room_entered")
