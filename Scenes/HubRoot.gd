@@ -22,6 +22,10 @@ var _visible = false
 
 func start():
 	_run_teleporter.disable()
+	_red_pedestal.enable()
+	_green_pedestal.enable()
+	_blue_pedestal.enable()
+	
 	_room_hub.enable_collisions()
 	_room_hub.set_player(player_node)
 	_room_hub.modulate = Color(1.0, 1.0, 1.0, 1.0)
@@ -142,5 +146,9 @@ func _on_Tween_tween_all_completed():
 		player_node.set_collision_mask_bit(0, false)
 		player_node.set_collision_mask_bit(1, false)
 		player_node.visible = false
+		
+		_red_pedestal.disable()
+		_green_pedestal.disable()
+		_blue_pedestal.disable()
 		
 		emit_signal("stopped")

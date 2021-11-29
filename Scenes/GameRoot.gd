@@ -36,17 +36,21 @@ func _on_item_equipped(item_id):
 
 
 func _on_active_item_recharging(action_num):
-	if action_num == 1:
+	if action_num != 1 and action_num != 2:
+		return
+	if _current_root == "run":
 		_run_active_item_hud.inactive(action_num)
-	elif action_num == 2:
-		_run_active_item_hud.inactive(action_num)
+	elif _current_root == "boss":
+		_boss_active_item_hud.inactive(action_num)
 
 
 func _on_active_item_charged(action_num):
-	if action_num == 1:
+	if action_num != 1 and action_num != 2:
+		return
+	if _current_root == "run":
 		_run_active_item_hud.active(action_num)
-	elif action_num == 2:
-		_run_active_item_hud.active(action_num)
+	elif _current_root == "boss":
+		_boss_active_item_hud.active(action_num)
 
 
 func _on_ItemDisplayHUD_opened():
@@ -114,7 +118,7 @@ func _on_HubRoot_started():
 func _on_HubRoot_stopped():
 	if _current_root == "run":
 		# If there is a seed...
-		var seed_int = randi() % 1000000
+		var seed_int = 167540 #randi() % 1000000
 		seed(seed_int)
 		print("Seed: " + str(seed_int))
 	

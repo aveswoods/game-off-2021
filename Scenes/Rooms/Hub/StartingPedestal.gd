@@ -33,7 +33,7 @@ func _ready():
 
 
 func _input(event):
-	if event.is_action_pressed("ui_accept") and _can_select:
+	if event.is_action_pressed("ui_accept") and _can_select and not disabled:
 		emit_signal("selected", item_id)
 		_can_select = false
 
