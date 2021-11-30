@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://creatures/player/abilities/stomp_passive.gd" type="Script" id=1]
 [ext_resource path="res://particle effects/damage.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Audio/SFX/sfx_sounds_impact2.wav" type="AudioStream" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 20, 15 )
@@ -27,5 +28,9 @@ one_shot = true
 direction = Vector2( 0, -1 )
 spread = 90.0
 color_ramp = SubResource( 2 )
+
+[node name="Audio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = -20.0
 
 [connection signal="body_entered" from="." to="." method="_on_Area2D_body_entered"]

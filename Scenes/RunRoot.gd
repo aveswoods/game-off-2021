@@ -51,6 +51,7 @@ func start():
 
 func stop():
 	_visible = false
+	_current_room.hide_circuitboard()
 	_tween.interpolate_property(
 		self,
 		"modulate",
@@ -66,6 +67,7 @@ func stop():
 func fast_stop():
 	player_node.hide()
 	_visible = false
+	_current_room.hide_circuitboard()
 	_tween.interpolate_property(
 		self,
 		"modulate",

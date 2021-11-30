@@ -64,6 +64,8 @@ func animate_explode():
 		0.25
 	)
 	_tween.start()
+	
+	_explosion_particles.get_node("Audio").play()
 
 func animate_big_explode():
 	_big_explosion_particles.emitting = true
@@ -125,6 +127,8 @@ func animate_fade_away():
 		1.0
 	)
 	_tween.start()
+	
+	Global.audio_enemies_erased.play()
 
 func animate_disintegrate():
 	emit_signal("finished_death_animation")

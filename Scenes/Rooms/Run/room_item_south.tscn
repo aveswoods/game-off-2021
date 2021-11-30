@@ -1,14 +1,40 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scenes/Rooms/Doorway.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Tilemaps/TileMap_Floor.tres" type="TileSet" id=2]
 [ext_resource path="res://Scenes/Rooms/room_base.gd" type="Script" id=3]
 [ext_resource path="res://Scenes/Rooms/Teleporter.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/Rooms/Run/Pedestal.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/Tilemaps/TileMap_Detail.tres" type="TileSet" id=6]
+[ext_resource path="res://Scenes/Tilemaps/Water/WaterSplashLeftOpen.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/Tilemaps/Water/WaterSourceLeft.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scenes/Tilemaps/TileMap_Water.tres" type="TileSet" id=9]
 
 [node name="Room" type="Node2D"]
 script = ExtResource( 3 )
 north_doorway = NodePath("DoorwayNorth")
+
+[node name="TileMapDetail" type="TileMap" parent="."]
+z_index = -1
+tile_set = ExtResource( 6 )
+cell_size = Vector2( 32, 32 )
+format = 1
+tile_data = PoolIntArray( 6, 0, 458752, 7, 0, 458752, 65542, 0, 458752, 65543, 0, 458752, 131074, 0, 13, 131075, 0, 13, 131076, 0, 13, 131077, 0, 14, 131078, 0, 458752, 131079, 0, 458752, 131080, 0, 12, 131081, 0, 13, 131082, 0, 13, 131083, 0, 13, 131084, 0, 458752, 131085, 0, 9, 196609, 0, 196623, 196610, 0, 65545, 196611, 0, 65547, 196612, 0, 196620, 196613, 0, 458752, 196614, 0, 393229, 196615, 0, 262155, 196616, 0, 458752, 196617, 0, 196620, 196618, 0, 131085, 196619, 0, 196621, 196620, 0, 196623, 196621, 0, 196623, 262146, 0, 131082, 262147, 0, 131083, 262148, 0, 131084, 262149, 0, 458752, 262150, 0, 458752, 262151, 0, 458752, 262152, 0, 458752, 262153, 0, 196623, 262154, 0, 131086, 262155, 0, 196622, 262156, 0, 196623, 262157, 0, 196619, 327682, 0, 131082, 327683, 0, 131081, 327684, 0, 196623, 327685, 0, 393227, 327686, 0, 196623, 327687, 0, 196623, 327688, 0, 262157, 327689, 0, 458752, 327690, 0, 196623, 327691, 0, 196623, 327692, 0, 196623, 327693, 0, 196623, 393218, 0, 458752, 393219, 0, 65546, 393220, 0, 196623, 393221, 0, 12, 393222, 0, 13, 393223, 0, 13, 393224, 0, 458752, 393225, 0, 196620, 393226, 0, 196623, 393227, 0, 196623, 393228, 0, 14, 393229, 0, 196623, 458753, 0, 196623, 458754, 0, 196622, 458755, 0, 131082, 458756, 0, 131084, 458757, 0, 196621, 458758, 0, 131086, 458759, 0, 458752, 458760, 0, 131082, 458761, 0, 131083, 458762, 0, 131084, 458763, 0, 196623, 458764, 0, 196623, 458765, 0, 196623, 524288, 0, 196623, 524289, 0, 196623, 524290, 0, 393229, 524291, 0, 196618, 524292, 0, 131085, 524293, 0, 65548, 524294, 0, 458752, 524295, 0, 458752, 524296, 0, 131082, 524297, 0, 131081, 524298, 0, 458752, 524299, 0, 196620, 524300, 0, 131083, 524301, 0, 131084, 589824, 0, 196623, 589825, 0, 393229, 589826, 0, 196623, 589827, 0, 458752, 589828, 0, 65547, 589829, 0, 196622, 589830, 0, 458752, 589831, 0, 458752, 589832, 0, 196618, 589833, 0, 458752, 589834, 0, 196619, 589835, 0, 196623, 589836, 0, 196623, 589837, 0, 196623, 655363, 0, 458752, 655364, 0, 458752, 655365, 0, 458752, 655366, 0, 458752, 655367, 0, 458752, 655368, 0, 458752, 655369, 0, 458752, 655370, 0, 458752, 655372, 0, 393228 )
+
+[node name="TileMapWater" type="TileMap" parent="."]
+z_index = 1
+tile_set = ExtResource( 9 )
+cell_size = Vector2( 32, 32 )
+format = 1
+tile_data = PoolIntArray( 655364, 0, 1, 655365, 0, 2, 655368, 0, 0, 655369, 0, 1, 655370, 0, 2 )
+
+[node name="WaterSource" parent="TileMapWater" instance=ExtResource( 8 )]
+position = Vector2( 112, 304 )
+z_index = -1
+z_as_relative = false
+
+[node name="WaterSplash" parent="TileMapWater" instance=ExtResource( 7 )]
+position = Vector2( 112, 336 )
 
 [node name="TileMapFloor" type="TileMap" parent="."]
 tile_set = ExtResource( 2 )

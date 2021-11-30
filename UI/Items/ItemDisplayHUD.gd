@@ -11,6 +11,8 @@ onready var _sprite_container = $SpriteContainer
 onready var _box = $SpriteContainer/ActiveItemBox
 onready var _tween = $Tween
 
+onready var _audio_open = $AudioOpen
+
 const active_text = "[center]Press Z or X to place in an active item slot[/center]"
 const passive_text = "[center]Press Z or X to continue[/center]"
 
@@ -109,6 +111,9 @@ func open(item_id : String, active_item : bool = false):
 	_open = true
 	_tweening = true
 	emit_signal("opened")
+	
+	# Play audio
+	_audio_open.play()
 
 
 func close():

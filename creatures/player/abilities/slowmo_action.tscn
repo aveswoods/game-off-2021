@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://creatures/player/abilities/slowmo_action.gd" type="Script" id=1]
 [ext_resource path="res://particle effects/xsmall_round_particle.png" type="Texture" id=2]
+[ext_resource path="res://Audio/SFX/sfx_exp_odd3.wav" type="AudioStream" id=3]
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.5, 1 )
@@ -28,5 +29,9 @@ initial_velocity = 300.0
 initial_velocity_random = 0.15
 linear_accel = -600.0
 color_ramp = SubResource( 1 )
+
+[node name="Audio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = -7.0
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

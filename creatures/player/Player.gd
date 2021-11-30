@@ -16,6 +16,8 @@ onready var _invincibility_timer = $InvincibilityTimer
 onready var _stun_timer = $StunTimer
 onready var _tween = $Tween
 
+onready var _audio_jump = $AudioJump
+
 # Game variables
 var hp = 0
 const base_hp = 8
@@ -136,6 +138,10 @@ func _physics_process(delta):
 			_is_on_floor = false
 			is_jumping = true
 			jump_gravity = 0
+			
+			_audio_jump.pitch_scale = rand_range(0.7, 0.9)
+			_audio_jump.play()
+	
 	
 	if (Input.is_action_just_released("ui_up") or velocity.y > 0 or input_disabled) and is_jumping:
 		is_jumping = false
@@ -166,6 +172,7 @@ func _physics_process(delta):
 			if _is_on_floor:
 				animation_tree.set("parameters/in_air_state/current", 0)
 				animation_tree.set("parameters/movement/current", 0)
+
 	
 	# Add gravity
 	if is_jumping:

@@ -6,6 +6,8 @@ signal charged
 onready var _particles = $CPUParticles2D
 onready var _timer = $Timer
 
+onready var _audio = $Audio
+
 var _player = null
 var slow_mo_time = 5
 var time_multiplier = 0.25
@@ -20,6 +22,8 @@ func equip(player):
 func unequip():
 	_player.remove_child(self)
 	_player = null
+	
+	Global.time_multiplier = 1.0
 
 
 func trigger():
@@ -32,6 +36,9 @@ func trigger():
 		# Animate
 		_particles.emitting = true
 		Global.flash_color_overlay(Color("#78f2ff66"))
+		
+		# Play audio
+		_audio.play()
 
 
 func _on_Timer_timeout():

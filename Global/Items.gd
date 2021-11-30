@@ -56,18 +56,18 @@ const ids_to_sprites = {
 }
 
 const ids_to_text = {
-	"bite": "[center]Bite and slice through your enemies.[/center]",
-	"blue": "[center]Connect with a room's Blue Bells to control your environment.[/center]",
-	"cubeupgrade": "[center]Blue cubes deal double damage.[/center]",
-	"doublejump": "[center]Jump once more in the air.[/center]",
-	"glide": "[center]Hold jump while in the air to gently glide to the ground.[/center]",
-	"lunge": "[center]Lunge with great force, bashing your enemies away.[/center]",
-	"mincontrol": "[center]Use while above an enemy to take control of its mind[/center]",
-	"redupgrade": "[center]Your attacks deal double damage.[/center]",
-	"shoot": "[center]Shoot enemies from a distance.[/center]",
-	"slowmo": "[center]Slow down your enemies for a short period of time.[/center]",
-	"stun": "[center]Stomp on enemies to temporarily stun them. Clear rooms by stunning all enemies.[/center]",
-	"stunbomb": "[center]Launch a bomb that stuns nearby enemies on impact.[/center]"
+	"bite": "[center]Red Mandibles\n\nBite and slice through your enemies.[/center]",
+	"blue": "[center]Blue-Tenna\n\nConnect with a room's Blue Bells, then remotely control your environment.[/center]",
+	"cubeupgrade": "[center]Enhanced Cube\n\nBlue cubes deal double damage.[/center]",
+	"doublejump": "[center]Fly Wings\n\nJump once more in the air.[/center]",
+	"glide": "[center]Airy Elixer\n\nHold jump while in the air to gently glide to the ground.[/center]",
+	"lunge": "[center]Beetle Horn\n\nLunge with great force, bashing your enemies away.[/center]",
+	"mincontrol": "[center]Permission Granted\n\nUse while above an enemy to take control of its mind.[/center]",
+	"redupgrade": "[center]Viral Dagger\n\nYour attacks deal double damage.[/center]",
+	"shoot": "[center]Volatile Elixer\n\nShoot enemies from a distance.[/center]",
+	"slowmo": "[center]Overclocked\n\nSlow down your enemies for a short period of time.[/center]",
+	"stun": "[center]Green Claws\n\nStomp on enemies to temporarily stun them. Clear rooms by stunning all enemies.[/center]",
+	"stunbomb": "[center]Jolt Bomb\n\nLaunch a bomb that stuns nearby enemies on impact.[/center]"
 }
 
 

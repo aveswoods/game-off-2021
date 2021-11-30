@@ -9,6 +9,9 @@ onready var _idle_shape = $CollisionShapeIdle
 onready var _attack_shape = $CollisionShapeAttack
 onready var _hitbox = $EnemyHitbox
 
+onready var _audio_killed = $AudioKilled
+onready var _audio_impact = $AudioImpact
+
 enum states {
 	IDLE,
 	WALK,
@@ -20,7 +23,7 @@ enum states {
 	DEAD
 }
 
-const starting_hp = 20
+const starting_hp = 16
 const walk_speed = 100
 const lunge_speed = 1000
 
@@ -150,6 +153,7 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 func _on_Gladiator_Boss_collided_with_wall():
 	_change_direction(-1 * facing_direction)
 	bump(Vector2(facing_direction * 400, 0))
+	_audio_impact.play()
 	if _state == states.LUNGE_ATTACK:
 		_animation_player.play("damaged")
 
@@ -178,6 +182,8 @@ func _on_Gladiator_Boss_killed(_source):
 	_hitbox.monitoring = false
 	_animation_player.play("death")
 	_animation_player_damaged.play("dead")
+	
+	_audio_killed.play()
 
 
 func _on_AnimationPlayerDamaged_animation_finished(anim_name):

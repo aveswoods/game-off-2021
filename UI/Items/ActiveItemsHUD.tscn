@@ -6,6 +6,8 @@
 
 [sub_resource type="DynamicFont" id=1]
 size = 8
+outline_size = 1
+outline_color = Color( 0.0313726, 0.333333, 0.384314, 1 )
 font_data = ExtResource( 2 )
 
 [node name="ActiveItemsHUD" type="Control"]
@@ -21,22 +23,26 @@ position = Vector2( -66, 25 )
 position = Vector2( -24, 25 )
 
 [node name="Label1" type="RichTextLabel" parent="."]
-margin_left = -68.0
-margin_top = 48.0
-margin_right = -48.0
-margin_bottom = 68.0
+margin_left = -76.0
+margin_top = 47.0
+margin_right = -56.0
+margin_bottom = 67.0
 custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Z[/center]"
 text = "Z"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label2" type="RichTextLabel" parent="."]
-margin_left = -26.0
-margin_top = 48.0
-margin_right = -6.0
-margin_bottom = 68.0
+margin_left = -33.0
+margin_top = 47.0
+margin_right = -13.0
+margin_bottom = 67.0
 custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "[center]X[/center]"
 text = "X"
 __meta__ = {
 "_edit_use_anchors_": false

@@ -4,6 +4,7 @@ signal selected(item_id)
 
 onready var _pedestal_sprite = $PedestalSprite
 onready var _select_area = $SelectArea
+onready var _animation_player = $AnimationPlayer
 
 export(String) var item_id = "NONE"
 export(bool) var disabled = false
@@ -39,8 +40,11 @@ func _input(event):
 
 
 func _on_SelectArea_body_entered(_body):
-	_can_select = true
-	# TODO animate button
+	if not disabled:
+		_can_select = true
+		_animation_player.play("show_input")
 
 func _on_SelectArea_body_exited(_body):
-	_can_select = false
+	if not disabled:
+		_can_select = false
+		_animation_player.play("hide_input")

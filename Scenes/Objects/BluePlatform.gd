@@ -5,7 +5,6 @@ var _activated = false
 
 
 func charge():
-	#$AudioStreamPlayer.play()
 	$AnimationPlayer.play("charged")
 	$CollisionShape2D.disabled = false
 	_charged = true
@@ -27,6 +26,6 @@ func is_activated():
 
 func idle():
 	$AnimationPlayer.play("idle")
-	$CollisionShape2D.disabled = false
+	$CollisionShape2D.set_deferred("disabled", false)
 	_charged = false
 	_activated = false

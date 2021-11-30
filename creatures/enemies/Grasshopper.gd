@@ -4,6 +4,8 @@ onready var _sprite = $CreatureSprite
 onready var _animation_player = $AnimationPlayer
 onready var _hitbox = $EnemyHitbox
 
+onready var _audio_impact = $AudioImpact
+
 const starting_hp = 2
 const jump_impulse = 240
 const jump_gravity_acceleration = 0.05
@@ -48,6 +50,7 @@ func _jump():
 	gravity = _gravity
 	friction = 0
 	_in_air = true
+	_jumping = false
 
 
 func _physics_process(delta):
@@ -71,32 +74,44 @@ func _physics_process(delta):
 	else:
 		if not stunned and not _damaged:
 			_idle_time -= delta * Global.time_multiplier
-			if _jumping:
-				if _in_air:
-					_gravity = lerp(_gravity, 30, jump_gravity_acceleration)
-					gravity = _gravity
-			elif _idle_time < 0:
+			if _in_air:
+				_gravity = lerp(_gravity, 30, jump_gravity_acceleration)
+				gravity = _gravity
+			elif _idle_time < 0 and not _jumping:
 				_animation_player.play("jump")
 				_jumping = true
+			elif _idle_time < -8:
+				_jumping = false
+				_in_air = false
+		elif _damaged and _animation_player.current_animation == "idle":
+			_damaged = false
 
 
 func _on_Grasshopper_collided_with_floor():
 	if _in_air:
 		_in_air = false
 		friction = 0.25
+		gravity = 30
 		_idle_time = 0.5 * (1 + randi() % 3)
-		if _jumping:
-			_animation_player.play("land")
-			_jumping = false
+		_animation_player.play("land")
+
 
 func _on_Grasshopper_collided_with_wall():
 	_change_direction(-1 * facing_direction)
 	bump(100 * Vector2(facing_direction, 0))
 	velocity.x *= -1
+	_audio_impact.play()
 
 func _on_Grasshopper_collided_with_body(collision):
 	var direction = (global_position - collision.collider.global_position).normalized()
 	bump(200 * direction)
+	_audio_impact.play()
+	if _in_air:
+		_in_air = false
+		friction = 0.25
+		gravity = 30
+		_idle_time = 0.5 * (1 + randi() % 3)
+		_animation_player.play("land")
 
 
 func _on_AnimationPlayer_animation_finished(anim_name):
@@ -107,6 +122,8 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 			if not stunned:
 				_animation_player.play("idle")
 			_damaged = false
+			_idle_time = 0.5 * (1 + randi() % 2)
+			_jumping = false
 
 
 func _on_Grasshopper_damaged():

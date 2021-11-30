@@ -31,7 +31,7 @@ tile_data = PoolIntArray( 13, 0, 393217, 14, 0, 393217, 65549, 0, 393217, 65550,
 position = Vector2( 496, 432 )
 scale = Vector2( -1, 1 )
 z_index = 5
-frame = 2
+frame = 0
 
 [node name="SplashRight2" parent="Water" instance=ExtResource( 5 )]
 position = Vector2( 816, 400 )
@@ -42,7 +42,7 @@ frame = 0
 [node name="SplashLeft" parent="Water" instance=ExtResource( 5 )]
 position = Vector2( 400, 432 )
 z_index = 5
-frame = 2
+frame = 0
 
 [node name="SourceRight" parent="Water" instance=ExtResource( 6 )]
 position = Vector2( 496, 304 )
@@ -81,16 +81,5 @@ one_shot = true
 [node name="Doorway" parent="." instance=ExtResource( 4 )]
 position = Vector2( 448, 8 )
 rotation = 3.14159
-
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
-margin_left = 554.591
-margin_top = 314.242
-margin_right = 774.591
-margin_bottom = 378.242
-text = "Rudamentary hub
-(Add permanent upgrades...)"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [connection signal="timeout" from="RoomChangeTimer" to="." method="_on_RoomChangeTimer_timeout"]

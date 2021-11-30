@@ -8,6 +8,9 @@ onready var _damage_particles = $DamageParticles
 onready var _bullet_particle = $BulletParticle
 onready var _timer = $Timer
 
+onready var _audio_fire = $AudioFire
+onready var _audio_impact = $AudioImpact
+
 var shoot_damage = 1
 var shoot_impact_impulse = 300
 var _player = null
@@ -119,6 +122,10 @@ func _on_Timer_timeout():
 				_damage_particles.direction.x = -1
 			_damage_particles.global_position = better_collider.global_position
 			_damage_particles.restart()
+			
+			# Play audio
+			_audio_impact.global_position = _damage_particles.global_position
+			_audio_impact.play()
 		
 		# Animate fire
 		if _player.is_facing_left():
@@ -146,6 +153,10 @@ func _on_Timer_timeout():
 		_is_deadtime = true
 		_is_shooting = false
 		_timer.start()
+		
+		# Play sound
+		_audio_fire.play()
+		
 	# Stop dead time
 	elif _is_deadtime:
 		_player.animation_tree.set("parameters/OneShot 2/active", 0)

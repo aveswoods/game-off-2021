@@ -1,10 +1,13 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://creatures/enemies/enemy sprites/fly mouth_20.png" type="Texture" id=1]
 [ext_resource path="res://creatures/CreatureSprite.gd" type="Script" id=2]
 [ext_resource path="res://creatures/enemies/EnemyHitbox.gd" type="Script" id=3]
 [ext_resource path="res://creatures/enemies/Fly Mouth.gd" type="Script" id=4]
 [ext_resource path="res://creatures/creature_shader_material.tres" type="Material" id=5]
+[ext_resource path="res://Audio/SFX/sfx_damage_hit3.wav" type="AudioStream" id=6]
+[ext_resource path="res://Audio/SFX/sfx_wing_flap.wav" type="AudioStream" id=7]
+[ext_resource path="res://Audio/SFX/sfx_exp_shortest_soft3.wav" type="AudioStream" id=8]
 
 [sub_resource type="CircleShape2D" id=11]
 radius = 13.0
@@ -22,7 +25,7 @@ radius = 15.0
 [sub_resource type="Animation" id=1]
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("CreatureSprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -34,7 +37,7 @@ tracks/0/keys = {
 "values": [ 1 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("CreatureSprite:frame")
+tracks/1/path = NodePath("EnemyHitbox/CollisionShapeActive:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -43,10 +46,10 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ 1 ]
+"values": [ true ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("EnemyHitbox/CollisionShapeActive:disabled")
+tracks/2/path = NodePath("CollisionShapeBite:disabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -58,23 +61,23 @@ tracks/2/keys = {
 "values": [ true ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("CollisionShapeBite:disabled")
+tracks/3/path = NodePath("AudioWings:playing")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
-tracks/3/enabled = true
+tracks/3/enabled = false
 tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ true ]
+"values": [ false ]
 }
 
 [sub_resource type="Animation" id=2]
 resource_name = "attack"
 length = 0.3
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("CreatureSprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -86,19 +89,19 @@ tracks/0/keys = {
 "values": [ 8, 9, 10 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("CreatureSprite:frame")
+tracks/1/path = NodePath("EnemyHitbox/CollisionShapeActive:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ 8, 9, 10 ]
+"values": [ false, true ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("EnemyHitbox/CollisionShapeActive:disabled")
+tracks/2/path = NodePath("CollisionShapeBite:disabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -110,23 +113,37 @@ tracks/2/keys = {
 "values": [ false, true ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("CollisionShapeBite:disabled")
+tracks/3/path = NodePath("AudioWings:playing")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0.1, 0.2 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( -0.1 ),
+"transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ false, true ]
+"values": [ true ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath("AudioBite")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.2 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ 0.0 ],
+"method": "play"
+} ]
 }
 
 [sub_resource type="Animation" id=3]
 resource_name = "damaged"
 length = 0.3
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("CreatureSprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -138,23 +155,23 @@ tracks/0/keys = {
 "values": [ 12, 13, 14 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("CreatureSprite:frame")
+tracks/1/path = NodePath("AudioWings:playing")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 12, 13, 14 ]
+"values": [ false ]
 }
 
 [sub_resource type="Animation" id=4]
 resource_name = "death"
 length = 0.5
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("CreatureSprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -166,16 +183,16 @@ tracks/0/keys = {
 "values": [ 15, 16, 17, 18, 19 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("CreatureSprite:frame")
+tracks/1/path = NodePath("AudioWings:playing")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 15, 16, 17, 18, 19 ]
+"values": [ false ]
 }
 
 [sub_resource type="Animation" id=5]
@@ -183,7 +200,7 @@ resource_name = "idle"
 length = 0.4
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("CreatureSprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -195,16 +212,16 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("CreatureSprite:frame")
+tracks/1/path = NodePath("AudioWings:playing")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 0, 1, 2, 3 ]
+"values": [ true ]
 }
 
 [sub_resource type="Animation" id=6]
@@ -212,7 +229,7 @@ resource_name = "walk"
 length = 0.4
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("CreatureSprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -224,16 +241,16 @@ tracks/0/keys = {
 "values": [ 3, 4, 5, 6 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("CreatureSprite:frame")
+tracks/1/path = NodePath("AudioWings:playing")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"times": PoolRealArray( 0.1 ),
+"transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 3, 4, 5, 6 ]
+"values": [ true ]
 }
 
 [sub_resource type="CircleShape2D" id=10]
@@ -251,12 +268,6 @@ texture = ExtResource( 1 )
 hframes = 20
 frame = 1
 script = ExtResource( 2 )
-
-[node name="Sprite" type="Sprite" parent="."]
-visible = false
-texture = ExtResource( 1 )
-hframes = 20
-frame = 1
 
 [node name="CollisionShapeBite" type="CollisionShape2D" parent="."]
 position = Vector2( 4, -4 )
@@ -298,6 +309,23 @@ monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AreaVision"]
 shape = SubResource( 10 )
+
+[node name="AudioImpact" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 6 )
+volume_db = -15.0
+pitch_scale = 3.0
+max_distance = 250.0
+
+[node name="AudioWings" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 7 )
+volume_db = -15.0
+max_distance = 192.0
+
+[node name="AudioBite" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 8 )
+volume_db = -10.0
+pitch_scale = 1.5
+max_distance = 250.0
 
 [connection signal="collided_with_body" from="." to="." method="_on_Fly_Mouth_collided_with_body"]
 [connection signal="collided_with_ceiling" from="." to="." method="_on_Fly_Mouth_collided_with_ceiling"]

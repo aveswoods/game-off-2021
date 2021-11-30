@@ -1,14 +1,21 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=35 format=2]
 
+[ext_resource path="res://Audio/SFX/sfx_exp_cluster10.wav" type="AudioStream" id=1]
 [ext_resource path="res://creatures/player/Player.gd" type="Script" id=2]
+[ext_resource path="res://Audio/SFX/sfx_sounds_impact12.wav" type="AudioStream" id=3]
+[ext_resource path="res://Audio/SFX/sfx_movement_footstepsloop4_fast.wav" type="AudioStream" id=4]
+[ext_resource path="res://Audio/SFX/sfx_sounds_impact14.wav" type="AudioStream" id=5]
 [ext_resource path="res://creatures/player/frames/bbaa.png" type="Texture" id=6]
 [ext_resource path="res://creatures/player/frames/fam.png" type="Texture" id=7]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 18.0
+radius = 16.0
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 8, 9 )
+extents = Vector2( 16, 9 )
+
+[sub_resource type="Animation" id=27]
+length = 0.001
 
 [sub_resource type="Animation" id=3]
 length = 0.3
@@ -53,6 +60,32 @@ tracks/1/keys = {
 "update": 1,
 "values": [ 18, 19, 20 ]
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath("AudioRunning:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath("AudioHurt")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ 0.0 ],
+"method": "play"
+} ]
+}
 
 [sub_resource type="Animation" id=22]
 resource_name = "death"
@@ -80,6 +113,32 @@ tracks/1/keys = {
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 21, 22, 23, 24, 25, 26, 27, 28 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AudioRunning:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath("AudioKilled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ 0.0 ],
+"method": "play"
+} ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -109,6 +168,18 @@ tracks/1/keys = {
 "update": 1,
 "values": [ 6, 7 ]
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath("AudioRunning:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
 
 [sub_resource type="Animation" id=5]
 length = 0.5
@@ -136,6 +207,18 @@ tracks/1/keys = {
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ 0, 1 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AudioRunning:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
 }
 
 [sub_resource type="Animation" id=6]
@@ -165,6 +248,18 @@ tracks/1/keys = {
 "update": 1,
 "values": [ 8, 9 ]
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath("AudioRunning:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
 
 [sub_resource type="Animation" id=7]
 length = 0.4
@@ -192,6 +287,18 @@ tracks/1/keys = {
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 2, 3, 4, 5 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AudioRunning:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
 }
 
 [sub_resource type="Animation" id=8]
@@ -280,7 +387,7 @@ input_1/name = "run"
 input_1/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=20]
-graph_offset = Vector2( 395.997, 49 )
+graph_offset = Vector2( -926.916, -131 )
 nodes/Animation/node = SubResource( 14 )
 nodes/Animation/position = Vector2( -702, -221 )
 "nodes/Animation 2/node" = SubResource( 9 )
@@ -312,7 +419,7 @@ nodes/in_air_state/position = Vector2( 455, 65 )
 nodes/movement/node = SubResource( 19 )
 nodes/movement/position = Vector2( -351, -169 )
 nodes/output/position = Vector2( 1640, 120 )
-node_connections = [ "output", 0, "OneShot 3", "in_air_state", 0, "OneShot 2", "in_air_state", 1, "in_air", "in_air", 0, "Animation 4", "in_air", 1, "Animation 3", "movement", 0, "Animation", "movement", 1, "Animation 2", "OneShot 3", 0, "death_state", "OneShot 3", 1, "Animation 7", "OneShot 2", 0, "movement", "OneShot 2", 1, "Animation 6", "death_state", 0, "OneShot", "death_state", 1, "Animation 8", "OneShot", 0, "in_air_state", "OneShot", 1, "Animation 5" ]
+node_connections = [ "output", 0, "OneShot 3", "in_air", 0, "Animation 4", "in_air", 1, "Animation 3", "death_state", 0, "OneShot", "death_state", 1, "Animation 8", "movement", 0, "Animation", "movement", 1, "Animation 2", "OneShot 3", 0, "death_state", "OneShot 3", 1, "Animation 7", "OneShot 2", 0, "movement", "OneShot 2", 1, "Animation 6", "in_air_state", 0, "OneShot 2", "in_air_state", 1, "in_air", "OneShot", 0, "in_air_state", "OneShot", 1, "Animation 5" ]
 
 [node name="Player" type="KinematicBody2D" groups=["player"]]
 process_priority = 10
@@ -325,18 +432,16 @@ position = Vector2( -2, -5 )
 [node name="SpriteBody" type="Sprite" parent="PlayerSprite"]
 texture = ExtResource( 6 )
 hframes = 30
-frame = 1
 
 [node name="SpriteFace" type="Sprite" parent="PlayerSprite"]
 texture = ExtResource( 7 )
 hframes = 30
-frame = 1
 
 [node name="CollisionShapeCircle" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
 [node name="CollisionShapeBottom" type="CollisionShape2D" parent="."]
-position = Vector2( -2, 9 )
+position = Vector2( 0, 9 )
 shape = SubResource( 2 )
 
 [node name="CollisionGravityRayCastL" type="RayCast2D" parent="."]
@@ -359,6 +464,7 @@ one_shot = true
 one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 27 )
 anims/bite = SubResource( 3 )
 anims/damaged = SubResource( 21 )
 anims/death = SubResource( 22 )
@@ -381,6 +487,23 @@ parameters/in_air_state/current = 0
 parameters/movement/current = 0
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="AudioRunning" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+volume_db = -20.0
+
+[node name="AudioJump" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+volume_db = -15.0
+pitch_scale = 0.8
+
+[node name="AudioHurt" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = -15.0
+
+[node name="AudioKilled" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+volume_db = -15.0
 
 [connection signal="timeout" from="InvincibilityTimer" to="." method="_on_InvincibilityTimer_timeout"]
 [connection signal="timeout" from="StunTimer" to="." method="_on_StunTimer_timeout"]

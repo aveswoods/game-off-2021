@@ -1,5 +1,8 @@
 extends Area2D
 
+onready var _audio_change = $AudioChange
+onready var _audio_connect = $AudioConnect
+
 var _player = null
 var _bluebells = null
 var _bluebells_near = false
@@ -38,6 +41,11 @@ func trigger():
 		# Animate
 		_bluebells.animate_change()
 		
+		# Play audio
+		if not _audio_connect.playing:
+			_audio_change.pitch_scale = rand_range(0.8, 1.1)
+			_audio_change.play()
+		
 		
 	# If not connected to a room's bluebells, connects to them if near them
 	elif _bluebells_near:
@@ -45,16 +53,24 @@ func trigger():
 		_blue_nodes = _bluebells.blue_nodes
 		_active_blue_node_index = 0
 		# Removes the connection with the player when the bluebells leave the tree, i.e. the player changes room
-		_bluebells.connect("tree_exited", self, "reset")
+		_bluebells.connect("disconnect", self, "reset")
 		
 		trigger()
+		
+		# Play audio
+		_audio_connect.play()
 
 
 func reset():
+	if _bluebells.is_connected("disconnect", self, "reset"):
+		_bluebells.disconnect("disconnect", self, "reset")
 	_bluebells = null
 	_bluebells_near = false
 	_bluebells_connected = false
+	for node in _blue_nodes:
+		node.idle()
 	_blue_nodes = null
+	_active_blue_node_index = -1
 
 
 func _on_Area2D_area_entered(area):

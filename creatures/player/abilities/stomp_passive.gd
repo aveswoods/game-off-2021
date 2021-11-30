@@ -2,6 +2,8 @@ extends Area2D
 
 onready var _impact_particles = $ImpactParticles
 
+onready var _audio = $Audio
+
 var stomp_damage = 0
 var stomp_enemy_impulse = Vector2(0, 30)
 var stun_time = 6
@@ -23,3 +25,6 @@ func _on_Area2D_body_entered(body):
 		body.take_damage(stomp_damage)
 		body.stun(stun_time)
 		_impact_particles.restart()
+		
+		_audio.pitch_scale = rand_range(0.8, 1.1)
+		_audio.play()

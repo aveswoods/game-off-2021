@@ -1,14 +1,19 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Fonts/Pizel.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://UI/Items/ActiveItemBox.tscn" type="PackedScene" id=2]
 [ext_resource path="res://UI/Items/ItemDisplayHUD.gd" type="Script" id=3]
+[ext_resource path="res://Audio/SFX/sfx_sounds_powerup4.wav" type="AudioStream" id=4]
 
 [sub_resource type="DynamicFont" id=1]
 size = 8
 font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=2]
+size = 8
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
 size = 8
 font_data = ExtResource( 1 )
 
@@ -81,6 +86,24 @@ __meta__ = {
 [node name="ActiveItemBox" parent="SpriteContainer" instance=ExtResource( 2 )]
 position = Vector2( 38, 39 )
 
+[node name="RichTextLabel" type="RichTextLabel" parent="SpriteContainer"]
+anchor_left = 0.5
+anchor_top = -0.15
+anchor_right = 0.5
+anchor_bottom = -0.15
+margin_left = -32.0
+margin_right = 32.0
+margin_bottom = 40.0
+custom_fonts/normal_font = SubResource( 3 )
+bbcode_enabled = true
+bbcode_text = "[center]Equipped[/center]"
+text = "Equipped"
+scroll_active = false
+
 [node name="Tween" type="Tween" parent="."]
+
+[node name="AudioOpen" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+volume_db = -15.0
 
 [connection signal="tween_all_completed" from="Tween" to="." method="_on_Tween_tween_all_completed"]

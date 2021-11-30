@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/bump.wav-02374d9e8af0962478e32ec5b8640426.sample"
+path="res://.import/sfx_exp_odd3.wav-86f2b16b309dcc6fb8181b93336e008c.sample"
 
 [deps]
 
-source_file="res://Audio/SFX/bump.wav"
-dest_files=[ "res://.import/bump.wav-02374d9e8af0962478e32ec5b8640426.sample" ]
+source_file="res://Audio/SFX/sfx_exp_odd3.wav"
+dest_files=[ "res://.import/sfx_exp_odd3.wav-86f2b16b309dcc6fb8181b93336e008c.sample" ]
 
 [params]
 

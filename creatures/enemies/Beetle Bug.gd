@@ -5,7 +5,10 @@ onready var _animation_player = $AnimationPlayer
 onready var _hitbox = $EnemyHitbox
 onready var _raycast = $RayCast2D
 
-const starting_hp = 5
+onready var _audio_impact = $AudioImpact
+onready var _audio_attacking = $AudioAttacking
+
+const starting_hp = 4
 const walk_speed = 50
 const charge_speed = 600
 const bump_absorbance = 1
@@ -105,12 +108,15 @@ func _physics_process(delta):
 					else:
 						if _walking:
 							movement_velocity = Vector2(facing_direction * walk_speed, 0)
+			elif _animation_player.current_animation == "RESET":
+				_damaged = false
 
 
 func _on_AnimationPlayer_animation_finished(anim_name):
 	match anim_name:
 		"charge":
 			_animation_player.play("attack")
+			_audio_attacking.play()
 			gravity = 0
 			_charging = true
 			bump(Vector2(facing_direction * charge_speed / 4.0, 0))
@@ -126,6 +132,7 @@ func _on_Beetle_Bug_collided_with_wall():
 	if _charging:
 		_stop_charging()
 		bump(Vector2(facing_direction * charge_speed, -1 * charge_speed / 2.0))
+		_audio_impact.play()
 
 
 func _on_Beetle_Bug_collided_with_body(collision):
@@ -135,6 +142,9 @@ func _on_Beetle_Bug_collided_with_body(collision):
 		# Bump other object
 		if collision.collider.has_method("bump") and not collision.collider.is_in_group("player"):
 			collision.collider.bump(Vector2(-1 * facing_direction * charge_speed, -1 * charge_speed / 2.0))
+		
+		_audio_impact.play()
+		
 		return
 	
 	var collision_velocity = collision.collider_velocity

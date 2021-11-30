@@ -4,9 +4,9 @@ extends Node
 ##Global scene to take care of stuff such as music and stats between levels
 ##armor, abilities etc.
 
-# Reference to the viewport
-onready var _viewport = get_viewport()
 onready var _tween = Tween.new()
+
+onready var audio_enemies_erased = $AudioEnemiesErased
 
 # Allows for slowdown of flow of time for everything except for the player
 var time_multiplier = 1.0

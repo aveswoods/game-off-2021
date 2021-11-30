@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scenes/Rooms/room_base.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Tilemaps/TileMap_Floor.tres" type="TileSet" id=2]
@@ -6,11 +6,6 @@
 [ext_resource path="res://Scenes/Rooms/Teleporter.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/Rooms/Doorway.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/Rooms/Hub/StartingPedestal.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Fonts/Pizel.ttf" type="DynamicFontData" id=7]
-
-[sub_resource type="DynamicFont" id=1]
-size = 8
-font_data = ExtResource( 7 )
 
 [node name="Room" type="Node2D"]
 script = ExtResource( 1 )
@@ -44,17 +39,6 @@ destination = 1
 
 [node name="Doorway" parent="." instance=ExtResource( 5 )]
 position = Vector2( 128, 312 )
-
-[node name="RichTextLabel2" type="RichTextLabel" parent="."]
-margin_left = 507.837
-margin_top = 175.187
-margin_right = 576.837
-margin_bottom = 215.187
-custom_fonts/normal_font = SubResource( 1 )
-text = "Start Run!"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="StartingPedestalBlue" parent="." instance=ExtResource( 6 )]
 position = Vector2( 400, 240 )

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scenes/Rooms/room_base.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Tilemaps/TileMap_Floor.tres" type="TileSet" id=2]
@@ -8,6 +8,8 @@
 [ext_resource path="res://Scenes/Rooms/Teleporter.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/Rooms/WinTeleporter.tscn" type="PackedScene" id=7]
 [ext_resource path="res://creatures/enemies/Bosses/Gladiator Boss.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scenes/Objects/BlueBells.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Scenes/Objects/BlueBox.tscn" type="PackedScene" id=10]
 
 [node name="Room" type="Node2D"]
 script = ExtResource( 1 )
@@ -27,6 +29,7 @@ tile_data = PoolIntArray( 131074, 0, 393217, 131075, 0, 393217, 131076, 0, 39321
 [node name="TileMapFloor" type="TileMap" parent="."]
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 32, 32 )
+collision_use_kinematic = true
 collision_layer = 7
 collision_mask = 0
 format = 1
@@ -49,9 +52,16 @@ one_shot = true
 [node name="Tween" type="Tween" parent="."]
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
-position = Vector2( 449.879, 291.027 )
+position = Vector2( 448.619, 300.791 )
 
 [node name="Boss" parent="." instance=ExtResource( 8 )]
-position = Vector2( 197.57, 284.092 )
+position = Vector2( 229.236, 286.694 )
+
+[node name="BlueBells" parent="." instance=ExtResource( 9 )]
+position = Vector2( 500, 290 )
+blue_paths = [ NodePath("../BlueBox") ]
+
+[node name="BlueBox" parent="." instance=ExtResource( 10 )]
+position = Vector2( 80, 304 )
 
 [connection signal="timeout" from="RoomChangeTimer" to="." method="_on_RoomChangeTimer_timeout"]

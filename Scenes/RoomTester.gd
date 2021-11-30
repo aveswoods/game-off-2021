@@ -36,16 +36,21 @@ func _ready():
 	_current_room = get_node(room)
 	_current_room.close_doorways()
 	_current_room.show_room()
+	var enemies = _current_room.get_node_or_null("Enemies")
+	if enemies != null:
+		enemies.enable()
 	
 	Items.set_player(_player)
-	#Items.equip_item("shoot")
-	Items.equip_item("stun")
+	Items.equip_item("shoot")
 	#Items.equip_item("stunbomb")
-	Items.equip_item("slowmo")
+	#Items.equip_item("slowmo")
 	#Items.equip_item("mindcontrol")
 	#Items.equip_item("doublejump")
-	#Items.equip_item("charm")
-	Items.equip_item("glide")
+	#Items.equip_item("glide")
+	
+	#Items.equip_item("bite")
+	#Items.equip_item("stun")
+	#Items.equip_item("blue")
 
 	
 func _physics_process(_delta):

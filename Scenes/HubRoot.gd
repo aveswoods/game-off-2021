@@ -16,6 +16,8 @@ export(NodePath) var player = null
 onready var player_node = get_node(player)
 onready var _player_start_location = player_node.position 
 onready var _camera = $Camera2D
+onready var _spawn_particles = $Player/SpawnParticles
+onready var _audio_spawn = $Player/AudioSpawn
 
 var _current_room = null
 var _visible = false
@@ -93,6 +95,10 @@ func _ready():
 	player_node.disabled = true
 	_visible = false
 	modulate = Color(1.0, 1.0, 1.0, 0.0)
+	
+	$RoomHub/Water/SplashLeft/AudioStreamPlayer2D.play()
+	$RoomHub/Water/SplashRight/AudioStreamPlayer2D.play()
+	$RoomHub/Water/SplashRight2/AudioStreamPlayer2D.play()
 
 
 func _set_limited_camera_position(cam_pos):
@@ -139,6 +145,9 @@ func _on_Tween_tween_all_completed():
 		player_node.show()
 		player_node.disabled = false
 		_current_room.show_circuitboard()
+		
+		_spawn_particles.emitting = true
+		_audio_spawn.play()
 		
 		emit_signal("started")
 	else:

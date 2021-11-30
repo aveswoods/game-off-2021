@@ -22,6 +22,10 @@ func _physics_process(_delta):
 		_player.jump_gravity = 0
 		_player.is_jumping = true
 		_double_jumped = true
+		
+		var audio_jump = _player.get_node("AudioJump")
+		audio_jump.pitch_scale = 1.1
+		audio_jump.play()
 
 
 func _on_player_hits_floor():

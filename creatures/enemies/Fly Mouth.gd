@@ -5,6 +5,8 @@ onready var _animation_player = $AnimationPlayer
 onready var _hitbox = $EnemyHitbox
 onready var _visionbox = $AreaVision
 
+onready var _audio_impact = $AudioImpact
+
 const starting_hp = 3
 const walk_speed = 20
 const fly_speed = 180
@@ -141,12 +143,15 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 
 func _on_Fly_Mouth_collided_with_body(collision):
 	_bump_away((global_position - collision.collider.global_position).normalized())
+	_audio_impact.play()
 
 
 func _on_Fly_Mouth_collided_with_ceiling():
 	_bump_away(Vector2.DOWN)
+	_audio_impact.play()
 func _on_Fly_Mouth_collided_with_floor():
 	_bump_away(Vector2.UP)
+	_audio_impact.play()
 
 
 func _on_Fly_Mouth_damaged():

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/sfx_exp_various6.wav-8d0781929f2613c332f82f860650fb58.sample"
+
+[deps]
+
+source_file="res://Audio/SFX/sfx_exp_various6.wav"
+dest_files=[ "res://.import/sfx_exp_various6.wav-8d0781929f2613c332f82f860650fb58.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

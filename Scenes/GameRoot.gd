@@ -6,9 +6,13 @@ onready var _item_display_hud = $CanvasLayer/ItemDisplayHUD
 onready var _hub_root = $HubRoot
 onready var _boss_active_item_hud = $BossRoot/CanvasLayer/ActiveItemsHUD
 onready var _boss_root = $BossRoot
+onready var _controls_text = $CanvasLayer/RichTextLabel
+onready var _controls_timer = $ControlsTimer
+onready var _tween = $Tween
 
 var _starting_item_selected = ""
 var _current_root = ""
+var _player_idle = false
 
 
 func _ready():
@@ -24,8 +28,28 @@ func _ready():
 	# Set up color overlay for effects
 	Global.color_overlay = $CanvasLayer/ColorRect
 	
+	# Hide controls text
+	_controls_text.modulate = Color(1.0, 1.0, 1.0, 0.0)
+	
 	_current_root = "hub"
 	_hub_root.start()
+	_player_idle = true
+
+
+func _input(event):
+	if _current_root == "hub" and _player_idle:
+		if event.is_action_pressed("ui_up") or event.is_action_pressed("ui_left") or event.is_action_pressed("ui_right"):
+			_player_idle = false
+			
+			_tween.interpolate_property(
+			_controls_text,
+			"modulate",
+			_controls_text.modulate,
+			Color(1.0, 1.0, 1.0, 0.0),
+			1.0,
+			Tween.TRANS_QUAD,Tween.EASE_OUT
+			)
+			_tween.start()
 
 
 func _on_item_equipped(item_id):
@@ -113,12 +137,12 @@ func _on_BossRoot_player_wins():
 
 
 func _on_HubRoot_started():
-	pass # Replace with function body.
+	_controls_timer.start()
 
 func _on_HubRoot_stopped():
 	if _current_root == "run":
 		# If there is a seed...
-		var seed_int = 167540 #randi() % 1000000
+		var seed_int = randi() % 1000000
 		seed(seed_int)
 		print("Seed: " + str(seed_int))
 	
@@ -144,6 +168,7 @@ func _on_RunRoot_stopped():
 	if _current_root == "hub":
 		Items.unequip_all()
 		_hub_root.start()
+		_player_idle = true
 	elif _current_root == "boss":
 		_boss_root.start()
 
@@ -155,3 +180,17 @@ func _on_BossRoot_stopped():
 	if _current_root == "hub":
 		Items.unequip_all()
 		_hub_root.start()
+		_player_idle = true
+
+
+func _on_ControlsTimer_timeout():
+	if _player_idle:
+		_tween.interpolate_property(
+			_controls_text,
+			"modulate",
+			Color(1.0, 1.0, 1.0, 0.0),
+			Color(1.0, 1.0, 1.0, 1.0),
+			1.0,
+			Tween.TRANS_QUAD,Tween.EASE_OUT
+		)
+		_tween.start()

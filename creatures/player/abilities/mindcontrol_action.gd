@@ -8,6 +8,9 @@ onready var _cast_particles = $CastParticles
 onready var _bullet_particle = $BulletParticle
 onready var _timer = $Timer
 
+onready var _audio_fire = $AudioFire
+onready var _audio_control = $AudioControl
+
 var recharge_time = 4
 var _player = null
 var _player_gravity = 0
@@ -36,6 +39,8 @@ func trigger():
 	if _can_control:
 		_cast_particles.emitting = true
 		_bullet_particle.emitting = true
+		
+		_audio_fire.play()
 	
 	if _can_control and collider != null and not collider is TileMap and collider.is_in_group("enemy"):
 		# Take control
@@ -55,6 +60,8 @@ func trigger():
 		_splash_particles.global_position = collider.global_position
 		_splash_particles.emitting = true
 		Global.flash_color_overlay(Color("#b4085562"))
+		
+		_audio_control.play()
 
 
 func _stop_controlling():
