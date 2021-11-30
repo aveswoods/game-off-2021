@@ -419,7 +419,7 @@ nodes/in_air_state/position = Vector2( 455, 65 )
 nodes/movement/node = SubResource( 19 )
 nodes/movement/position = Vector2( -351, -169 )
 nodes/output/position = Vector2( 1640, 120 )
-node_connections = [ "output", 0, "OneShot 3", "in_air", 0, "Animation 4", "in_air", 1, "Animation 3", "death_state", 0, "OneShot", "death_state", 1, "Animation 8", "movement", 0, "Animation", "movement", 1, "Animation 2", "OneShot 3", 0, "death_state", "OneShot 3", 1, "Animation 7", "OneShot 2", 0, "movement", "OneShot 2", 1, "Animation 6", "in_air_state", 0, "OneShot 2", "in_air_state", 1, "in_air", "OneShot", 0, "in_air_state", "OneShot", 1, "Animation 5" ]
+node_connections = [ "output", 0, "OneShot 3", "OneShot", 0, "in_air_state", "OneShot", 1, "Animation 5", "OneShot 3", 0, "death_state", "OneShot 3", 1, "Animation 7", "OneShot 2", 0, "movement", "OneShot 2", 1, "Animation 6", "death_state", 0, "OneShot", "death_state", 1, "Animation 8", "movement", 0, "Animation", "movement", 1, "Animation 2", "in_air", 0, "Animation 4", "in_air", 1, "Animation 3", "in_air_state", 0, "OneShot 2", "in_air_state", 1, "in_air" ]
 
 [node name="Player" type="KinematicBody2D" groups=["player"]]
 process_priority = 10

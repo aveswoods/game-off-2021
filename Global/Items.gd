@@ -177,10 +177,11 @@ func unequip_all():
 	
 	_equipped_items.clear()
 	
-	if _player.action1_script != null:
-		_player.action1_script = null
-	if _player.action2_script != null:
-		_player.action2_script = null
+	if _player != null:
+		if _player.action1_script != null:
+			_player.action1_script = null
+		if _player.action2_script != null:
+			_player.action2_script = null
 
 
 # Unequips equipped items from current player, and equips them on a new player

@@ -13,6 +13,9 @@ onready var _tween = $Tween
 var _starting_item_selected = ""
 var _current_root = ""
 var _player_idle = false
+var _dialogue_displayed = false
+var _root_closing = false
+var _dialogue = null
 
 
 func _ready():
@@ -31,9 +34,10 @@ func _ready():
 	# Hide controls text
 	_controls_text.modulate = Color(1.0, 1.0, 1.0, 0.0)
 	
-	_current_root = "hub"
-	_hub_root.start()
-	_player_idle = true
+	_dialogue = Dialogic.start("Opening")
+	_dialogue.connect("dialogic_signal", self, "_on_opening_dialogue_finished")
+	add_child(_dialogue)
+	_dialogue_displayed = true
 
 
 func _input(event):
@@ -50,6 +54,28 @@ func _input(event):
 			Tween.TRANS_QUAD,Tween.EASE_OUT
 			)
 			_tween.start()
+
+
+func _on_opening_dialogue_finished(_value):
+	_current_root = "hub"
+	_hub_root.start()
+	_player_idle = true
+	
+	_dialogue.disconnect("dialogic_signal", self, "_on_opening_dialogue_finished")
+	remove_child(_dialogue)
+	_dialogue = null
+	_dialogue_displayed = false
+
+
+func _on_gameover_dialogue_finished(_value):
+	if not _root_closing and _current_root == "hub":
+		_hub_root.start()
+		_player_idle = true
+	
+	_dialogue.disconnect("dialogic_signal", self, "_on_gameover_dialogue_finished")
+	remove_child(_dialogue)
+	_dialogue = null
+	_dialogue_displayed = false
 
 
 func _on_item_equipped(item_id):
@@ -107,13 +133,19 @@ func _on_HubRoot_item_selected(item_id):
 
 func _on_HubRoot_run_start_entered():
 	_hub_root.stop()
-	
+	_root_closing = true
 	_current_root = "run"
 
 
 func _on_RunRoot_player_killed():
 	_run_root.stop()
+	_root_closing = true
 	_current_root = "hub"
+	
+	_dialogue = Dialogic.start("DEBUGGED")
+	_dialogue.connect("dialogic_signal", self, "_on_gameover_dialogue_finished")
+	add_child(_dialogue)
+	_dialogue_displayed = true
 
 
 func _on_RunRoot_boss_room_entered():
@@ -121,6 +153,7 @@ func _on_RunRoot_boss_room_entered():
 	_boss_active_item_hud.set_item(1, _run_active_item_hud.get_item_id(1))
 	_boss_active_item_hud.set_item(2, _run_active_item_hud.get_item_id(2))
 	_run_root.fast_stop()
+	_root_closing = true
 	_current_root = "boss"
 	
 	Items.set_player(_boss_root.player_node)
@@ -128,18 +161,27 @@ func _on_RunRoot_boss_room_entered():
 
 func _on_BossRoot_player_killed():
 	_boss_root.stop()
+	_root_closing = true
 	_current_root = "hub"
+	
+	_dialogue = Dialogic.start("DEBUGGED")
+	_dialogue.connect("dialogic_signal", self, "_on_gameover_dialogue_finished")
+	add_child(_dialogue)
+	_dialogue_displayed = true
 
 
 func _on_BossRoot_player_wins():
 	_boss_root.fast_stop()
+	_root_closing = true
 	_current_root = "hub"
 
 
 func _on_HubRoot_started():
+	Items.unequip_all()
 	_controls_timer.start()
 
 func _on_HubRoot_stopped():
+	_root_closing = false
 	if _current_root == "run":
 		# If there is a seed...
 		var seed_int = randi() % 1000000
@@ -162,23 +204,24 @@ func _on_HubRoot_stopped():
 
 
 func _on_RunRoot_started():
-	pass # Replace with function body.
+	pass
 
 func _on_RunRoot_stopped():
-	if _current_root == "hub":
-		Items.unequip_all()
+	_root_closing = false
+	if _current_root == "hub" and not _dialogue_displayed:
 		_hub_root.start()
 		_player_idle = true
 	elif _current_root == "boss":
 		_boss_root.start()
+		_root_closing = false
 
 
 func _on_BossRoot_started():
-	pass # Replace with function body.
+	pass
 
 func _on_BossRoot_stopped():
-	if _current_root == "hub":
-		Items.unequip_all()
+	_root_closing = false
+	if _current_root == "hub" and not _dialogue_displayed:
 		_hub_root.start()
 		_player_idle = true
 

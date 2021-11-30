@@ -12,6 +12,7 @@ onready var _green_pedestal = $RoomRunPortal/StartingPedestalGreen
 onready var _blue_pedestal = $RoomRunPortal/StartingPedestalBlue
 onready var _run_teleporter = $RoomRunPortal/Teleporter
 onready var _tween = $Tween
+onready var _gravity_tween = $PlayerGravityTween
 export(NodePath) var player = null
 onready var player_node = get_node(player)
 onready var _player_start_location = player_node.position 
@@ -38,6 +39,8 @@ func start():
 	player_node.set_collision_mask_bit(1, true)
 	player_node.position = _player_start_location
 	_camera.current = true
+	_camera.smoothing_enabled = false
+	_camera.position = _player_start_location
 	_visible = true
 	_tween.interpolate_property(
 		self,
@@ -144,12 +147,26 @@ func _on_Tween_tween_all_completed():
 		player_node.visible = true
 		player_node.show()
 		player_node.disabled = false
+		_camera.smoothing_enabled = true
 		_current_room.show_circuitboard()
 		
 		_spawn_particles.emitting = true
 		_audio_spawn.play()
 		
 		emit_signal("started")
+		
+		# Player slow falls
+		player_node.input_disabled = true
+		_gravity_tween.interpolate_property(
+			player_node,
+			"gravity",
+			0,
+			30,
+			0.5,
+			Tween.TRANS_EXPO,Tween.EASE_IN
+		)
+		_gravity_tween.start()
+		
 	else:
 		player_node.set_collision_layer_bit(0, false)
 		player_node.set_collision_mask_bit(0, false)
@@ -161,3 +178,7 @@ func _on_Tween_tween_all_completed():
 		_blue_pedestal.disable()
 		
 		emit_signal("stopped")
+
+
+func _on_PlayerGravityTween_tween_all_completed():
+	player_node.input_disabled = false

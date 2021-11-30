@@ -16,5 +16,5 @@ data_*/
 
 # End of https://www.toptal.com/developers/gitignore/api/godot
 
-# Ignore project.godot on branch
-project.godot
+# Ignore addons folder
+addons/

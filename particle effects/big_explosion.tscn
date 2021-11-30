@@ -12,7 +12,7 @@ frame_1/delay_sec = 0.0
 
 [node name="CPUParticles2D" type="CPUParticles2D"]
 emitting = false
-amount = 24
+amount = 48
 one_shot = true
 explosiveness = 1.0
 lifetime_randomness = 1.0
