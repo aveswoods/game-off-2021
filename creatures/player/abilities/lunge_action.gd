@@ -23,6 +23,10 @@ func equip(player):
 func unequip():
 	_player.remove_child(self)
 	_player = null
+	is_decelerating = false
+	is_lunging = false
+	_can_lunge = true
+	_player_gravity = 0
 
 
 func trigger():

@@ -82,7 +82,7 @@ func _physics_process(delta):
 			
 	# Standard behavior
 	else:
-		if not stunned:
+		if not stunned and not dead:
 			if _charging:
 				movement_velocity = Vector2(facing_direction * charge_speed, 0)
 			elif not _damaged:

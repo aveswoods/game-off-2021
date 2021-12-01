@@ -66,7 +66,7 @@ const ids_to_text = {
 	"redupgrade": "[center]Viral Dagger\n\nYour attacks deal double damage.[/center]",
 	"shoot": "[center]Volatile Elixer\n\nShoot enemies from a distance.[/center]",
 	"slowmo": "[center]Overclocked\n\nSlow down your enemies for a short period of time.[/center]",
-	"stun": "[center]Green Claws\n\nStomp on enemies to temporarily stun them. Clear rooms by stunning all enemies.[/center]",
+	"stun": "[center]Green Stun\n\nStomp on enemies to temporarily stun them. Clear rooms by stunning all enemies.[/center]",
 	"stunbomb": "[center]Jolt Bomb\n\nLaunch a bomb that stuns nearby enemies on impact.[/center]"
 }
 

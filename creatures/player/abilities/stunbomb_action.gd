@@ -34,7 +34,6 @@ func trigger():
 		_bomb.position = _player.position + 20 * direction
 		_bomb.launch(direction)
 		
-		_player.animation_tree.set("parameters/OneShot 2/active", 1)
 		_launching = true
 		
 		emit_signal("recharging")

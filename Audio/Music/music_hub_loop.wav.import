@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/music_hub_loop.wav-0d4f5cf69498261d4ddf80fc144f90ce.sample"
+
+[deps]
+
+source_file="res://Audio/Music/music_hub_loop.wav"
+dest_files=[ "res://.import/music_hub_loop.wav-0d4f5cf69498261d4ddf80fc144f90ce.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0

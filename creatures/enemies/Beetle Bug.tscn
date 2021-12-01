@@ -10,7 +10,7 @@
 [ext_resource path="res://Audio/SFX/sfx_exp_various6.wav" type="AudioStream" id=8]
 
 [sub_resource type="RectangleShape2D" id=9]
-extents = Vector2( 12.6905, 9 )
+extents = Vector2( 14, 9.5 )
 
 [sub_resource type="CapsuleShape2D" id=10]
 radius = 10.0407
@@ -221,7 +221,7 @@ frame = 1
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0.855728, 0 )
+position = Vector2( 1, -0.5 )
 shape = SubResource( 9 )
 
 [node name="EnemyHitbox" type="Area2D" parent="." groups=["enemy"]]

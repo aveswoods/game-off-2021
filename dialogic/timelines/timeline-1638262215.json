@@ -8,25 +8,7 @@
 			"character": "",
 			"event_id": "dialogic_001",
 			"portrait": "",
-			"text": "What?"
-		},
-		{
-			"character": "",
-			"event_id": "dialogic_001",
-			"portrait": "",
-			"text": "There's another [color=#9af089]bug[/color] in my program?"
-		},
-		{
-			"character": "",
-			"event_id": "dialogic_001",
-			"portrait": "",
-			"text": "..."
-		},
-		{
-			"character": "",
-			"event_id": "dialogic_001",
-			"portrait": "",
-			"text": "Time to run the debugger..."
+			"text": "What?\nThere's another [color=#9af089]bug[/color] in my program?\n...\nTime to run the [shake rate=32 level=6]debugger[/shake]..."
 		},
 		{
 			"emit_signal": "",

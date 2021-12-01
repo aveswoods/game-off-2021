@@ -1,17 +1,30 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Audio/Music/[MP3FY] Hart - Party Till The End.wav" type="AudioStream" id=1]
+[ext_resource path="res://Audio/Music/music_hub_loop.wav" type="AudioStream" id=1]
 [ext_resource path="res://Global/Global.gd" type="Script" id=2]
 [ext_resource path="res://Audio/SFX/sfx_movement_portal6.wav" type="AudioStream" id=3]
+[ext_resource path="res://Audio/Music/music_area_loop.wav" type="AudioStream" id=4]
+[ext_resource path="res://Audio/Music/music_boss_loop.wav" type="AudioStream" id=5]
 
 [node name="Global" type="Node"]
 script = ExtResource( 2 )
 
-[node name="AudioMusic" type="AudioStreamPlayer" parent="."]
+[node name="MusicBoss" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+bus = "Music"
+
+[node name="MusicRun" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+bus = "Music"
+
+[node name="MusicHub" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 1 )
+bus = "Music"
 
 [node name="AudioEnemiesErased" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
 volume_db = -17.0
 
-[connection signal="finished" from="AudioMusic" to="." method="_on_AudioMusic_finished"]
+[node name="Tween" type="Tween" parent="."]
+
+[connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]

@@ -72,7 +72,7 @@ func _physics_process(delta):
 				gravity = _gravity
 	# Standard behavior
 	else:
-		if not stunned and not _damaged:
+		if not stunned and not _damaged and not dead:
 			_idle_time -= delta * Global.time_multiplier
 			if _in_air:
 				_gravity = lerp(_gravity, 30, jump_gravity_acceleration)

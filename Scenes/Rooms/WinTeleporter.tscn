@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://creatures/creature_shader_material.tres" type="Material" id=1]
 [ext_resource path="res://Scenes/Rooms/win_doorway.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/Rooms/WinTeleporter.gd" type="Script" id=3]
 [ext_resource path="res://Fonts/Pizel.ttf" type="DynamicFontData" id=4]
 [ext_resource path="res://Audio/SFX/sfx_exp_short_soft5.wav" type="AudioStream" id=5]
+[ext_resource path="res://Audio/SFX/sfx_sounds_interaction15.wav" type="AudioStream" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32, 32 )
@@ -225,6 +226,11 @@ __meta__ = {
 stream = ExtResource( 5 )
 volume_db = -15.0
 pitch_scale = 1.5
+
+[node name="AudioEntered" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = -17.0
+pitch_scale = 0.3
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_Area2D_body_exited"]

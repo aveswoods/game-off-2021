@@ -67,6 +67,17 @@ func _on_opening_dialogue_finished(_value):
 	_dialogue_displayed = false
 
 
+func _on_closing_dialogue_finished(_value):
+	_current_root = "hub"
+	_hub_root.start()
+	_player_idle = true
+	
+	_dialogue.disconnect("dialogic_signal", self, "_on_closing_dialogue_finished")
+	remove_child(_dialogue)
+	_dialogue = null
+	_dialogue_displayed = false
+
+
 func _on_gameover_dialogue_finished(_value):
 	if not _root_closing and _current_root == "hub":
 		_hub_root.start()
@@ -135,12 +146,15 @@ func _on_HubRoot_run_start_entered():
 	_hub_root.stop()
 	_root_closing = true
 	_current_root = "run"
+	Global.fade_out_music("hub", 1.5)
 
 
 func _on_RunRoot_player_killed():
 	_run_root.stop()
 	_root_closing = true
 	_current_root = "hub"
+	
+	Global.fade_out_music("run", 3.0)
 	
 	_dialogue = Dialogic.start("DEBUGGED")
 	_dialogue.connect("dialogic_signal", self, "_on_gameover_dialogue_finished")
@@ -156,6 +170,8 @@ func _on_RunRoot_boss_room_entered():
 	_root_closing = true
 	_current_root = "boss"
 	
+	Global.fade_out_music("run", 0.5)
+	
 	Items.set_player(_boss_root.player_node)
 
 
@@ -163,6 +179,8 @@ func _on_BossRoot_player_killed():
 	_boss_root.stop()
 	_root_closing = true
 	_current_root = "hub"
+	
+	Global.fade_out_music("boss", 3.0)
 	
 	_dialogue = Dialogic.start("DEBUGGED")
 	_dialogue.connect("dialogic_signal", self, "_on_gameover_dialogue_finished")
@@ -173,12 +191,19 @@ func _on_BossRoot_player_killed():
 func _on_BossRoot_player_wins():
 	_boss_root.fast_stop()
 	_root_closing = true
-	_current_root = "hub"
+	
+	Global.fade_out_music("boss", 0.25)
+	
+	_dialogue = Dialogic.start("Closing")
+	_dialogue.connect("dialogic_signal", self, "_on_closing_dialogue_finished")
+	add_child(_dialogue)
+	_dialogue_displayed = true
 
 
 func _on_HubRoot_started():
 	Items.unequip_all()
 	_controls_timer.start()
+	Global.play_music("hub")
 
 func _on_HubRoot_stopped():
 	_root_closing = false
@@ -204,7 +229,7 @@ func _on_HubRoot_stopped():
 
 
 func _on_RunRoot_started():
-	pass
+	Global.play_music("run")
 
 func _on_RunRoot_stopped():
 	_root_closing = false
@@ -217,7 +242,7 @@ func _on_RunRoot_stopped():
 
 
 func _on_BossRoot_started():
-	pass
+	Global.play_music("boss")
 
 func _on_BossRoot_stopped():
 	_root_closing = false

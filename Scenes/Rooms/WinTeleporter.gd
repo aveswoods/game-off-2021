@@ -11,6 +11,7 @@ onready var _animation_player_text = $AnimationPlayerText
 var _in_doorway = false
 
 onready var _audio_spawn = $AudioSpawn
+onready var _audio_entered = $AudioEntered
 
 
 func enable():
@@ -32,6 +33,7 @@ func _ready():
 func _process(_delta):
 	if Input.is_action_just_pressed("ui_accept") and not disabled and _in_doorway:
 		emit_signal("player_wins")
+		_audio_entered.play()
 
 
 func _on_Area2D_body_entered(body):

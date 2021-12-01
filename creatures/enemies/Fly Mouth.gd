@@ -78,7 +78,7 @@ func _physics_process(delta):
 				_animation_player.play("walk")
 	# Standard behavior
 	else:
-		if not stunned and not _damaged:
+		if not stunned and not _damaged and not dead:
 			if _target != null:
 				var target_displacement = _target.global_position - global_position
 				movement_velocity = fly_speed * target_displacement.normalized()
